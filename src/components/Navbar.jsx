@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 
-function Navbar() {
+function Navbar({ addToCart = [] }) {
   return (
     <nav className="navbar navbar-expand-lg custom_navbar">
       <div className="container">
@@ -37,6 +37,10 @@ function Navbar() {
             </Link>
             <Link to="/cart" className="cart_btn">
               <FaShoppingCart /> Cart
+                {addToCart.length > 0 && (
+                  <span>({addToCart.length})</span>
+                )}
+               
             </Link>
           </div>
         </div>
