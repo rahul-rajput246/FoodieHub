@@ -62,20 +62,70 @@
        setDelete(activeDelete.filter((items) => items.id !== sum))
     }
 
+    {/* Add To Cart With + and - */}
+
+    const addToCart = [
+       {
+         id:1,
+         price:200,
+         name:"pizza",
+       },
+       {
+         id:2,
+         price:400,
+         name:"Burger",
+       },
+       {
+         id:3,
+         price:2300,
+         name:"Chicken fries",
+       },
+    ];
+
     const [cart,setCart] = useState([]);
 
-    const cart_btn = (products) => {
-       
-      const exits = cart.some((items) => items.id === products.id);
-       if(exits){
-          setCart(cart.filter((items) => items.id !== products.id));
-       } else {
-          setCart([...cart,products]);
-       }
+   {/* Add to Cart */}
+   
+    const add_Btn = (id) => {
+      
+      const newItem = cart.find((item) => item.id === id);
 
+      if(newItem){
+         let newCart = cart.map((item) => 
+            item.id === id ? {...item,qty: item.qty+1} : item
+         );
+         setCart(newCart);
+      } else {
+        setCart([...cart,{id:id , qty:1}]);
+      }
+
+    };
+
+    {/* Increase quantity of items*/}
+
+    const plusBtn = (id) => {
+        let newCart = cart.map((item) => 
+          item.id === id ? {...item,qty:item.qty + 1} : item
+        );
+        setCart(newCart);
     }
 
-    const [add_counter,setAdd_counter] = useState(0);
+    {/* Decrease quantity of items */}
+
+    const minusBtn = (id) => {
+       let newCart = cart.find((item) => item.id === id);
+       if(newCart.qty === 1){
+          let newCart = cart.filter((item) => item.id !== id);
+          setCart(newCart);
+       } else{
+        let newCart = cart.map((item) => 
+            item.id === id ? {...item,qty:item.qty-1} : item
+        );
+          setCart(newCart);
+       }
+    }
+
+    const totalQty = cart.reduce((total, item) => total + item.qty,0);
    
     return(
       <>
@@ -103,29 +153,34 @@
           ))}
         </div>
 
-        <div className="add_cart_box" style={{display:"flex",justifyContent:"center", gap:"30px"}}>
-            <div className="cart_box">
-                <h4 style={{textAlign:"center",width:"100%",marginTop:"20px"}}>Cart</h4>
-            </div>
-              {map_array.map((items) => (
-                    <div className="hello" key={items.id}>
-                        <div className="cart_btn_box">
-                        <h3>{items.itemName}</h3>
-                          <button onClick={() => setAdd_counter(add_counter + 1)}>+</button>
-                          <button className="cart_btn" onClick={() => cart_btn(items)}>
-                            {cart.some((i) => i.id === items.id) ? "Remove" : "Add"}
-                          </button>
-                          <button>{add_counter}</button>
-                          <button onClick={() => setAdd_counter(add_counter - 1)}>-</button>
-                        </div>
+       <div className="addtocar_box">
+          <div className="cart_icon_box">
+            <i className="bi bi-cart">
+                {totalQty > 0 &&
+                  <span>{totalQt}</span>
+                }
+            </i>
+          </div>
+          <div className="container">
+            {addToCart.map((jalwa) => {
+              let cartItem = cart.find((c) => c.id === jalwa.id);
+                return(
+                    <div className="cart_box_id" key={jalwa.id}>
+                       <h4>{jalwa.name} - {jalwa.price}</h4>
+                       {cartItem ? (
+                        <>
+                          <button className="plus_btn" onClick={() => plusBtn(jalwa.id)}>+</button>
+                          <span>{cartItem.qty}</span>
+                          <button className="minus_btn" onClick={() => minusBtn(jalwa.id)}>-</button>
+                       </>
+                       ) : (
+                           <button className="Add" onClick={() => add_Btn(jalwa.id)}>Add</button>
+                       )};
                     </div>
-                
-              ))}
-              <div className="cart_body">
-                
-              </div>
-
-        </div>
+                );
+              })}
+          </div>
+       </div>
 
       </>
     );

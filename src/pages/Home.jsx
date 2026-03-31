@@ -21,11 +21,12 @@ function Home() {
   {/* Add to Cart*/}
 
 	const [addToCart, setAddToCart] = useState([]);
-	
+  const totalQty = addToCart.reduce((total,item) => total + item.qty,0)
+
   return (
     <>
-		
-    <Navbar addToCart={addToCart} />
+
+    <Navbar totalQty={totalQty}/>
 
 		{/* Banner Page */}
 	
@@ -78,7 +79,7 @@ function Home() {
           </div>
 		  
         <div className="category_card">
-          <CategorySection items={activeCategory.items}  addToCart={addToCart}  setAddToCart={setAddToCart}/>
+          <CategorySection items={activeCategory.items} addToCart={addToCart} setAddToCart={setAddToCart} />
         </div>
         
         </div>

@@ -95,6 +95,19 @@
     color: #000;
 }
 
+.cart_btn span {
+    background: #fff;
+    padding: 0px 8px;
+    border-radius: 50px;
+    position: absolute;
+    top: 19px;
+}
+
+cart_btn:hover span {
+    background: #ff8900;
+    color: #fff;
+}
+
 .login_btn svg,
 .cart_btn svg {
     margin-right: 8px;
