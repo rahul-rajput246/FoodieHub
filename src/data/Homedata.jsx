@@ -1,7 +1,7 @@
-import { FaTruck } from "react-icons/fa";
 import { MdPayment } from "react-icons/md";
 import { GiChefToque } from "react-icons/gi";
-import { FaLeaf } from "react-icons/fa";
+import { FaTruck, FaLeaf } from "react-icons/fa";
+import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 
 {/* Category Section */}
 	
@@ -397,6 +397,30 @@ import { FaLeaf } from "react-icons/fa";
 	  }
 	];
 
+	export const steps = [
+			{
+			id: 1,
+			step: "01",
+			icon: <FaUtensils />,
+			title: "Choose Your Food",
+			desc: "Explore our delicious menu and pick your favorite meals, snacks, and drinks in just a few clicks.",
+			},
+			{
+			id: 2,
+			step: "02",
+			icon: <FaKitchenSet />,
+			title: "We Prepare It Fresh",
+			desc: "Once you place your order, our kitchen starts preparing your food fresh with quality ingredients and care.",
+			},
+			{
+			id: 3,
+			step: "03",
+			icon: <FaMotorcycle />,
+			title: "Fast Delivery",
+			desc: "Our delivery team brings your order hot and fresh right to your doorstep in the shortest time possible.",
+			},
+		];
+
 	export const Testomonial = [
 				{
 					id:1,
@@ -423,3 +447,31 @@ import { FaLeaf } from "react-icons/fa";
 					rating:4,
 				},
 			];
+		
+	export const faqs = [
+		{
+		  id: 1,
+		  question: "How long does delivery take?",
+		  answer:"We usually deliver your order within 25 to 35 minutes depending on your location, traffic, and order size.",
+		},
+		{
+		  id: 2,
+		  question: "Do you offer cash on delivery?",
+		  answer:"Yes, we offer cash on delivery as well as secure online payment options for your convenience.",
+		},
+		{
+		  id: 3,
+		  question: "Can I track my order in real time?",
+		  answer:"Yes, once your order is confirmed, you can track its delivery progress in real time.",
+		},
+		{
+		  id: 4,
+		  question: "Are your ingredients fresh?",
+		  answer:"Absolutely. We use fresh and quality ingredients to prepare every order with care and great taste.",
+		},
+		{
+		  id: 5,
+		  question: "Do you offer discounts or special deals?",
+		  answer:"Yes, we regularly offer combo deals, discounts, and limited-time food offers on selected menu items.",
+		},
+	  ];

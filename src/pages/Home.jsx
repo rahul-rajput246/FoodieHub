@@ -1,3 +1,4 @@
+import Navbar from "../components/Navbar";
 import CategorySection from "../components/CategorySection";
 import WhyToChooseUs from "../components/whytoChooseUs";
 import MostLovedSection from "../components/MostLovedSection";
@@ -5,10 +6,11 @@ import SpecialOfferBanner from "../components/SpecialOfferBanner";
 import TestomonialSection from "../components/TestomonialSection";
 import HowItWorks from "../components/HowItWorks";
 import FAQSection from "../components/FAQSection";
-import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { categories, whyToChooseUs, mostLovedItems, Testomonial } from "../data/Homedata";
+import { categories, whyToChooseUs, mostLovedItems, Testomonial, faqs } from "../data/Homedata";
 import { useState } from "react";
+
 
 function Home() {
 
@@ -126,7 +128,13 @@ function Home() {
 
       {/* FAQ Section */}
 
-      <FAQSection />
+      <FAQSection 
+        items={faqs}
+      />
+
+      {/* Footer Section */}
+      
+      <Footer />
       
     </>
   );

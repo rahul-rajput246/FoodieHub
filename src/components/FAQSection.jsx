@@ -1,47 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaPlus, FaMinus } from "react-icons/fa6";
+import { FaPlus, FaMinus, FaHeadset } from "react-icons/fa6";
 
-function FAQSection() {
-  const faqs = [
-    {
-      id: 1,
-      question: "How long does delivery take?",
-      answer:
-        "We usually deliver your order within 25 to 35 minutes, depending on your location, traffic, and order size.",
-    },
-    {
-      id: 2,
-      question: "Do you offer cash on delivery?",
-      answer:
-        "Yes, we offer cash on delivery along with secure online payment options for your convenience.",
-    },
-    {
-      id: 3,
-      question: "Can I track my order in real time?",
-      answer:
-        "Yes, once your order is confirmed, you can track its status and delivery progress in real time.",
-    },
-    {
-      id: 4,
-      question: "Are your ingredients fresh?",
-      answer:
-        "Absolutely. We use fresh and high-quality ingredients to prepare every meal with great taste and care.",
-    },
-    {
-      id: 5,
-      question: "Can I cancel or change my order?",
-      answer:
-        "Yes, you can request changes or cancellation within a few minutes of placing the order, before preparation begins.",
-    },
-    {
-      id: 6,
-      question: "Do you offer discounts or special deals?",
-      answer:
-        "Yes, we regularly provide exciting discounts, combo offers, and limited-time deals on popular menu items.",
-    },
-  ];
-
+function FAQSection({ items }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const toggleFAQ = (index) => {
@@ -49,53 +10,95 @@ function FAQSection() {
   };
 
   return (
-    <section className="faq_section py-5">
+   <section className="faq_section py-3">
       <div className="container">
-        <div className="faq_heading text-center pb-4">
+
+        {/* TOP HEADING */}
+        <div className="faq_heading text-center pb-5">
           <span className="faq_tag">Help & Support</span>
           <h2>Frequently Asked Questions</h2>
           <p>
-            Find quick answers to common questions about ordering, delivery,
-            payment, and food quality at FoodieHub.
+            Got questions about delivery, payments, or food quality? 
+            We’ve answered the most common things here to make your 
+            ordering experience smooth and easy.
           </p>
         </div>
 
-        <div className="row justify-content-center">
-          <div className="col-lg-8">
-            <div className="faq_main_box">
-              {faqs.map((item, index) => (
+        {/* CONTENT */}
+        <div className="row g-4">
+
+          {/* LEFT SIDE */}
+          <div className="col-lg-5">
+            <div className="faq_left_box">
+
+               {/* MAIN CARD */}
+                <div className="faq_left_card">
+
+                  {/* support */}
+                  <div className="faq_support_card">
+                    <div className="faq_support_icon">
+                      <FaHeadset />
+                    </div>
+                    <div className="faq_support_text">
+                      <h4>Need more help?</h4>
+                      <p>Our support team is here to help you anytime.</p>
+                    </div>
+                  </div>
+
+                  {/* divider */}
+                  <div className="faq_divider"></div>
+
+                  {/* points */}
+                  <ul className="faq_points">
+                    <li>🚀 Fast Delivery in 30 mins</li>
+                    <li>🥗 Fresh & Hygienic Food</li>
+                    <li>💳 Easy Payment Options</li>
+                  </ul>
+
+                  {/* highlight */}
+                  <div className="faq_highlight">
+                    <h5>🔥 1000+ Happy Customers</h5>
+                  </div>
+
+                  {/* button */}
+                  <Link to="/contact" className="faq_contact_btn">
+                    Contact Us
+                  </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE */}
+          <div className="col-lg-7">
+            <div className="faq_right_box">
+              {items.map((faq, index) => (
                 <div
                   className={`faq_item ${activeIndex === index ? "active" : ""}`}
-                  key={item.id}
+                  key={faq.id}
                 >
                   <button
                     className="faq_question"
-                    onClick={() => toggleFAQ(index)}
                     type="button"
+                    onClick={() => toggleFAQ(index)}
                   >
-                    <span>{item.question}</span>
+                    <span>{faq.question}</span>
                     <div className="faq_icon">
                       {activeIndex === index ? <FaMinus /> : <FaPlus />}
                     </div>
                   </button>
 
                   <div className={`faq_answer ${activeIndex === index ? "show" : ""}`}>
-                    <p>{item.answer}</p>
+                    <p>{faq.answer}</p>
                   </div>
                 </div>
               ))}
             </div>
-
-            <div className="faq_bottom text-center pt-4">
-              <p>Still have questions? We’re here to help you.</p>
-              <Link to="/contact" className="faq_contact_btn">
-                Contact Us
-              </Link>
-            </div>
           </div>
+
         </div>
       </div>
     </section>
+   
   );
 }
 
