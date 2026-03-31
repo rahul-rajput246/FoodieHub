@@ -3,6 +3,8 @@ import WhyToChooseUs from "../components/whytoChooseUs";
 import MostLovedSection from "../components/MostLovedSection";
 import SpecialOfferBanner from "../components/SpecialOfferBanner";
 import TestomonialSection from "../components/TestomonialSection";
+import HowItWorks from "../components/HowItWorks";
+import FAQSection from "../components/FAQSection";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { categories, whyToChooseUs, mostLovedItems, Testomonial } from "../data/Homedata";
@@ -22,6 +24,10 @@ function Home() {
 
 	const [addToCart, setAddToCart] = useState([]);
   const totalQty = addToCart.reduce((total,item) => total + item.qty,0)
+
+  {/* Most love items*/}
+
+  const [order,setOrder] = useState([]);
 
   return (
     <>
@@ -98,7 +104,13 @@ function Home() {
 			title="Most Loved Food Items"
 			subtitle="Discover the dishes our customers order again and again, made fresh with love and packed with flavor."
 			items={mostLovedItems}
+      order={order} 
+      setOrder={setOrder}
 		/>
+
+    {/* How It Works */}
+
+      <HowItWorks />
 	  
 	   {/* Special Banner Section */}
 
@@ -112,6 +124,9 @@ function Home() {
         items={Testomonial}
       /> 
 
+      {/* FAQ Section */}
+
+      <FAQSection />
       
     </>
   );

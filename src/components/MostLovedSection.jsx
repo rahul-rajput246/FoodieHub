@@ -1,4 +1,24 @@
-function MostLovedSection({ title, subtitle, items }) {
+import { useNavigate } from "react-router-dom";
+
+function MostLovedSection({ title, subtitle, items, order, setOrder}) {
+
+		const navigate = useNavigate();
+		
+		const orderNow = (id) => {
+		const order_item = order.find((item) => item.id === id);
+
+		if(order_item){
+			let select_item = order.map((item) => 
+				item.id === id ? {...item,qty: item.qty + 1} : item
+			);
+			 setOrder(select_item);
+		} else {
+			setOrder([...order,{id:id,qty:1}]);
+		}
+
+		navigate("/cart");
+	}
+
   return (
     <div className="most_loved_section py-3">
 		<div className="container">
@@ -23,7 +43,7 @@ function MostLovedSection({ title, subtitle, items }) {
 
 						  <div className="most_loved_bottom">
 							<span className="most_loved_price">₹{item.price}</span>
-							<button className="most_loved_btn">Order Now</button>
+							<button className="most_loved_btn" onClick={() => orderNow(items.id)}>Order Now</button>
 						  </div>
 						</div>
 					  </div>

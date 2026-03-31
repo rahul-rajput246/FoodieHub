@@ -157,7 +157,7 @@
           <div className="cart_icon_box">
             <i className="bi bi-cart">
                 {totalQty > 0 &&
-                  <span>{totalQt}</span>
+                  <span>{totalQty}</span>  
                 }
             </i>
           </div>
