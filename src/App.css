@@ -1068,8 +1068,6 @@ cart_btn:hover span {
 
 .faq_points li::before {
   content: "✔";
-  position: absolute;
-  left: 0;
   color: #ff7600;
   font-weight: bold;
 }
