@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function MostLovedSection({ title, subtitle, items, order, setOrder}) {
+function MostLovedSection({ title, subtitle, items, order, setOrder }) {
 
 		const navigate = useNavigate();
 		

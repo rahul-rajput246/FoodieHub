@@ -292,40 +292,40 @@ import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 	
 	{/* Why To Choose Us Section */}
 		
-		export const whyToChooseUs = [
-			{
-				id:1,
-				title:"Experience the Best Food Service",
-				subtitle:"We deliver more than just food — we deliver experience",
-				items:[
-					
-					{
-						id:1,
-						icon:<FaTruck />,
-						heading:"Fast Delivery",
-						desc:"Get your food delivered quickly and always fresh. We make sure your cravings are satisfied without delay.",
-					},
-					{
-						id:2,
-						icon:<FaLeaf />,
-						heading:"Fresh Ingredients",
-						desc:"We use only high-quality and fresh ingredients. Every dish is prepared with care and hygiene.",
-					},
-					{
-						id:3,
-						icon:<MdPayment />,
-						heading:"Easy Payment",
-						desc:"Enjoy a smooth and secure checkout process. Multiple payment options for your convenience.",
-					},
-					{
-						id:4,
-						icon:<GiChefToque />,
-						heading:"Expert Chefs",
-						desc:"Our chefs bring rich flavors and expertise to every meal. Taste restaurant-quality food at home.",
-					}
-				]
-			}
-		];
+	export const whyToChooseUs = [
+		{
+			id:1,
+			title:"Experience the Best Food Service",
+			subtitle:"We deliver more than just food — we deliver experience",
+			items:[
+				
+				{
+					id:1,
+					icon:<FaTruck />,
+					heading:"Fast Delivery",
+					desc:"Get your food delivered quickly and always fresh. We make sure your cravings are satisfied without delay.",
+				},
+				{
+					id:2,
+					icon:<FaLeaf />,
+					heading:"Fresh Ingredients",
+					desc:"We use only high-quality and fresh ingredients. Every dish is prepared with care and hygiene.",
+				},
+				{
+					id:3,
+					icon:<MdPayment />,
+					heading:"Easy Payment",
+					desc:"Enjoy a smooth and secure checkout process. Multiple payment options for your convenience.",
+				},
+				{
+					id:4,
+					icon:<GiChefToque />,
+					heading:"Expert Chefs",
+					desc:"Our chefs bring rich flavors and expertise to every meal. Taste restaurant-quality food at home.",
+				}
+			]
+		}
+	];
 	
 
 	{/* Most Loved Section */}
@@ -397,6 +397,8 @@ import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 	  }
 	];
 
+	{/* How it Works */}
+
 	export const steps = [
 			{
 			id: 1,
@@ -424,7 +426,6 @@ import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 	export const Testomonial = [
 				{
 					id:1,
-					icon:"",
 					testimonialName:"Rahul Rajput",
 					image:"assets/images/our_team_img1.png",
 					review:"Absolutely loved the burger and fries. Delivery was super quick and food arrived hot.",
@@ -432,7 +433,6 @@ import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 				},
 				{
 					id:2,
-					icon:"",
 					testimonialName:"Mohit Gautam",
 					image:"assets/images/our_team_img2.png",
 					review:"The pizza was cheesy, fresh, and full of flavor. One of the best online food experiences.",
@@ -440,7 +440,6 @@ import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 				},
 				{
 					id:3,
-					icon:"",
 					testimonialName:"Himanshu Singh",
 					image:"assets/images/our_team_img3.png",
 					review:"FoodieHub made my dinner so easy. Great taste, great service, and smooth ordering process",
