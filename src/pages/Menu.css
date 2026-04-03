@@ -1,0 +1,139 @@
+.menu_page {
+  background: #fffaf4;
+}
+
+.menu_filter_box {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.menu_filter_box h4 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.menu_filter_box h5 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.menu_filter_btn {
+  display: block;
+  width: 100%;
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  transition: 0.3s;
+}
+
+.menu_filter_btn.active,
+.menu_filter_btn:hover {
+  background: #ff7a00;
+  color: #fff;
+  border-color: #ff7a00;
+}
+
+.menu_clear_btn {
+  width: 100%;
+  border: none;
+  background: #222;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.menu_top_bar {
+  background: #fff;
+  padding: 18px 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.menu_sort_select {
+  max-width: 220px;
+}
+
+.menu_food_card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  transition: 0.3s;
+}
+
+.menu_food_card:hover {
+  transform: translateY(-5px);
+}
+
+.menu_food_img_box {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.menu_food_img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.menu_food_badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.menu_food_category {
+  display: inline-block;
+  font-size: 13px;
+  background: #fff3e8;
+  color: #ff7a00;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.menu_food_card_body h4 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.menu_food_card_body p {
+  font-size: 14px;
+  color: #666;
+  min-height: 42px;
+}
+
+.menu_food_card_bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.menu_food_price {
+  font-size: 18px;
+  color: #222;
+}
+
+.menu_add_btn {
+  border: none;
+  background: #ff7a00;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 10px;
+}

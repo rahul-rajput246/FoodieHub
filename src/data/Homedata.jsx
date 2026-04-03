@@ -3,6 +3,23 @@ import { GiChefToque } from "react-icons/gi";
 import { FaTruck, FaLeaf } from "react-icons/fa";
 import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 
+{/* Home Banner Data */}
+
+	export const HomeBannerData = {
+		image:"assets/images/home_banner.png",
+		titleFirst: "Be The Quickest",
+		titleSecond:"In Your Food",
+		titleThird:"Delivery",
+		subtitle: "Fastest Food Delivery",
+		description:
+		"From kitchen to your door — hot, fresh & lightning fast. Order your favorite meals anytime with FoodieHub.",
+		btn1Text: "Shop Now",
+		btn1Link: "/shop",
+		btn2Text: "Explore Menu",
+		btn2Link: "/menu",
+	};
+
+
 {/* Category Section */}
 	
 	export const categories = [
@@ -330,72 +347,10 @@ import { FaUtensils, FaKitchenSet, FaMotorcycle } from "react-icons/fa6";
 
 	{/* Most Loved Section */}
 	
-	export const mostLovedItems = [
-	  {
-		id: 1,
-		name: "Cheese Burger",
-		price: 149,
-		rating: 4.8,
-		description: "Loaded with cheese, fresh veggies and grilled patty.",
-		image: "assets/images/burger_img.jfif"
-	  },
-	  {
-		id: 2,
-		name: "Paneer Butter Masala",
-		price: 249,
-		rating: 4.9,
-		description: "Rich buttery gravy with soft paneer cubes and spices.",
-		image: "assets/images/paneer_img.jfif"
-	  },
-	  {
-		id: 3,
-		name: "Cold Coffee",
-		price: 99,
-		rating: 4.7,
-		description: "Creamy chilled coffee blended perfectly for refreshment.",
-		image: "assets/images/cold_coffee.jfif"
-	  },
-	  {
-		id: 4,
-		name: "Black Forest Cake",
-		price: 179,
-		rating: 4.8,
-		description: "Soft chocolate cake layered with cream and cherries.",
-		image: "assets/images/blackForest_cake.webp"
-	  },
-	  {
-		id: 5,
-		name: "Chicken Wings",
-		price: 249,
-		rating: 4.9,
-		description: "Crispy spicy wings tossed in delicious hot sauce.",
-		image: "assets/images/chicken_wings_img.jfif"
-	  },
-	  {
-		id: 6,
-		name: "Dal Makhni",
-		price: 229,
-		rating: 4.8,
-		description: "Slow-cooked dal with butter and creamy rich flavor.",
-		image: "assets/images/dal_makhni_img.jfif"
-	  },
-	  {
-		id: 7,
-		name: "Brownie Shake",
-		price: 139,
-		rating: 4.7,
-		description: "Chocolate brownie shake with rich creamy texture.",
-		image: "assets/images/brownie_shake.jfif"
-	  },
-	  {
-		id: 8,
-		name: "Gulab Jamun",
-		price: 129,
-		rating: 4.8,
-		description: "Soft sweet dumplings soaked in sugar syrup.",
-		image: "assets/images/gulab_jamun.jpg"
-	  }
-	];
+	export const mostLovedItems = {
+	   title: "Most Loved Dishes",
+  	   subtitle: "Discover the dishes our customers keep coming back for."
+	};
 
 	{/* How it Works */}
 
