@@ -364,3 +364,20 @@ export const menuItems = [
     }
     
   ];
+
+  {/* Sort By Data */}
+
+  export const sortData = [
+    {
+      id:0,
+      title:"Sort By"
+    },
+    {
+      id:1,
+      title:"Price Low To High"
+    },
+    {
+      id:2,
+      title:"Price: High To Low"
+    }
+  ];

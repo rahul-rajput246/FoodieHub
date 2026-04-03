@@ -96,6 +96,12 @@
   color: #000;
 }
 
+.cart_btn:hover .cart_count {
+    background-color: #ff8900;
+    color: #fff;
+    transition: 0.3s ease;
+}
+
 .cart_btn span {
   background: #fff;
   padding: 0px 8px;

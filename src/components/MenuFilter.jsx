@@ -1,4 +1,4 @@
-import { menuItems, allPrice } from "../data/Menudata";
+import { menuItems, allPrice, sortData } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import { categories } from '../data/Homedata';
 import '../pages/Menu.css';
@@ -12,14 +12,10 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
   const [activeCategory,setCategory] =  useState("All");
 
   const randomFood = useMemo(() => {
-      return [...menuItems].sort(() => Math.random() - 0.5).slice(0,8);
+      return [...menuItems].sort(() => Math.random() - 0.5);
   }, []);
 
-  const randomPrice = useMemo(() => {
-     return [...menuItems].sort(() => Math.random() - 0.5);
-  }, []);
-
-  const filterFood = activeCategory === "All" ? randomPrice : menuItems.filter((item) => item.category === activeCategory);
+  const filterFood = activeCategory === "All" ? randomFood : menuItems.filter((item) => item.category === activeCategory);
 
  {/* Price Filter */}
  
@@ -32,6 +28,22 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
                       : activePrice === "200 - 300"
                       ? filterFood.filter((item) => item.price >= 200 && item.price <= 300)
                       : filterFood.filter((item) => item.price > 300);
+
+  {/* Sort By Filter */}
+
+  const [sortBy,setSortBy] = useState("Sort By");
+
+  const sortFilter = [...filterPrice].sort((a, b) => {
+    if (sortBy === "Price Low To High") {
+      return a.price - b.price;
+    }
+
+    if (sortBy === "Price: High To Low") {
+      return b.price - a.price;
+    }
+
+    return 0;
+  });
 
   return (
     <section className="menu_page py-5">
@@ -104,19 +116,18 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
             <div className="menu_top_bar d-flex justify-content-between align-items-center mb-4">
               <div>
                 <h4 className="mb-1">Our Delicious Menu</h4>
-                <p className="mb-0">Showing {menuItems.length} food items</p>
+                <p className="mb-0">Showing {sortFilter.length} food items</p>
               </div>
 
-              <select className="form-select menu_sort_select">
-                <option>Sort By</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Rating: High to Low</option>
+              <select className="form-select menu_sort_select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                {sortData.map((item) => 
+                  <option key={item.id}>{item.title}</option>
+                )}
               </select>
             </div>
 
             <div className="row">
-              {filterPrice.map((item) => {
+              {sortFilter.map((item) => {
                 const cartItem = addToCart.find((cart) => cart.id === item.id);
 
                 return (

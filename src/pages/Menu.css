@@ -138,6 +138,15 @@
   border-radius: 10px;
 }
 
+select.form-select:focus {
+    box-shadow: none;
+    border: 1px solid #d6d6d6;
+}
+
+input.form-control:focus {
+    box-shadow: none;
+    border: 1px solid #cbcbcb;
+}
 
 @media(min-width:557px) and (max-width:991px){
   .category_buttons {
