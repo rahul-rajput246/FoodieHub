@@ -1,10 +1,12 @@
-import { menuItems } from "../data/Menudata";
+import { menuItems, allPrice } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import { categories } from '../data/Homedata';
 import '../pages/Menu.css';
 
 function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
 
+  {/* Category Filter */}
+  
   const allCategories = [{id:0,title:"All"}, ...categories]
   
   const [activeCategory,setCategory] =  useState("All");
@@ -13,7 +15,23 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
       return [...menuItems].sort(() => Math.random() - 0.5).slice(0,8);
   }, []);
 
-  const filterFood = activeCategory === "All" ? randomFood : menuItems.filter((item) => item.category === activeCategory);
+  const randomPrice = useMemo(() => {
+     return [...menuItems].sort(() => Math.random() - 0.5);
+  }, []);
+
+  const filterFood = activeCategory === "All" ? randomPrice : menuItems.filter((item) => item.category === activeCategory);
+
+ {/* Price Filter */}
+ 
+  const [activePrice,setPrice] = useState("All Prices");
+
+  const filterPrice = activePrice === "All Prices"
+                      ? filterFood
+                      : activePrice === "Under 200"
+                      ? filterFood.filter((item) => item.price < 200)
+                      : activePrice === "200 - 300"
+                      ? filterFood.filter((item) => item.price >= 200 && item.price <= 300)
+                      : filterFood.filter((item) => item.price > 300);
 
   return (
     <section className="menu_page py-5">
@@ -55,10 +73,15 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
                   <h5>Price Range</h5>
                 </div>
                 <div className="category_buttons">
-                  <button className="menu_filter_btn">All Prices</button>
-                  <button className="menu_filter_btn">Under ₹200</button>
-                  <button className="menu_filter_btn">₹200 - ₹300</button>
-                  <button className="menu_filter_btn">Above ₹300</button>
+                  {allPrice.map((item) => (
+                      <button 
+                      key={item.id}
+                      className={`menu_filter_btn ${activePrice === item.title ? "active" : ""}`}
+                      onClick={() => setPrice(item.title)}
+                      >
+                          {item.title}
+                      </button>
+                   ))}
                 </div>
               </div>
 
@@ -93,7 +116,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
             </div>
 
             <div className="row">
-              {filterFood.map((item) => {
+              {filterPrice.map((item) => {
                 const cartItem = addToCart.find((cart) => cart.id === item.id);
 
                 return (

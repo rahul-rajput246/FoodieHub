@@ -215,7 +215,7 @@ export const menuItems = [
     id: 20,
     name: "Brownie Shake",
     category: "Chill Drinks",
-    price: 139,
+    price: 499,
     rating: 4.9,
     description: "Rich brownie blended shake with chocolate chunks",
     image: "assets/images/brownie_shake.jfif",
@@ -235,7 +235,7 @@ export const menuItems = [
     id: 22,
     name: "Pineapple Juice",
     category: "Chill Drinks",
-    price: 179,
+    price: 355,
     rating: 4.4,
     description: "Fresh tropical pineapple juice full of natural sweetness",
     image: "assets/images/pineapple_juice.jfif",
@@ -305,7 +305,7 @@ export const menuItems = [
     id: 29,
     name: "Donut Cake",
     category: "Sweet Cravings",
-    price: 139,
+    price: 369,
     rating: 4.4,
     description: "Soft glazed donut topped with chocolate and sprinkles",
     image: "assets/images/donat_cake.jfif",
@@ -342,3 +342,25 @@ export const menuItems = [
     mostLoved: true,
   }
 ];
+
+{/* Price Filter Data*/}
+
+ export const allPrice = [
+    {
+      id:0,
+      title:"All Prices"
+    },
+    {
+      id:1,
+      title:"Under 200"
+    },
+    {
+      id:2,
+      title:"200 - 300"
+    },
+    {
+      id:3,
+      title:"Above 300"
+    }
+    
+  ];
