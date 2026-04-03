@@ -8,6 +8,7 @@ function Menu({ addToCart, add_cart, plus_cart, minus_cart, totalQty , wishList,
   return (
     <>
       <Navbar totalQty={totalQty} />
+      
       <HomeBanner details={MenuBannerData} />
 
      <MenuFilter

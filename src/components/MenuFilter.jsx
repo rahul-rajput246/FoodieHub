@@ -1,7 +1,20 @@
 import { menuItems } from "../data/Menudata";
-import '../pages/Menu.css'
+import { useState, useMemo } from "react";
+import { categories } from '../data/Homedata';
+import '../pages/Menu.css';
 
 function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
+
+  const allCategories = [{id:0,title:"All"}, ...categories]
+  
+  const [activeCategory,setCategory] =  useState("All");
+
+  const randomFood = useMemo(() => {
+      return [...menuItems].sort(() => Math.random() - 0.5).slice(0,8);
+  }, []);
+
+  const filterFood = activeCategory === "All" ? randomFood : menuItems.filter((item) => item.category === activeCategory);
+
   return (
     <section className="menu_page py-5">
       <div className="container">
@@ -25,11 +38,15 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
                   <h5>Categories</h5>
                 </div>
                 <div className="category_buttons">
-                  <button className="menu_filter_btn active">All</button>
-                  <button className="menu_filter_btn">Pizza</button>
-                  <button className="menu_filter_btn">Burger</button>
-                  <button className="menu_filter_btn">Drinks</button>
-                  <button className="menu_filter_btn">Desserts</button>
+                  {allCategories.map((props) => (
+                      <button
+                        key={props.id}
+                        className={`menu_filter_btn ${activeCategory === props.title ? "active" : ""}`}
+                        onClick={() => setCategory(props.title)}
+                      >
+                        {props.title}
+                      </button>
+                  ))}
                 </div>
               </div>
 
@@ -76,7 +93,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
             </div>
 
             <div className="row">
-              {menuItems.map((item) => {
+              {filterFood.map((item) => {
                 const cartItem = addToCart.find((cart) => cart.id === item.id);
 
                 return (

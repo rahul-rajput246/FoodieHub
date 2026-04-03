@@ -32,12 +32,12 @@ function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty,wish,wishLi
     return [...menuItems].sort(() => Math.random() - 0.5).slice(0, 8);
   }, []);
 
-  const mostLovedItems = menuItems.filter((item) => item.mostLoved);
-
   const filteredCategoryItems =
     activeCategory === "All"
       ? randomItem
       : menuItems.filter((item) => item.category === activeCategory);
+
+  const mostLovedItems = menuItems.filter((item) => item.mostLoved);
 
   return (
     <>
