@@ -1,7 +1,7 @@
 import { menuItems } from "../data/Menudata";
 import '../pages/Menu.css'
 
-function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart }) {
+function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
   return (
     <section className="menu_page py-5">
       <div className="container">
@@ -21,27 +21,39 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart }) {
               </div>
 
               <div className="mb-4">
-                <h5>Categories</h5>
-                <button className="menu_filter_btn active">All</button>
-                <button className="menu_filter_btn">Pizza</button>
-                <button className="menu_filter_btn">Burger</button>
-                <button className="menu_filter_btn">Drinks</button>
-                <button className="menu_filter_btn">Desserts</button>
+                <div className="category_heading_box">
+                  <h5>Categories</h5>
+                </div>
+                <div className="category_buttons">
+                  <button className="menu_filter_btn active">All</button>
+                  <button className="menu_filter_btn">Pizza</button>
+                  <button className="menu_filter_btn">Burger</button>
+                  <button className="menu_filter_btn">Drinks</button>
+                  <button className="menu_filter_btn">Desserts</button>
+                </div>
               </div>
 
               <div className="mb-4">
-                <h5>Price Range</h5>
-                <button className="menu_filter_btn">All Prices</button>
-                <button className="menu_filter_btn">Under ₹200</button>
-                <button className="menu_filter_btn">₹200 - ₹300</button>
-                <button className="menu_filter_btn">Above ₹300</button>
+                <div className="category_heading_box">
+                  <h5>Price Range</h5>
+                </div>
+                <div className="category_buttons">
+                  <button className="menu_filter_btn">All Prices</button>
+                  <button className="menu_filter_btn">Under ₹200</button>
+                  <button className="menu_filter_btn">₹200 - ₹300</button>
+                  <button className="menu_filter_btn">Above ₹300</button>
+                </div>
               </div>
 
               <div className="mb-4">
-                <h5>Sort By</h5>
-                <button className="menu_filter_btn">Price: Low to High</button>
-                <button className="menu_filter_btn">Price: High to Low</button>
-                <button className="menu_filter_btn">Rating: High to Low</button>
+                <div className="category_heading_box">
+                  <h5>Sort By</h5>
+                </div>
+                <div className="category_buttons">
+                  <button className="menu_filter_btn">Price: Low to High</button>
+                  <button className="menu_filter_btn">Price: High to Low</button>
+                  <button className="menu_filter_btn">Rating: High to Low</button>
+                </div>
               </div>
 
               <button className="menu_clear_btn">Clear Filters</button>
@@ -76,7 +88,16 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart }) {
                           alt={item.name}
                           className="menu_food_img"
                         />
-                        <span className="menu_food_badge">⭐ {item.rating}</span>
+                        <button
+                          className="food_badge"
+                          onClick={() => wish(item.id)}
+                        >
+                          {!wishList.includes(item.id) ? (
+                            <i className="bi bi-heart"></i>
+                          ) : (
+                            <i className="bi bi-heart-fill"></i>
+                          )}
+                  </button>
                       </div>
 
                       <div className="menu_food_card_body">

@@ -137,3 +137,14 @@
   padding: 8px 16px;
   border-radius: 10px;
 }
+
+
+@media(min-width:557px) and (max-width:991px){
+  .category_buttons {
+      display: flex;
+      gap: 20px;
+  }
+  .menu_filter_btn {
+    font-size: 13px;
+  }
+}

@@ -1411,6 +1411,9 @@ cart_btn:hover span {
     justify-content: center;
     text-align: left;
   }
+  .banner_right_box {
+    padding-top: 0px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -1429,12 +1432,12 @@ cart_btn:hover span {
   }
 
   .banner_right_box {
-    padding-top: 80px;
+    padding-top: 20px;
   }
 
   .shop_btn,
   .menu_btn {
-    width: 100%;
+    width: fit-content;
     text-align: center;
   }
 
@@ -1557,5 +1560,12 @@ cart_btn:hover span {
 
   .faq_support_text h4 {
     font-size: 18px;
+  }
+
+  .button_box {
+    margin-top: 15px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
   }
 }

@@ -1,15 +1,6 @@
-import { useState } from "react";
 
-function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart }) {
-  const [wishList, setWishList] = useState([]);
 
-  const wish = (id) => {
-    if (wishList.includes(id)) {
-      setWishList(wishList.filter((item) => item !== id));
-    } else {
-      setWishList([...wishList, id]);
-    }
-  };
+function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
 
   return (
     <div className="category_block">

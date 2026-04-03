@@ -4,7 +4,7 @@ import MenuFilter from "../components/MenuFilter";
 import Footer from "../components/Footer";
 import { MenuBannerData } from "../data/Menudata";
 
-function Menu({ addToCart, add_cart, plus_cart, minus_cart, totalQty }) {
+function Menu({ addToCart, add_cart, plus_cart, minus_cart, totalQty , wishList,wish }) {
   return (
     <>
       <Navbar totalQty={totalQty} />
@@ -14,6 +14,8 @@ function Menu({ addToCart, add_cart, plus_cart, minus_cart, totalQty }) {
         addToCart={addToCart}
         add_cart={add_cart}
         plus_cart={plus_cart}
+        wish={wish}
+        wishList={wishList}
         minus_cart={minus_cart}
       />
 

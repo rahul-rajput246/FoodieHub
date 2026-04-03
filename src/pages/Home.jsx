@@ -17,22 +17,26 @@ import {
   faqs
 } from "../data/Homedata";
 import { menuItems } from "../data/Menudata";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 
-function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty }) {
+function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty,wish,wishList   }) {
+  
   const [activeWhyToChooseUs, setWhyToChooseUs] = useState(whyToChooseUs[0]);
-  const [order, setOrder] = useState([]);
 
   const allCategories = [{ id: 0, title: "All" }, ...categories];
 
   const [activeCategory, setActiveCategory] = useState("All");
 
+  const randomItem = useMemo(() => {
+    return [...menuItems].sort(() => Math.random() - 0.5).slice(0, 8);
+  }, []);
+
   const mostLovedItems = menuItems.filter((item) => item.mostLoved);
 
   const filteredCategoryItems =
     activeCategory === "All"
-      ? menuItems.slice(0,8)
+      ? randomItem
       : menuItems.filter((item) => item.category === activeCategory);
 
   return (
@@ -44,7 +48,7 @@ function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty }) {
       <div className="category_section pb-5">
         <div className="container">
           <div className="category_row pt-5 py-3">
-            {categories.map((category) => (
+            {allCategories.map((category) => (
               <button
                 key={category.id}
                 className={`category_heading ${activeCategory === category.title ? "active" : ""}`}
@@ -61,6 +65,8 @@ function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty }) {
               addToCart={addToCart}
               add_cart={add_cart}
               plus_cart={plus_cart}
+              wish={wish}
+              wishList={wishList}
               minus_cart={minus_cart}
             />
           </div>
