@@ -27,6 +27,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 80,
     rating: 4.8,
+    type:"Veg",
     description: "Juicy grilled burger with cheese and crispy veggies",
     image: "assets/images/burger_img.jfif",
     mostLoved: false,
@@ -37,6 +38,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 299,
     rating: 4.7,
+    type:"Veg",
     description: "Loaded pizza with melted cheese and fresh toppings",
     image: "assets/images/pizza_img.jfif",
     mostLoved: false,
@@ -47,6 +49,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 99,
     rating: 4.5,
+    type:"Veg",
     description: "Crispy golden fries with spicy seasoning",
     image: "assets/images/frize_img.jfif",
     mostLoved: false,
@@ -57,6 +60,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 149,
     rating: 4.4,
+    type:"Veg",
     description: "Fresh sandwich stuffed with cheesy fillings",
     image: "assets/images/sandwitch_img.jfif",
     mostLoved: false,
@@ -67,6 +71,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 129,
     rating: 4.6,
+    type:"Veg",
     description: "Soft bun with sausage and delicious sauces",
     image: "assets/images/hot_dog_img.webp",
     mostLoved: false,
@@ -77,6 +82,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 179,
     rating: 4.5,
+    type:"Non-Veg",
     description: "Spicy wrap filled with grilled chicken and veggies",
     image: "assets/images/fried_chicken_img.jfif",
     mostLoved: false,
@@ -87,6 +93,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 159,
     rating: 4.7,
+    type:"Non-Veg",
     description: "Crunchy chicken nuggets with dip on the side",
     image: "assets/images/grildChicken.jfif",
     mostLoved: false,
@@ -97,6 +104,7 @@ export const menuItems = [
     category: "Fast Food",
     price: 249,
     rating: 4.9,
+    type:"Non-Veg",
     description: "Hot and crispy wings tossed in spicy sauce",
     image: "assets/images/chicken_wings_img.jfif",
     mostLoved: true,
@@ -107,6 +115,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 249,
     rating: 4.8,
+    type:"Veg",
     description: "Creamy paneer curry cooked in rich buttery tomato gravy",
     image: "assets/images/paneer_img.jfif",
     mostLoved: true,
@@ -117,6 +126,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 199,
     rating: 4.6,
+    type:"Veg",
     description: "Yellow dal tempered with garlic, cumin and desi spices",
     image: "assets/images/dal_tadka_img.jfif",
     mostLoved: false,
@@ -127,6 +137,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 99,
     rating: 4.7,
+    type:"Veg",
     description: "Spicy chickpea curry cooked in traditional Punjabi style",
     image: "assets/images/chole_img.jpg",
     mostLoved: false,
@@ -137,6 +148,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 149,
     rating: 4.7,
+    type:"Veg",
     description: "Kidney beans curry served with steamed rice",
     image: "assets/images/rajma_rice_img.jpg",
     mostLoved: false,
@@ -147,6 +159,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 129,
     rating: 4.5,
+    type:"Veg",
     description: "Aromatic basmati rice flavored with cumin seeds",
     image: "assets/images/jeera_rice_img.jfif",
     mostLoved: false,
@@ -157,6 +170,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 179,
     rating: 4.4,
+    type:"Veg",
     description: "Protein-rich soya chunks cooked in spicy gravy",
     image: "assets/images/soya_curry_img.webp",
     mostLoved: false,
@@ -167,6 +181,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 159,
     rating: 4.3,
+    type:"Veg",
     description: "Stir-fried okra with onions and traditional spices",
     image: "assets/images/ladyfinger_img.jpg",
     mostLoved: false,
@@ -177,6 +192,7 @@ export const menuItems = [
     category: "Desi Tadka",
     price: 249,
     rating: 4.9,
+    type:"Veg",
     description: "Slow-cooked black lentils with butter and cream",
     image: "assets/images/dal_makhni_img.jfif",
     mostLoved: true,
@@ -187,6 +203,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 99,
     rating: 4.7,
+    type:"Drinks",
     description: "Chilled creamy coffee blended with ice and rich flavor",
     image: "assets/images/cold_coffee.jfif",
     mostLoved: true,
@@ -197,6 +214,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 149,
     rating: 4.8,
+    type:"Drinks",
     description: "Thick chocolate milkshake topped with whipped cream",
     image: "assets/images/chockolate_shake.jfif",
     mostLoved: false,
@@ -207,6 +225,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 129,
     rating: 4.6,
+    type:"Drinks",
     description: "Smooth iced coffee with sweet caramel drizzle",
     image: "assets/images/caramel_cold_coffee.jfif",
     mostLoved: true,
@@ -217,6 +236,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 499,
     rating: 4.9,
+    type:"Drinks",
     description: "Rich brownie blended shake with chocolate chunks",
     image: "assets/images/brownie_shake.jfif",
     mostLoved: true,
@@ -226,7 +246,8 @@ export const menuItems = [
     name: "Mint Mojito",
     category: "Chill Drinks",
     price: 169,
-    rating: 4.5,
+    rating: 3.5,
+    type:"Drinks",
     description: "Refreshing mint drink with lime and soda fizz",
     image: "assets/images/mojito.jfif",
     mostLoved: false,
@@ -237,6 +258,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 355,
     rating: 4.4,
+    type:"Drinks",
     description: "Fresh tropical pineapple juice full of natural sweetness",
     image: "assets/images/pineapple_juice.jfif",
     mostLoved: false,
@@ -247,6 +269,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 159,
     rating: 4.6,
+    type:"Drinks",
     description: "Cool and hydrating watermelon juice for summer refreshment",
     image: "assets/images/watermelon_juice.webp",
     mostLoved: false,
@@ -257,6 +280,7 @@ export const menuItems = [
     category: "Chill Drinks",
     price: 249,
     rating: 4.3,
+    type:"Drinks",
     description: "Tangy Indian soda with spices, lemon and fizzy taste",
     image: "assets/images/masala_soda.jfif",
     mostLoved: false,
@@ -266,7 +290,8 @@ export const menuItems = [
     name: "Black Forest Cake",
     category: "Sweet Cravings",
     price: 149,
-    rating: 4.8,
+    rating: 3.7,
+    type:"Veg",
     description: "Soft chocolate sponge layered with cream and cherries",
     image: "assets/images/blackForest_cake.webp",
     mostLoved: true,
@@ -277,6 +302,7 @@ export const menuItems = [
     category: "Sweet Cravings",
     price: 299,
     rating: 4.6,
+    type:"Veg",
     description: "Light and fluffy pastry topped with fresh pineapple cream",
     image: "assets/images/pineapple_pastry.webp",
     mostLoved: false,
@@ -286,7 +312,8 @@ export const menuItems = [
     name: "Butterscotch Ice Cream",
     category: "Sweet Cravings",
     price: 79,
-    rating: 4.5,
+    rating: 3.9,
+    type:"Veg",
     description: "Creamy ice cream with rich butterscotch flavor and crunch",
     image: "assets/images/butterScotch_iceCream.jfif",
     mostLoved: false,
@@ -297,6 +324,7 @@ export const menuItems = [
     category: "Sweet Cravings",
     price: 119,
     rating: 4.9,
+    type:"Veg",
     description: "Warm chocolate brownie served with cold vanilla ice cream",
     image: "assets/images/ice_brownie.jpg",
     mostLoved: false,
@@ -307,6 +335,7 @@ export const menuItems = [
     category: "Sweet Cravings",
     price: 369,
     rating: 4.4,
+    type:"Non-Veg",
     description: "Soft glazed donut topped with chocolate and sprinkles",
     image: "assets/images/donat_cake.jfif",
     mostLoved: false,
@@ -317,6 +346,7 @@ export const menuItems = [
     category: "Sweet Cravings",
     price: 159,
     rating: 4.5,
+    type:"Non-Veg",
     description: "Delicious cupcake with creamy frosting and toppings",
     image: "assets/images/cupcake.jpg",
     mostLoved: false,
@@ -326,7 +356,8 @@ export const menuItems = [
     name: "Rasmalai",
     category: "Sweet Cravings",
     price: 140,
-    rating: 4.7,
+    rating: 4,
+    type:"Drinks",
     description: "Soft paneer balls soaked in sweet creamy milk syrup",
     image: "assets/images/rasmalai.avif",
     mostLoved: false,
@@ -336,12 +367,34 @@ export const menuItems = [
     name: "Gulab Jamun",
     category: "Sweet Cravings",
     price: 199,
-    rating: 4.8,
+    rating: 4.2,
+    type:"Veg",
     description: "Deep fried sweet balls soaked in sugar syrup",
     image: "assets/images/gulab_jamun.jpg",
     mostLoved: true,
   }
 ];
+
+{/* Type Of Dishes Data */}
+
+  export const typeDishData = [
+    {
+      id:0,
+      title:"All"
+    },
+    {
+      id:1,
+      title:"Veg"
+    },
+    {
+      id:2,
+      title:"Non-Veg"
+    },
+    {
+      id:3,
+      title:"Drinks"
+    }
+  ];
 
 {/* Price Filter Data*/}
 
@@ -379,5 +432,26 @@ export const menuItems = [
     {
       id:2,
       title:"Price: High To Low"
+    }
+  ];
+
+  {/* Ratings Data */}
+
+  export const ratingData = [
+    {
+      id:0,
+      title:"All"
+    },
+    {
+      id:1,
+      title:"Above 4.5"
+    },
+    {
+      id:2,
+      title:"Above 4"
+    },
+    {
+      id:3,
+      title:"Above 3.5"
     }
   ];

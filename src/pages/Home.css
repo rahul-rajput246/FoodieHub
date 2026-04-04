@@ -530,7 +530,7 @@ cart_btn:hover span {
 
 .most_loved_img {
   width: 100%;
-  height: 230px;
+  height: 150px;
   object-fit: cover;
   transition: 0.4s ease;
 }
@@ -567,7 +567,7 @@ cart_btn:hover span {
   font-size: 14px;
   color: #6f6f6f;
   line-height: 1.6;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   min-height: 48px;
 }
 

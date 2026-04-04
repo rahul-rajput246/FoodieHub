@@ -1,4 +1,4 @@
-import { menuItems, allPrice, sortData } from "../data/Menudata";
+import { menuItems, allPrice, sortData, ratingData, typeDishData } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import { categories } from '../data/Homedata';
 import '../pages/Menu.css';
@@ -15,7 +15,8 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
       return [...menuItems].sort(() => Math.random() - 0.5);
   }, []);
 
-   /* Category Filter */
+/* Category Filter */
+
 const filterFood =
   activeCategory === "All"
     ? randomFood
@@ -45,10 +46,44 @@ const filterPrice =
     ? searchFilter.filter((item) => item.price >= 200 && item.price <= 300)
     : searchFilter.filter((item) => item.price > 300);
 
+
+/* Types Of Dishes Filter */
+
+const [activeType, setActiveType] = useState("All");
+
+const typesFilter =
+  activeType === "All"
+    ? filterPrice
+    : filterPrice.filter((item) => item.type === activeType);
+
+
+/* Ratings Filter */
+
+const [activeRating,setRating] = useState("All");
+
+const filterRating =
+  activeRating === "All"
+    ? typesFilter
+    : activeRating === "Above 4.5"
+    ? typesFilter.filter((item) => item.rating >= 4.5)
+    : activeRating === "Above 4"
+    ? typesFilter.filter((item) => item.rating >= 4)
+    : typesFilter.filter((item) => item.rating >= 3.5);
+
+const clearFilters = () => {
+  setCategory("All");
+  setActiveType("All");
+  setSearch("");
+  setPrice("All Prices");
+  setRating("All");
+  setSortBy("Sort By");
+};
+
 /* Sort By Filter */
 const [sortBy, setSortBy] = useState("Sort By");
 
-const sortFilter = [...filterPrice].sort((a, b) => {
+const sortFilter = [...filterRating].sort((a, b) => {
+
   if (sortBy === "Price Low To High") {
     return a.price - b.price;
   }
@@ -59,14 +94,6 @@ const sortFilter = [...filterPrice].sort((a, b) => {
 
   return 0;
 });
-
-const clearFilters = () => {
-  setCategory("All");
-  setSearch("");
-  setPrice("All Prices");
-  setSortBy("Sort By");
-};
- 
 
   return (
     <section className="menu_page py-5">
@@ -107,6 +134,23 @@ const clearFilters = () => {
 
               <div className="mb-4">
                 <div className="category_heading_box">
+                  <h5>Types of Dishes</h5>
+                </div>
+                <div className="category_buttons">
+                  {typeDishData.map((props) => (
+                      <button
+                        key={props.id}
+                        className={`menu_filter_btn ${activeType === props.title ? "active" : ""}`}
+                        onClick={() => setActiveType(props.title)}
+                      >
+                        {props.title}
+                      </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="category_heading_box">
                   <h5>Price Range</h5>
                 </div>
                 <div className="category_buttons">
@@ -124,12 +168,17 @@ const clearFilters = () => {
 
               <div className="mb-4">
                 <div className="category_heading_box">
-                  <h5>Sort By</h5>
+                  <h5>Ratings</h5>
                 </div>
                 <div className="category_buttons">
-                  <button className="menu_filter_btn">Price: Low to High</button>
-                  <button className="menu_filter_btn">Price: High to Low</button>
-                  <button className="menu_filter_btn">Rating: High to Low</button>
+                   {ratingData.map((item) => (
+                        <button
+                            key={item.id}
+                            onClick={() => setRating(item.title)}
+                            className={`menu_filter_btn ${activeRating === item.title ? "active" : ""}`}>
+                            {item.title}
+                        </button>
+                   ))}
                 </div>
               </div>
 
