@@ -1180,7 +1180,7 @@ cart_btn:hover span {
 .footer_box p {
   font-size: 15px;
   line-height: 1.8;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .footer_box h4 {
@@ -1214,6 +1214,7 @@ cart_btn:hover span {
 .footer_socials {
   display: flex;
   gap: 10px;
+  margin-top: 20px;
 }
 
 .footer_socials a {

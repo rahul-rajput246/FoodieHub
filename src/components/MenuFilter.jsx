@@ -4,7 +4,7 @@ import { categories } from '../data/Homedata';
 import '../pages/Menu.css';
 
 function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
-
+  
   {/* Category Filter */}
   
   const allCategories = [{id:0,title:"All"}, ...categories]
@@ -15,35 +15,58 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
       return [...menuItems].sort(() => Math.random() - 0.5);
   }, []);
 
-  const filterFood = activeCategory === "All" ? randomFood : menuItems.filter((item) => item.category === activeCategory);
+   /* Category Filter */
+const filterFood =
+  activeCategory === "All"
+    ? randomFood
+    : randomFood.filter((item) => item.category === activeCategory);
 
- {/* Price Filter */}
+/* Search Filter */
+const [search, setSearch] = useState("");
+
+const searchFilter =
+  search.trim() === ""
+    ? filterFood
+    : filterFood.filter((item) =>
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.category.toLowerCase().includes(search.toLowerCase()) ||
+        item.description.toLowerCase().includes(search.toLowerCase())
+      );
+
+/* Price Filter */
+const [activePrice, setPrice] = useState("All Prices");
+
+const filterPrice =
+  activePrice === "All Prices"
+    ? searchFilter
+    : activePrice === "Under 200"
+    ? searchFilter.filter((item) => item.price < 200)
+    : activePrice === "200 - 300"
+    ? searchFilter.filter((item) => item.price >= 200 && item.price <= 300)
+    : searchFilter.filter((item) => item.price > 300);
+
+/* Sort By Filter */
+const [sortBy, setSortBy] = useState("Sort By");
+
+const sortFilter = [...filterPrice].sort((a, b) => {
+  if (sortBy === "Price Low To High") {
+    return a.price - b.price;
+  }
+
+  if (sortBy === "Price: High To Low") {
+    return b.price - a.price;
+  }
+
+  return 0;
+});
+
+const clearFilters = () => {
+  setCategory("All");
+  setSearch("");
+  setPrice("All Prices");
+  setSortBy("Sort By");
+};
  
-  const [activePrice,setPrice] = useState("All Prices");
-
-  const filterPrice = activePrice === "All Prices"
-                      ? filterFood
-                      : activePrice === "Under 200"
-                      ? filterFood.filter((item) => item.price < 200)
-                      : activePrice === "200 - 300"
-                      ? filterFood.filter((item) => item.price >= 200 && item.price <= 300)
-                      : filterFood.filter((item) => item.price > 300);
-
-  {/* Sort By Filter */}
-
-  const [sortBy,setSortBy] = useState("Sort By");
-
-  const sortFilter = [...filterPrice].sort((a, b) => {
-    if (sortBy === "Price Low To High") {
-      return a.price - b.price;
-    }
-
-    if (sortBy === "Price: High To Low") {
-      return b.price - a.price;
-    }
-
-    return 0;
-  });
 
   return (
     <section className="menu_page py-5">
@@ -60,6 +83,8 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
                   type="text"
                   className="form-control"
                   placeholder="Search here..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
 
@@ -108,7 +133,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
                 </div>
               </div>
 
-              <button className="menu_clear_btn">Clear Filters</button>
+              <button className="menu_clear_btn" onClick={clearFilters}>Clear Filters</button>
             </div>
           </div>
 
@@ -148,11 +173,14 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }
                           ) : (
                             <i className="bi bi-heart-fill"></i>
                           )}
-                  </button>
+                        </button>
                       </div>
 
                       <div className="menu_food_card_body">
-                        <span className="menu_food_category">{item.category}</span>
+                        <div className="category_badge_box">
+                          <span className="menu_food_category">{item.category}</span>
+                          <span className="rating">⭐{item.rating}</span>
+                        </div>
                         <h4>{item.name}</h4>
                         <p>{item.description}</p>
 

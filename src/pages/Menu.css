@@ -148,6 +148,12 @@ input.form-control:focus {
     border: 1px solid #cbcbcb;
 }
 
+.category_badge_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 @media(min-width:557px) and (max-width:991px){
   .category_buttons {
       display: flex;
@@ -155,5 +161,11 @@ input.form-control:focus {
   }
   .menu_filter_btn {
     font-size: 13px;
+  }
+}
+
+@media (max-width:779px){
+  .form-select{
+    width:60% !important;
   }
 }
