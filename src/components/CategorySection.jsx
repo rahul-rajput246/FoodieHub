@@ -1,6 +1,6 @@
 
 
-function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
+function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wishList, wish }) {
 
   return (
     <div className="category_block">
@@ -27,7 +27,10 @@ function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart,wis
                 </div>
 
                 <div className="food_card_body">
-                  <h4 className="food_title">{props.name}</h4>
+                  <div className="category_badge_box">
+                    <h4 className="food_title">{props.name}</h4>
+                    <span className="rating">⭐{props.rating}</span>
+                  </div>
                   <p className="food_desc">{props.description}</p>
 
                   <div className="food_card_bottom">

@@ -358,18 +358,17 @@ cart_btn:hover span {
 }
 
 .food_title {
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 700;
   color: #1a1a1a;
-  margin-bottom: 8px;
+  margin-bottom: 0px;
 }
 
 .food_desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #666;
-  margin-bottom: 0px;
-  min-height: 66px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    margin: 15px 0px;
 }
 
 .food_card_bottom {
@@ -398,6 +397,12 @@ cart_btn:hover span {
 .food_add_btn:hover {
   background: #ff7600;
   transform: scale(1.05);
+}
+
+.category_badge_box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Why to Choose Us */
@@ -805,7 +810,7 @@ cart_btn:hover span {
 .how_it_works_card {
   background: #fff;
   border-radius: 24px;
-  padding: 35px 25px;
+  padding: 45px 25px;
   height: 100%;
   position: relative;
   overflow: hidden;
@@ -1270,14 +1275,6 @@ cart_btn:hover span {
 
 .food_card_body {
   padding: 20px 0 0;
-}
-
-.food_desc {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #666;
-  margin-bottom: 18px;
-  min-height: 66px;
 }
 
 .food_card_bottom {

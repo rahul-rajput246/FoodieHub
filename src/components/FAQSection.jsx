@@ -10,7 +10,7 @@ function FAQSection({ items }) {
   };
 
   return (
-   <section className="faq_section py-3">
+   <section className="faq_section py-3" id="faq">
       <div className="container">
 
         {/* TOP HEADING */}
