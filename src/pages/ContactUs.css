@@ -37,7 +37,6 @@
 }
 
 .contact_form_wrapper {
-  background: #f3eee7;
   border-radius: 30px;
 }
 
@@ -164,9 +163,13 @@
   transform: translateY(-2px);
 }
 
-.align-items-center {
+.contact_form_box {
     align-items: center !important;
     background: #fffaf4;
+}
+
+.form_fileds{
+    background-color: #fff;
 }
 
 @media (max-width: 991px) {

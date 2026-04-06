@@ -1329,6 +1329,7 @@ cart_btn:hover span {
 @media (max-width: 991px) {
   .custom_navbar .container {
     padding: 12px 16px;
+    backdrop-filter: blur(10px);  
   }
 
   .banner_section {

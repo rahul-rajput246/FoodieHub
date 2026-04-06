@@ -7,10 +7,10 @@ import {
 
 function ContactFormSection() {
   return (
-    <section className="contact_form_section py-3">
+    <section className="contact_form_section py-3   ">
       <div className="container">
         <div className="contact_form_wrapper">
-          <div className="row align-items-center g-5">
+          <div className="row contactForm_box align-items-center g-5">
             
             <div className="col-lg-5">
               <div className="contact_form_content">
@@ -39,7 +39,7 @@ function ContactFormSection() {
             </div>
 
             <div className="col-lg-7">
-              <div className="contact_form_box">
+              <div className="contact_form_box form_fileds">
                 <form>
                   <div className="row g-3">
                     <div className="col-md-6">
