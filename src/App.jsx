@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
+import About from "./pages/About";
 import Cart from "./pages/Cart";
-import Category from "./pages/Category";
 
 function App() {
 
@@ -120,10 +120,17 @@ function App() {
         }
       />
 
-      <Route 
-        path="/category"
-        element={<Category />}
-      />
+      <Route path="/about" 
+      element={<About
+        addToCart={addToCart}
+        add_cart={add_cart}
+        plus_cart={plus_cart}
+        minus_cart={minus_cart}
+        wish={wish}
+        wishList={wishList}
+        totalQty={totalQty}
+      />}>
+      </Route>
 
       <Route
         path="/cart"

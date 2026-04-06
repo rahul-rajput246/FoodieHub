@@ -26,7 +26,6 @@ function Navbar({totalQty}) {
 		  <div className="navbar-nav mx-auto nav_links">
             <Link to="/">Home</Link>
             <Link to="/Menu">Menu</Link>
-            <Link to="/Category">Category</Link>
             <Link to="/About">About</Link>
             <Link to="/Contact">Contact</Link>
           </div>

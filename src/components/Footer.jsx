@@ -35,7 +35,6 @@ function Footer() {
               <ul>
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="/Menu">Menu</Link></li>
-                <li><Link to="/Category">Category</Link></li>
                 <li><Link to="/About">About</Link></li>
                 <li><Link to="/Contact">Contact</Link></li>
               </ul>
