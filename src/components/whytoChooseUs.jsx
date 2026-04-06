@@ -1,6 +1,7 @@
 function WhytoChooseUs({title,subtitle,items}){
 	return(
 		
+		<div className="why_to_choose_secton pb-5">
 		<div className="container">
 					
 				<div className="why_to_heading_row pb-4">
@@ -28,6 +29,7 @@ function WhytoChooseUs({title,subtitle,items}){
 				
 				))}
 				
+			</div>
 			</div>
 		</div>
 		

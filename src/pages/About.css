@@ -43,3 +43,233 @@
     margin-top: 10px;
     text-decoration: none;
 }
+
+.specialities_section {
+  background: #fffaf4;
+}
+
+.specialities_heading {
+  max-width: 650px;
+  margin: auto;
+}
+
+.specialities_tag {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ff7a00;
+  background: #fff1e5;
+  padding: 6px 14px;
+  border-radius: 30px;
+  margin-bottom: 14px;
+}
+
+.specialities_heading h2 {
+  font-size: 38px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 12px;
+}
+
+.specialities_heading p {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.7;
+}
+
+.speciality_card {
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: 0.3s ease;
+}
+
+.speciality_card:hover {
+  transform: translateY(-8px);
+}
+
+.speciality_img_box {
+  overflow: hidden;
+}
+
+.speciality_img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: 0.4s ease;
+}
+
+.speciality_card:hover .speciality_img {
+  transform: scale(1.06);
+}
+
+.speciality_card_body {
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.speciality_card_body h4 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.speciality_card_body p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* CTA Section */
+
+.cta_section {
+  background: #fffaf4;
+}
+
+.cta_box {
+  background: linear-gradient(135deg, #ff7a00, #ff9a2f);
+  border-radius: 28px;
+  padding: 50px 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cta_box::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.cta_box::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  left: -60px;
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+
+.cta_content {
+  position: relative;
+  z-index: 2;
+}
+
+.cta_tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 30px;
+  margin-bottom: 15px;
+}
+
+.cta_content h2 {
+  font-size: 38px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 14px;
+  line-height: 1.3;
+  max-width: 620px;
+}
+
+.cta_content p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 560px;
+  margin-bottom: 0;
+}
+
+.cta_btn_box {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cta_btn {
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.primary_btn {
+  background: #fff;
+  color: #ff7a00;
+}
+
+.primary_btn:hover {
+  background: #222;
+  color: #fff;
+}
+
+.secondary_btn {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  background: transparent;
+}
+
+.secondary_btn:hover {
+  background: #fff;
+  color: #ff7a00;
+}
+
+@media (max-width: 991px) {
+  .specialities_heading h2 {
+    font-size: 32px;
+  }
+  .cta_box {
+    padding: 40px 25px;
+  }
+
+  .cta_content h2 {
+    font-size: 30px;
+  }
+
+  .cta_btn_box {
+    justify-content: flex-start;
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 767px) {
+  .specialities_heading h2 {
+    font-size: 28px;
+  }
+
+  .specialities_heading p {
+    font-size: 14px;
+  }
+
+  .speciality_img {
+    height: 200px;
+  }
+  .cta_content h2 {
+    font-size: 26px;
+  }
+
+  .cta_content p {
+    font-size: 14px;
+  }
+
+  .cta_btn {
+    width: 100%;
+    text-align: center;
+  }
+}

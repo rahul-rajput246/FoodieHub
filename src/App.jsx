@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import About from "./pages/About";
+import ContactUs from "./pages/ContactUs";
 import Cart from "./pages/Cart";
+import ScrollToHash from "./components/ScrollToHash";
 
 function App() {
 
@@ -74,7 +76,9 @@ function App() {
   const totalQty = addToCart.reduce((total, item) => total + item.qty, 0);
 
   return (
-    <Routes>
+    <>
+   <ScrollToHash />
+   <Routes>
       <Route
         path="/"
         element={
@@ -132,6 +136,17 @@ function App() {
       />}>
       </Route>
 
+      <Route path="/contact" element={<ContactUs 
+        addToCart={addToCart}
+        add_cart={add_cart}
+        plus_cart={plus_cart}
+        minus_cart={minus_cart}
+        wish={wish}
+        wishList={wishList}
+        totalQty={totalQty}
+      />}>
+      </Route>
+
       <Route
         path="/cart"
         element={
@@ -144,6 +159,7 @@ function App() {
         }
       />
     </Routes>
+    </>
   );
 }
 

@@ -1,5 +1,3 @@
-
-
 function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wishList, wish }) {
 
   return (

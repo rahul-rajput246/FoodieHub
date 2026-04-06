@@ -73,13 +73,12 @@ function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty,wish,wishLi
         </div>
       </div>
 
-      <div className="why_to_choose_secton pb-5">
+      
         <WhyToChooseUs
           items={activeWhyToChooseUs.items}
           title={activeWhyToChooseUs.title}
           subtitle={activeWhyToChooseUs.subtitle}
         />
-      </div>
 
       <MostLovedSection
         title={mostLovedContent.title}
@@ -89,13 +88,17 @@ function Home({ addToCart, add_cart, plus_cart, minus_cart, totalQty,wish,wishLi
       />
 
       <HowItWorks />
+      
       <SpecialOfferBanner />
+     
       <TestomonialSection
         title="Loved By Food Lovers"
         desc="See what our happy customers say about the taste, freshness, and fast delivery of FoodieHub."
         items={Testomonial}
       />
+
       <FAQSection items={faqs} />
+      
       <Footer />
     </>
   );
