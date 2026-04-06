@@ -1,7 +1,7 @@
 import {contactData} from "../data/ContactUsdata";
 function ContactInfoCards() {
   return (
-    <section className="contact_info py-5 bg-#fffaf4">
+    <section className="contact_info py-5 bg-#fffaf4" id="contact-form">
       <div className="container">
         <div className="row g-4">
           {contactData.map((item, index) => (

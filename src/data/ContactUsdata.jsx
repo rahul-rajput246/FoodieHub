@@ -10,7 +10,7 @@ export const ContactBannerData = {
     btn1Link: "/menu",
     btn2Text: "Call Now",
     btn2Link: "#contact-form",
-    image: "/assets/images/contact-banner.png",
+    image: "assets/images/contact_banner.jpeg",
 };
 
 {/* Contact Form */}
