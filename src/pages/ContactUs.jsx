@@ -7,10 +7,10 @@ import ContactForm from "../components/ContactUsForm";
 import CTASection from "../components/CTASection";
 import ContactMap from "../components/ContactMap";
 import "./ContactUs.css";
-function ContactUs(){
+function ContactUs({totalQty}){
     return(
         <>
-            <Navbar />
+            <Navbar totalQty={totalQty} />
 
             <Banner details={ContactBannerData}/>
 

@@ -12,11 +12,11 @@ import TestomonialSection from "../components/TestomonialSection";
 import CTASection from "../components/CTASection";
 import FAQSection from "../components/FAQSection";
 
-function AboutPage(){
+function AboutPage({totalQty}){
     return (
         <>
            
-            <Navbar />
+            <Navbar totalQty={totalQty} />
 
             <Banner details={AboutData}/>
 
