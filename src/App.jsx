@@ -5,6 +5,7 @@ import Menu from "./pages/Menu";
 import About from "./pages/About";
 import ContactUs from "./pages/ContactUs";
 import Cart from "./pages/Cart";
+import CheckOut from "./pages/CheckOut";
 import ScrollToHash from "./components/ScrollToHash";
 
 function App() {
@@ -159,6 +160,14 @@ function App() {
           />
         }
       />
+
+      <Route
+        path="/checkout"
+        element={
+          <CheckOut />
+        }
+      />
+
     </Routes>
     </>
   );

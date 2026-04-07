@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { menuItems } from "../data/Menudata";
 
-function Cart({ addToCart, plus_cart, minus_cart, add_cart, totalQty }) {
+function Cart({ addToCart, plus_cart, minus_cart}) {
   const cartItems = menuItems.filter((product) =>
     addToCart.some((item) => item.id === product.id)
   );
@@ -82,7 +82,7 @@ function Cart({ addToCart, plus_cart, minus_cart, add_cart, totalQty }) {
                     <span>₹{totalAmount}</span>
                   </div>
 
-                  <button className="checkout_btn">Proceed To Checkout</button>
+                  <Link to="/checkout" className="checkout_btn">Proceed To Checkout</Link>
                   <Link to="/menu" className="continue_btn">Continue Shopping</Link>
 
                   <p className="delivery_note">
