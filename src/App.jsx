@@ -164,7 +164,10 @@ function App() {
       <Route
         path="/checkout"
         element={
-          <CheckOut />
+          <CheckOut 
+            addToCart={addToCart}
+            totalQty={totalQty}
+          />
         }
       />
 
