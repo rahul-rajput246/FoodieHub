@@ -196,13 +196,16 @@
 }
 
 .visit_badge {
-  display: inline-block;
-  font-size: 15px;
-  font-weight: 700;
-  color: #f4a300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
+    color: #ff8900;
+    letter-spacing: .5px;
+    background: #ffb40026;
+    border: 1px solid #ffb40066;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
 }
 
 .visit_us_box h2 {
@@ -285,7 +288,7 @@
 
   .contact_form_content h2 {
     font-size: 42px;
-  } 
+  }     
   .map_box {
     height: 320px;
   }

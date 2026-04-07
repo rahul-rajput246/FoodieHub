@@ -147,13 +147,14 @@ function App() {
       />}>
       </Route>
 
-      <Route
+     <Route
         path="/cart"
         element={
           <Cart
             addToCart={addToCart}
             plus_cart={plus_cart}
             minus_cart={minus_cart}
+            add_cart={add_cart}
             totalQty={totalQty}
           />
         }
