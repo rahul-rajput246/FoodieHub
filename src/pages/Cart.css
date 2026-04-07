@@ -224,17 +224,22 @@
 }
 
 /* Buttons */
+.checkout_btn,
+.continue_btn,
+.browse_btn {
+  width: 100%;
+  border: none;
+  border-radius: 50px;
+  padding: 14px 20px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
 
-.checkout_btn, .continue_btn, .browse_btn {
-    width: 100%;
-    border: none;
-    border-radius: 50px;
-    padding: 14px 20px;
-    font-size: 17px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.3s ease;
+.cart_summary_box a {
     text-decoration: none;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
