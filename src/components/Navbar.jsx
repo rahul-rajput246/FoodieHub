@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 
-function Navbar({totalQty}) {
+function Navbar({totalQty , user}) {
   return (
     <nav className="navbar navbar-expand-lg custom_navbar">
       <div className="container">
@@ -31,9 +31,21 @@ function Navbar({totalQty}) {
           </div>
 
           <div className="right_nav_box">
-            <Link to="/login" className="login_btn">
-              <FaUser /> Login
-            </Link>
+            {user ? (
+              user.roles?.includes("admin") ? (
+                <Link to="http://localhost:8000/admin/dashboard" className="login_btn">
+                  <FaUser /> {user.name}
+                </Link>
+              ) : (
+                <Link to="http://localhost:8000/dashboard" className="login_btn">
+                  <FaUser /> {user.name}
+                </Link>
+              )
+            ) : (
+              <Link to="http://localhost:8000/login" className="login_btn">
+                <FaUser /> Login
+              </Link>
+            )}
             <Link to="/cart" className="cart_btn">
               <FaShoppingCart /> Cart
               {totalQty > 0 && 

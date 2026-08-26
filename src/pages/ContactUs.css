@@ -227,6 +227,7 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  margin-bottom: 30px;
 }
 
 .visit_item {
@@ -269,6 +270,7 @@
   padding: 14px 28px;
   border-radius: 14px;
   transition: 0.3s ease;
+  text-decoration: none;
 }
 
 .visit_btn:hover {
@@ -280,6 +282,31 @@
     transform: translateY(-5px);
     transition: 0.5s ease;
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh; /* center vertically */
+}
+
+.spinner img {
+  width: 100px; 
+  height: 100px;
+  animation: spin 1s linear infinite;
+}
+
+/* rotation animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
 
 @media (max-width: 991px) {
   .contact_form_content {

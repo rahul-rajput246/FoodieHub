@@ -1,7 +1,8 @@
 import "../pages/About.css";
 import { Link } from "react-router-dom";
 
-function AboutStory() {
+function AboutStory({ details }) {
+
   return (
     <section className="about_story py-5">
       <div className="container">
@@ -11,9 +12,10 @@ function AboutStory() {
           <div className="col-lg-6 mb-4 mb-lg-0">
             <div className="about_img_box">
               <img 
-                src="/assets/images/about-story.png" 
+                src={`http://127.0.0.1:8000/storage/${details?.content?.about_our_story?.image}`} 
                 alt="about"
                 className="about_img"
+                loading="lazy"
               />
             </div>
           </div>
@@ -22,26 +24,21 @@ function AboutStory() {
           <div className="col-lg-6">
             <div className="about_content">
 
-              <span className="about_tag">Our Story</span>
+              <span className="about_tag">{details?.content?.About_Our_Story?.subtitle}</span>
 
               <h2>
-                Bringing Delicious Food <br />
-                To Your Doorstep
+                {details?.content?.About_Our_Story?.title}
               </h2>
 
               <p>
-                FoodieHub started with a simple idea — to make delicious, 
-                restaurant-quality food accessible to everyone. We believe 
-                food is not just about taste, it's about experience.
+                 {details?.content?.About_Our_Story?.desc1}
               </p>
 
               <p>
-                From fresh ingredients to fast delivery, our mission is to 
-                serve happiness in every bite. Whether it's fast food or 
-                traditional flavors, we’ve got something for everyone.
+               {details?.content?.About_Our_Story?.desc2}
               </p>
 
-              <Link to="/menu" className="about_btn">Explore Menu</Link>
+              <Link to="/menu" className="about_btn">{details?.content?.About_Our_Story?.btn_text}</Link>
 
             </div>
           </div>

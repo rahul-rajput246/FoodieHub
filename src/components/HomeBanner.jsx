@@ -1,40 +1,43 @@
 import { Link } from "react-router-dom";
-function HomeBanner({ details }){
+function HomeBanner({ details, bannerKey}){
+
+  const banner = details?.content?.[bannerKey];
+
     return(
       <div className="banner_section">
         <div className="banner_img_box">
-          <img src={details.image} alt="banner_Img.." className="banner_img" />
+          <img src={`http://127.0.0.1:8000/storage/${banner?.image}`} loading="lazy" alt="banner_Img.." className="banner_img" />
         </div>
         <div className="banner_overlay">
           <div className="container">
             <div className="banner_right_box">
               <div className="heading_box">
-                <span className="banner_tag">{details.subtitle}</span>
+                <span className="banner_tag">{banner?.subtitle}</span>
                 <h3>
                   
-                  {details.title ? (
+                  {banner?.title1 ? (
                   <>
-                    {details.title} <br />
-                    <span>{details.titleSecond}</span>
-                    {details.titleThird}
+                    {banner?.title1} <br />
+                    <span>{banner?.title2}</span><br />
+                    {banner?.color_title}
                   </>
                 ) : (
                   <>
-                    {details.titleFirst} <br />
-                    {details.titleSecond} <br />
-                    <span>{details.titleThird}</span>
+                    {banner?.title1} <br />
+                    {banner?.title2} <br />
+                    <span>{banner?.color_title}</span>
                   </>
                 )}
                 </h3>
-                <p>{details.description}</p>
+                <p>{banner?.desc}</p>
               </div>
 
               <div className="button_box">
-                <Link to={details.btn1Link} className="shop_btn">
-                  {details.btn1Text}
+                <Link to={banner?.btn_url1} className="shop_btn">
+                  {banner?.btn_text1}
                 </Link>
-                <Link to={details.btn2Link} className="menu_btn">
-                  {details.btn2Text}
+                <Link to={banner?.btn_url2} className="menu_btn">
+                  {banner?.btn_text2}
                 </Link>
               </div>
             </div>

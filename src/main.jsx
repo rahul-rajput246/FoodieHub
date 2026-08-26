@@ -9,7 +9,10 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 
 import "./index.css";
 import "./pages/Home.css";
+import axios from "axios";
 
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

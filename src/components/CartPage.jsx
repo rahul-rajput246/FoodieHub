@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
-import { menuItems } from "../data/Menudata";
+import { useNavigate } from "react-router-dom";
 
-function Cart({ addToCart, plus_cart, minus_cart}) {
-  const cartItems = menuItems.filter((product) =>
+function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
+
+  const cartItems = foodItems.filter((product) =>
     addToCart.some((item) => item.id === product.id)
   );
 
@@ -12,12 +13,34 @@ function Cart({ addToCart, plus_cart, minus_cart}) {
   };
 
   const subtotal = cartItems.reduce((total, product) => {
-    return total + product.price * getQty(product.id);
+    return total + Number(product.food_price) * getQty(product.id);
   }, 0);
 
   const deliveryFee = subtotal > 499 ? 0 : 40;
   const discount = subtotal > 999 ? 100 : 0;
   const totalAmount = subtotal + deliveryFee - discount;
+
+  // login state check
+
+  const navigate = useNavigate();
+  
+  const handleCheckout = async () => {
+    try {
+      await fetch("http://localhost:8000/sanctum/csrf-cookie", {
+        credentials: "include",
+      });
+
+      const res = await fetch("http://localhost:8000/api/user", {
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        navigate("/checkout");
+      }
+    } catch (error) {
+      window.location.href = "http://localhost:8000/login";
+    }
+  };
 
   return (
 
@@ -34,13 +57,13 @@ function Cart({ addToCart, plus_cart, minus_cart}) {
                   {cartItems.map((product) => (
                     <div className="cart_item_card" key={product.id}>
                       <div className="cart_item_img">
-                        <img src={product.image} alt={product.name} />
+                        <img src={product.image_url} alt={product.food_name} loading="lazy" />
                       </div>
 
                       <div className="cart_item_info">
-                        <h4>{product.name}</h4>
-                        <p>{product.description}</p>
-                        <span className="cart_item_price">₹{product.price}</span>
+                        <h4>{product.food_name}</h4>
+                        <p>{product.food_subtitle}</p>
+                        <span className="cart_item_price">₹{product.food_price}</span>
                       </div>
 
                       <div className="cart_item_actions">
@@ -50,7 +73,7 @@ function Cart({ addToCart, plus_cart, minus_cart}) {
                           <button onClick={() => plus_cart(product.id)}>+</button>
                         </div>
 
-                        <h5>₹{product.price * getQty(product.id)}</h5>
+                        <h5>₹{Number(product.food_price) * getQty(product.id)}</h5>
                       </div>
                     </div>
                   ))}
@@ -82,8 +105,12 @@ function Cart({ addToCart, plus_cart, minus_cart}) {
                     <span>₹{totalAmount}</span>
                   </div>
 
-                  <Link to="/checkout" className="checkout_btn">Proceed To Checkout</Link>
-                  <Link to="/menu" className="continue_btn">Continue Shopping</Link>
+                  <button onClick={handleCheckout} className="checkout_btn">
+                    Proceed To Checkout
+                  </button>
+                  <Link to="/menu" className="continue_btn">
+                    Continue Shopping
+                  </Link>
 
                   <p className="delivery_note">
                     Free delivery on orders above ₹499

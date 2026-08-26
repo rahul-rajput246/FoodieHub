@@ -1,0 +1,84 @@
+.order_success_section {
+  padding: 60px 0;
+  background: #fff7ed;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+}
+
+.order_success_box {
+  background: #ffffff;
+  padding: 50px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.success_icon {
+  width: 80px;
+  height: 80px;
+  background: #22c55e;
+  color: white;
+  font-size: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.order_success_box h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #111827;
+}
+
+.success_msg {
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.order_info {
+  background: #fff7ed;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.order_info p {
+  margin: 5px 0;
+  color: #374151;
+}
+
+.success_actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn_primary {
+  background: #ff7e00;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.btn_primary:hover {
+  background: #e56f00;
+}
+
+.btn_outline {
+  border: 2px solid #ff7e00;
+  color: #ff7e00;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.btn_outline:hover {
+  background: #ff7e00;
+  color: white;
+}

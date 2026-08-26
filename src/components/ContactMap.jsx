@@ -1,6 +1,6 @@
 import { FaMapMarkerAlt, FaClock, FaPhoneAlt } from "react-icons/fa";
-
-function ContactMapSection() {
+import { Link } from "react-router-dom";
+function ContactMapSection({ details }) {
   return (
     <section className="contact_map_section py-3">
       <div className="container">
@@ -24,40 +24,39 @@ function ContactMapSection() {
 
             <div className="col-lg-5">
               <div className="visit_us_box">
-                <span className="visit_badge">Visit Us</span>
-                <h2>Come & Enjoy Food With Us</h2>
+                <span className="visit_badge">{details?.content?.contact_visit?.subtitle}</span>
+                <h2>{details?.content?.contact_visit?.title}</h2>
                 <p>
-                  Stop by our place for fresh flavors, quick service, and a
-                  warm FoodieHub experience.
+                  {details?.content?.contact_visit?.desc}
                 </p>
 
                 <div className="visit_info">
                   <div className="visit_item">
                     <FaMapMarkerAlt className="visit_icon" />
                     <div>
-                      <h6>Location</h6>
-                      <p>Karimpur, India</p>
+                      <h6>{details?.content?.contact_visit?.locationTitle}</h6>
+                      <p>{details?.content?.contact_visit?.locationSubtitle}</p>
                     </div>
                   </div>
 
                   <div className="visit_item">
                     <FaClock className="visit_icon" />
-                    <div>
-                      <h6>Opening Hours</h6>
-                      <p>10:00 AM - 11:00 PM</p>
+                    <div> 
+                      <h6>{details?.content?.contact_visit?.timingTitle}</h6>
+                      <p>{details?.content?.contact_visit?.timingSubtitle}</p>
                     </div>
                   </div>
 
                   <div className="visit_item">
                     <FaPhoneAlt className="visit_icon" />
                     <div>
-                      <h6>Contact</h6>
-                      <p>+91 98765 43210</p>
+                      <h6>{details?.content?.contact_visit?.contactTitle}</h6>
+                      <p>{details?.content?.contact_visit?.contactSubtitle}</p>
                     </div>
                   </div>
                 </div>
 
-                <button className="visit_btn">Get Directions</button>
+                <Link to="https://www.google.com/maps/place/Shivah+Web+Tech+Private+Limited/@30.7120603,76.6950417,17z/data=!3m1!4b1!4m6!3m5!1s0x390feff7e0e2421f:0x1932dde5487c0b94!8m2!3d30.7120557!4d76.6976166!16s%2Fg%2F11v15z8030?entry=ttu&g_ep=EgoyMDI2MDQxNC4wIKXMDSoASAFQAw%3D%3D" className="visit_btn">{details?.content?.contact_visit?.btn_text}</Link>
               </div>
             </div>
 

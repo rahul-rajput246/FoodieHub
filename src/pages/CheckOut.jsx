@@ -2,10 +2,53 @@ import "./CheckOut.css"
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CheckOutPage from "../components/CheckOutPage";
-function CheckOut({addToCart, plus_cart, minus_cart, add_cart, totalQty}){
+
+import { useState, useEffect } from "react";    
+
+function CheckOut({ addToCart, totalQty, setAddToCart, foodItems, plus_cart, minus_cart, add_cart, user }) {
+
+    // const [user, setUser] = useState(null);
+
+    // useEffect(() => {
+    //   const fetchUser = async () => {
+    //     try {
+    //       await fetch("http://localhost:8000/sanctum/csrf-cookie", {
+    //         credentials: "include",
+    //       });
+    
+    //       const res = await fetch("http://localhost:8000/api/user", {
+    //         credentials: "include",
+    //       });
+    
+    //       if (!res.ok) throw new Error("Not logged in");
+    
+    //       const data = await res.json();
+    //       setUser(data);
+    //     } catch (err) {
+    //       setUser(null);
+    //     }
+    //   };
+    
+    //   fetchUser();
+    // }, []);
+
+  //   if (!user) {
+  //   return <h2>Loading...</h2>;
+  // }
+
+   if (!user) {
+      return (
+        <div className="text-center py-5">
+          <div className="spinner">
+            <img src="public/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
+          </div>
+        </div>
+      );
+    }
+
     return(
        <>
-            <Navbar />
+            <Navbar user={user} />
 
             <div className="checkout_heading_section">
                 <div className="container">
@@ -22,6 +65,8 @@ function CheckOut({addToCart, plus_cart, minus_cart, add_cart, totalQty}){
             minus_cart={minus_cart}
             add_cart={add_cart}
             totalQty={totalQty}
+            setAddToCart={setAddToCart}
+            foodItems={foodItems}
          />
 
             <Footer />

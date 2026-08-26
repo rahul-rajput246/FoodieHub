@@ -7,171 +7,302 @@ import ContactUs from "./pages/ContactUs";
 import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import ScrollToHash from "./components/ScrollToHash";
+import OrderSuccess from "./pages/OrderSuccess";
+
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
 
 function App() {
 
-  const [addToCart, setAddToCart] = useState(() => {
-      const savedItmes = localStorage.getItem("foodCart");
-      return savedItmes ? JSON.parse(savedItmes) : [];  
-  });
+  const [user, setUser] = useState(null);
+  
+  const [wishList, setWishList] = useState([]);
+const [wishlistItems, setWishlistItems] = useState([]);
 
-  const add_cart = (id) => {
-    const cartItem = addToCart.find((item) => item.id === id);
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("/api/user");
+      setUser(res.data);
+    } catch {
+      setUser(null);
+    }
+  };
 
-    if (cartItem) {
-      const newCart = addToCart.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item
-      );
-      setAddToCart(newCart);
-    } else {
-      setAddToCart([...addToCart, { id: id, qty: 1 }]);
+  fetchUser();
+}, []);
+
+  const getCookieValue = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return decodeURIComponent(parts.pop().split(';').shift());
     }
   };
 
   useEffect(() => {
-    localStorage.setItem("foodCart" , JSON.stringify(addToCart));
-  }, [addToCart])
+  axios.get("/sanctum/csrf-cookie");
+}, []);
+
+  const [foodItems, setFoodItems] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/food-data")
+      .then((res) => res.json())
+      .then((result) => {
+        setFoodItems(result.data || []);
+      })
+      .catch((error) => {
+        console.log("Error Fetching API:", error);
+      });
+  }, []);
+
+
+  const [cartItems, setCartItems] = useState(() => {
+    const savedItems = localStorage.getItem("foodCart");
+    return savedItems ? JSON.parse(savedItems) : [];
+  });
+
+ const add_cart = async (id) => {
+  const product = foodItems.find((item) => item.id === id);
+  if (!product) return;
+
+  try {
+    await axios.post("/api/cart/add", {
+      food_item_id: product.id,
+      quantity: 1,
+    });
+
+    fetchCart();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+  useEffect(() => {
+    localStorage.setItem("foodCart", JSON.stringify(cartItems));
+  }, [cartItems])
 
   const plus_cart = (id) => {
-    const newCart = addToCart.map((item) =>
+    const newCart = cartItems.map((item) =>
       item.id === id ? { ...item, qty: item.qty + 1 } : item
     );
-    setAddToCart(newCart);
+    setCartItems(newCart);
   };
 
   const minus_cart = (id) => {
-    const cartItem = addToCart.find((item) => item.id === id);
+    const cartItem = cartItems.find((item) => item.id === id);
 
     if (!cartItem) return;
 
     if (cartItem.qty === 1) {
-      const updatedCart = addToCart.filter((item) => item.id !== id);
-      setAddToCart(updatedCart);
+      const updatedCart = cartItems.filter((item) => item.id !== id);
+      setCartItems(updatedCart);
     } else {
-      const updatedCart = addToCart.map((item) =>
+      const updatedCart = cartItems.map((item) =>
         item.id === id ? { ...item, qty: item.qty - 1 } : item
       );
-      setAddToCart(updatedCart);
+      setCartItems(updatedCart);
     }
   };
 
-  {/* whishList section */}
+ const totalQty = cartItems.reduce((total, item) => total + item.qty, 0);
 
-  const [wishList, setWishList] = useState(() => {
-    const saveWishlist = localStorage.getItem("foodWishlist");
-    return saveWishlist ? JSON.parse(saveWishlist) : [];
-  });
 
-  const wish = (id) => {
-    if (wishList.includes(id)) {
-      setWishList(wishList.filter((item) => item !== id));
-    } else {
-      setWishList([...wishList, id]);
+  // Add to wishlist
+
+ const addToWishlist = async (foodId) => {
+  try {
+    await axios.post("/api/wishlist/add", {
+      food_item_id: foodId,
+    });
+    fetchWishlist();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const fetchWishlist = async () => {
+  try {
+    const res = await axios.get("/api/wishlist");
+    setWishlistItems(res.data.wishlistItems || []);
+    setWishList((res.data.wishlistItems || []).map(i => i.food_item_id));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const removeFromWishlist = async (foodId) => {
+  const item = wishlistItems.find(i => i.food_item_id === foodId);
+  if (!item) return;
+
+  try {
+    await axios.delete(`/api/wishlist/remove/${item.id}`);
+    fetchWishlist();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+useEffect(() => {
+  fetchWishlist();
+}, []);
+
+
+const fetchCart = async () => {
+  try {
+    const res = await axios.get("/api/cart");
+
+    const data = res.data;
+
+    if (data.success) {
+      const formattedCart = data.cartItems.map((item) => ({
+        id: item.food_item_id,
+        qty: item.quantity,
+      }));
+
+      setCartItems(formattedCart);
     }
-  };
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   useEffect(() => {
-      localStorage.setItem("foodWishlist" , JSON.stringify(wishList));
-  },[wishList])
+    fetchCart();
+  }, []);
 
-  const totalQty = addToCart.reduce((total, item) => total + item.qty, 0);
 
   return (
     <>
-   <ScrollToHash />
-   <Routes>
-      <Route
-        path="/"
-        element={
-          <Home
-            addToCart={addToCart}
+      <ScrollToHash />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              addToCart={cartItems}
+              add_cart={add_cart}
+              plus_cart={plus_cart}
+              minus_cart={minus_cart}
+              wishList={wishList}
+              addToWishlist={addToWishlist}
+              removeFromWishlist={removeFromWishlist}
+              foodItems={foodItems}
+              user={user} 
+              totalQty={totalQty}
+            />
+          }
+        />
+
+        <Route
+          path="/home"
+          element={
+            <Home
+              addToCart={cartItems}
+              add_cart={add_cart}
+              plus_cart={plus_cart}
+              minus_cart={minus_cart}
+              wishList={wishList}
+              addToWishlist={addToWishlist}
+              removeFromWishlist={removeFromWishlist}
+              foodItems={foodItems}
+              user={user} 
+              totalQty={totalQty}
+            />
+          }
+        />
+
+        <Route
+          path="/menu"
+          element={
+            <Menu
+              addToCart={cartItems}
+              add_cart={add_cart}
+              plus_cart={plus_cart}
+              minus_cart={minus_cart}
+              wishList={wishList}
+              addToWishlist={addToWishlist}
+              removeFromWishlist={removeFromWishlist}
+              foodItems={foodItems}
+              user={user} 
+              totalQty={totalQty}
+            />
+          }
+        />
+
+        <Route path="/about"
+          element={<About
+            addToCart={cartItems}
             add_cart={add_cart}
             plus_cart={plus_cart}
             minus_cart={minus_cart}
-            wish={wish}
             wishList={wishList}
+            addToWishlist={addToWishlist}
+            removeFromWishlist={removeFromWishlist}
+            foodItems={foodItems}
+            user={user} 
             totalQty={totalQty}
-          />
-        }
-      />
+          />}>
+        </Route>
 
-      <Route
-        path="/home"
-        element={
-          <Home
-            addToCart={addToCart}
-            add_cart={add_cart}
-            plus_cart={plus_cart}
-            minus_cart={minus_cart}
-            wish={wish}
-            wishList={wishList}
-            totalQty={totalQty}
-          />
-        }
-      />
+        <Route path="/contact" element={<ContactUs
+          addToCart={cartItems}
+          add_cart={add_cart}
+          plus_cart={plus_cart}
+          minus_cart={minus_cart}
+          wishList={wishList}
+          addToWishlist={addToWishlist}
+          removeFromWishlist={removeFromWishlist}
+          foodItems={foodItems}
+          totalQty={totalQty}
+          user={user} 
+        />}>
+        </Route>
 
-      <Route
-        path="/menu"
-        element={
-          <Menu
-            addToCart={addToCart}
-            add_cart={add_cart}
-            plus_cart={plus_cart}
-            minus_cart={minus_cart}
-            wish={wish}
-            wishList={wishList}
-            totalQty={totalQty}
-          />
-        }
-      />
+        <Route
+          path="/cart"
+          element={
+            <Cart
+              addToCart={cartItems}
+              plus_cart={plus_cart}
+              minus_cart={minus_cart}
+              add_cart={add_cart}
+              // totalQty={totalQty}
+              foodItems={foodItems}
+              user={user} 
+            />
+          }
+        />
 
-      <Route path="/about" 
-      element={<About
-        addToCart={addToCart}
-        add_cart={add_cart}
-        plus_cart={plus_cart}
-        minus_cart={minus_cart}
-        wish={wish}
-        wishList={wishList}
-        totalQty={totalQty}
-      />}>
-      </Route>
+        <Route
+          path="/checkout"
+          element={
+            <CheckOut
+              addToCart={cartItems}
+              //totalQty={totalQty}
+              setAddToCart={setCartItems}
+              foodItems={foodItems}
+              plus_cart={plus_cart}
+              minus_cart={minus_cart}
+              add_cart={add_cart}
+              user={user} 
+            />
 
-      <Route path="/contact" element={<ContactUs 
-        addToCart={addToCart}
-        add_cart={add_cart}
-        plus_cart={plus_cart}
-        minus_cart={minus_cart}
-        wish={wish}
-        wishList={wishList}
-        totalQty={totalQty}
-      />}>
-      </Route>
+          }
+        />
 
-     <Route
-        path="/cart"
-        element={
-          <Cart
-            addToCart={addToCart}
-            plus_cart={plus_cart}
-            minus_cart={minus_cart}
-            add_cart={add_cart}
-            totalQty={totalQty}
-          />
-        }
-      />
+        <Route
+          path="/order-success"
+          element={
+            <OrderSuccess user={user} />
+          }
+        />
 
-      <Route
-        path="/checkout"
-        element={
-          <CheckOut 
-            addToCart={addToCart}
-            totalQty={totalQty}
-          />
-        }
-      />
-
-    </Routes>
+      </Routes>
     </>
   );
 }

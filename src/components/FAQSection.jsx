@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPlus, FaMinus, FaHeadset } from "react-icons/fa6";
 
-function FAQSection({ items }) {
+function FAQSection({ details }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const toggleFAQ = (index) => {
@@ -15,12 +15,10 @@ function FAQSection({ items }) {
 
         {/* TOP HEADING */}
         <div className="faq_heading text-center pb-5">
-          <span className="faq_tag">Help & Support</span>
-          <h2>Frequently Asked Questions</h2>
+          <span className="faq_tag">{details?.content?.home_faq?.home_faq_subtitle}</span>
+          <h2>{details?.content?.home_faq?.home_faq_title}</h2>
           <p>
-            Got questions about delivery, payments, or food quality? 
-            We’ve answered the most common things here to make your 
-            ordering experience smooth and easy.
+           {details?.content?.home_faq?.home_faq_desc}
           </p>
         </div>
 
@@ -62,7 +60,7 @@ function FAQSection({ items }) {
 
                   {/* button */}
                   <Link to="/contact" className="faq_contact_btn">
-                    Contact Us
+                    {details?.content?.home_faq?.home_faq_btn_text}
                   </Link>
               </div>
             </div>
@@ -71,10 +69,10 @@ function FAQSection({ items }) {
           {/* RIGHT SIDE */}
           <div className="col-lg-7">
             <div className="faq_right_box">
-              {items.map((faq, index) => (
+              {details?.content?.home_faq?.items?.map((faq, index) => (
                 <div
                   className={`faq_item ${activeIndex === index ? "active" : ""}`}
-                  key={faq.id}
+                  key={index}
                 >
                   <button
                     className="faq_question"
@@ -82,6 +80,7 @@ function FAQSection({ items }) {
                     onClick={() => toggleFAQ(index)}
                   >
                     <span>{faq.question}</span>
+
                     <div className="faq_icon">
                       {activeIndex === index ? <FaMinus /> : <FaPlus />}
                     </div>

@@ -36,6 +36,7 @@ function SpecialOfferBanner() {
                   src="assets/images/burger.png"
                   alt="offer"
                   className="offer_img"
+                  loading="lazy"
                 />
               </div>
             </div>

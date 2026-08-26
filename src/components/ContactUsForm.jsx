@@ -5,7 +5,7 @@ import {
   FaRegCommentDots,
 } from "react-icons/fa";
 
-function ContactFormSection() {
+function ContactFormSection({ details }) {
   return (
     <section className="contact_form_section py-3   ">
       <div className="container">
@@ -14,25 +14,24 @@ function ContactFormSection() {
             
             <div className="col-lg-5">
               <div className="contact_form_content">
-                <span className="contact_badge">Contact Us</span>
-                <h2>Let’s Start a <span>Conversation</span></h2>
+                <span className="contact_badge">{details?.content?.contact_form?.subtitle}</span>
+                <h2>{details?.content?.contact_form?.title} <span>{details?.content?.contact_form?.color_title}</span></h2>
                 <p>
-                  Got a question, food request, or feedback? We’re always ready
-                  to hear from you and help you out.
+                  {details?.content?.contact_form?.desc}
                 </p>
 
                 <div className="contact_points">
                   <div className="contact_point">
                     <span></span>
-                    <p>Quick response from our team</p>
+                    <p>{details?.content?.contact_form?.point1}</p>
                   </div>
                   <div className="contact_point">
                     <span></span>
-                    <p>Easy support for orders & queries</p>
+                    <p>{details?.content?.contact_form?.point2}</p>
                   </div>
                   <div className="contact_point">
                     <span></span>
-                    <p>Friendly service with FoodieHub style</p>
+                    <p>{details?.content?.contact_form?.point3}</p>
                   </div>
                 </div>
               </div>

@@ -1,99 +1,101 @@
-import { menuItems, allPrice, sortData, ratingData, typeDishData } from "../data/Menudata";
+import { allPrice, sortData, ratingData, typeDishData } from "../data/Menudata";
 import { useState, useMemo } from "react";
-import { categories } from '../data/Homedata';
 import '../pages/Menu.css';
 
-function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart,wishList,wish }) {
-  
-  {/* Category Filter */}
-  
-  const allCategories = [{id:0,title:"All"}, ...categories]
-  
-  const [activeCategory,setCategory] =  useState("All");
+function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, foods }) {
+
+  {/* Category Filter */ }
+
+  const allCategories = useMemo(() => {
+    const uniqueCategory = [...new Set(foods.map((items) => items.category_name).filter(Boolean))];
+    return ["All", ...uniqueCategory];
+  }, [foods]);
+
+  const [activeCategory, setCategory] = useState("All");
 
   const randomFood = useMemo(() => {
-      return [...menuItems].sort(() => Math.random() - 0.5);
-  }, []);
+    return [...foods].sort(() => Math.random() - 0.5);
+  }, [foods]);
 
-/* Category Filter */
+  /* Category Filter */
 
-const filterFood =
-  activeCategory === "All"
-    ? randomFood
-    : randomFood.filter((item) => item.category === activeCategory);
+  const filterFood =
+    activeCategory === "All"
+      ? randomFood
+      : randomFood.filter((item) => item.category_name === activeCategory);
 
-/* Search Filter */
-const [search, setSearch] = useState("");
+  /* Search Filter */
+  const [search, setSearch] = useState("");
 
-const searchFilter =
-  search.trim() === ""
-    ? filterFood
-    : filterFood.filter((item) =>
-        item.name.toLowerCase().includes(search.toLowerCase()) ||
-        item.category.toLowerCase().includes(search.toLowerCase()) ||
-        item.description.toLowerCase().includes(search.toLowerCase())
+  const searchFilter =
+    search.trim() === ""
+      ? filterFood
+      : filterFood.filter((item) =>
+        item.food_name?.toLowerCase().includes(search.toLowerCase()) ||
+        item.category_name?.toLowerCase().includes(search.toLowerCase()) ||
+        item.food_desc?.toLowerCase().includes(search.toLowerCase())
       );
 
-/* Price Filter */
-const [activePrice, setPrice] = useState("All Prices");
+  /* Price Filter */
+  const [activePrice, setPrice] = useState("All Prices");
 
-const filterPrice =
-  activePrice === "All Prices"
-    ? searchFilter
-    : activePrice === "Under 200"
-    ? searchFilter.filter((item) => item.price < 200)
-    : activePrice === "200 - 300"
-    ? searchFilter.filter((item) => item.price >= 200 && item.price <= 300)
-    : searchFilter.filter((item) => item.price > 300);
-
-
-/* Types Of Dishes Filter */
-
-const [activeType, setActiveType] = useState("All");
-
-const typesFilter =
-  activeType === "All"
-    ? filterPrice
-    : filterPrice.filter((item) => item.type === activeType);
+  const filterPrice =
+    activePrice === "All Prices"
+      ? searchFilter
+      : activePrice === "Under 200"
+        ? searchFilter.filter((item) => Number(item.food_price) < 200)
+        : activePrice === "200 - 300"
+          ? searchFilter.filter((item) => Number(item.food_price) >= 200 && Number(item.food_price) <= 300)
+          : searchFilter.filter((item) => Number(item.food_price) > 300);
 
 
-/* Ratings Filter */
+  /* Types Of Dishes Filter */
 
-const [activeRating,setRating] = useState("All");
+  const [activeType, setActiveType] = useState("All");
 
-const filterRating =
-  activeRating === "All"
-    ? typesFilter
-    : activeRating === "Above 4.5"
-    ? typesFilter.filter((item) => item.rating >= 4.5)
-    : activeRating === "Above 4"
-    ? typesFilter.filter((item) => item.rating >= 4)
-    : typesFilter.filter((item) => item.rating >= 3.5);
+  const typesFilter =
+    activeType === "All"
+      ? filterPrice
+      : filterPrice.filter((item) => item.food_type === activeType);
 
-const clearFilters = () => {
-  setCategory("All");
-  setActiveType("All");
-  setSearch("");
-  setPrice("All Prices");
-  setRating("All");
-  setSortBy("Sort By");
-};
 
-/* Sort By Filter */
-const [sortBy, setSortBy] = useState("Sort By");
+  /* Ratings Filter */
 
-const sortFilter = [...filterRating].sort((a, b) => {
+  const [activeRating, setRating] = useState("All");
 
-  if (sortBy === "Price Low To High") {
-    return a.price - b.price;
-  }
+  const filterRating =
+    activeRating === "All"
+      ? typesFilter
+      : activeRating === "Above 4.5"
+        ? typesFilter.filter((item) => Number(item.food_rating) >= 4.5)
+        : activeRating === "Above 4"
+          ? typesFilter.filter((item) => Number(item.food_rating) >= 4)
+          : typesFilter.filter((item) => Number(item.food_rating) >= 3.5);
 
-  if (sortBy === "Price: High To Low") {
-    return b.price - a.price;
-  }
+  const clearFilters = () => {
+    setCategory("All");
+    setActiveType("All");
+    setSearch("");
+    setPrice("All Prices");
+    setRating("All");
+    setSortBy("Sort By");
+  };
 
-  return 0;
-});
+  /* Sort By Filter */
+  const [sortBy, setSortBy] = useState("Sort By");
+
+  const sortFilter = [...filterRating].sort((a, b) => {
+
+    if (sortBy === "Price Low To High") {
+      return Number(a.food_price) - Number(b.food_price)
+    }
+
+    if (sortBy === "Price: High To Low") {
+      return Number(b.food_price) - Number(a.food_price);
+    }
+
+    return 0;
+  });
 
   return (
     <section className="menu_page py-5">
@@ -120,14 +122,14 @@ const sortFilter = [...filterRating].sort((a, b) => {
                   <h5>Categories</h5>
                 </div>
                 <div className="category_buttons">
-                  {allCategories.map((props) => (
-                      <button
-                        key={props.id}
-                        className={`menu_filter_btn ${activeCategory === props.title ? "active" : ""}`}
-                        onClick={() => setCategory(props.title)}
-                      >
-                        {props.title}
-                      </button>
+                  {allCategories.map((category, index) => (
+                    <button
+                      key={index}
+                      className={`menu_filter_btn ${activeCategory === category ? "active" : ""}`}
+                      onClick={() => setCategory(category)}
+                    >
+                      {category}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -137,14 +139,14 @@ const sortFilter = [...filterRating].sort((a, b) => {
                   <h5>Types of Dishes</h5>
                 </div>
                 <div className="category_buttons">
-                  {typeDishData.map((props) => (
-                      <button
-                        key={props.id}
-                        className={`menu_filter_btn ${activeType === props.title ? "active" : ""}`}
-                        onClick={() => setActiveType(props.title)}
-                      >
-                        {props.title}
-                      </button>
+                  {typeDishData.map((item) => (
+                    <button
+                      key={item.id}
+                      className={`menu_filter_btn ${activeType === item.title ? "active" : ""}`}
+                      onClick={() => setActiveType(item.title)}
+                    >
+                      {item.title}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -155,14 +157,14 @@ const sortFilter = [...filterRating].sort((a, b) => {
                 </div>
                 <div className="category_buttons">
                   {allPrice.map((item) => (
-                      <button 
+                    <button
                       key={item.id}
                       className={`menu_filter_btn ${activePrice === item.title ? "active" : ""}`}
                       onClick={() => setPrice(item.title)}
-                      >
-                          {item.title}
-                      </button>
-                   ))}
+                    >
+                      {item.title}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -171,14 +173,15 @@ const sortFilter = [...filterRating].sort((a, b) => {
                   <h5>Ratings</h5>
                 </div>
                 <div className="category_buttons">
-                   {ratingData.map((item) => (
-                        <button
-                            key={item.id}
-                            onClick={() => setRating(item.title)}
-                            className={`menu_filter_btn ${activeRating === item.title ? "active" : ""}`}>
-                            {item.title}
-                        </button>
-                   ))}
+                  {ratingData.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => setRating(item.title)}
+                      className={`menu_filter_btn ${activeRating === item.title ? "active" : ""}`}
+                    >
+                      {item.title}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -194,7 +197,7 @@ const sortFilter = [...filterRating].sort((a, b) => {
               </div>
 
               <select className="form-select menu_sort_select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                {sortData.map((item) => 
+                {sortData.map((item) =>
                   <option key={item.id}>{item.title}</option>
                 )}
               </select>
@@ -209,13 +212,14 @@ const sortFilter = [...filterRating].sort((a, b) => {
                     <div className="menu_food_card p-3 h-100">
                       <div className="menu_food_img_box">
                         <img
-                          src={item.image}
-                          alt={item.name}
+                          src={item.image_url}
+                          alt={item.food_name}
                           className="menu_food_img"
+                          loading="lazy"
                         />
                         <button
                           className="food_badge"
-                          onClick={() => wish(item.id)}
+                          onClick={() => addToWishlist(item.id)}
                         >
                           {!wishList.includes(item.id) ? (
                             <i className="bi bi-heart"></i>
@@ -227,14 +231,14 @@ const sortFilter = [...filterRating].sort((a, b) => {
 
                       <div className="menu_food_card_body">
                         <div className="category_badge_box">
-                          <span className="menu_food_category">{item.category}</span>
-                          <span className="rating">⭐{item.rating}</span>
+                          <span className="menu_food_category">{item.category_name}</span>
+                          <span className="rating">⭐{item.food_rating}</span>
                         </div>
-                        <h4>{item.name}</h4>
-                        <p>{item.description}</p>
+                        <h4>{item.food_name}</h4>
+                        <p>{item.food_subtitle}</p>
 
                         <div className="menu_food_card_bottom">
-                          <strong className="menu_food_price">₹{item.price}</strong>
+                          <strong className="menu_food_price">₹{item.food_price}</strong>
 
                           {cartItem ? (
                             <div className="d-flex align-items-center gap-2">

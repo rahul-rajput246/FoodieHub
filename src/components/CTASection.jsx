@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function CTASection() {
+function CTASection({details}) {
   return (
     <section className="cta_section py-5">
       <div className="container">
@@ -8,11 +8,10 @@ function CTASection() {
           <div className="row align-items-center">
             <div className="col-lg-8">
               <div className="cta_content">
-                <span className="cta_tag">Ready To Order?</span>
-                <h2>Hungry? Let's Make Your Day Delicious</h2>
+                <span className="cta_tag">{details?.content?.aboutOffer?.subtitle}</span>
+                <h2>{details?.content?.aboutOffer?.title}</h2>
                 <p>
-                  Fresh flavors, quick delivery, and your favorite dishes are
-                  waiting for you. Order now and enjoy the FoodieHub experience.
+                  {details?.content?.aboutOffer?.desc}
                 </p>
               </div>
             </div>
@@ -20,10 +19,10 @@ function CTASection() {
             <div className="col-lg-4">
               <div className="cta_btn_box">
                 <Link to="/menu" className="cta_btn primary_btn">
-                  Order Now
+                  {details?.content?.aboutOffer?.btn_text1}
                 </Link>
                 <Link to="/menu" className="cta_btn secondary_btn">
-                  Explore Menu
+                 {details?.content?.aboutOffer?.btn_text2}
                 </Link>
               </div>
             </div>
