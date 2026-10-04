@@ -51,13 +51,18 @@ useEffect(() => {
   const [foodItems, setFoodItems] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/food-data`)
-      .then((res) => res.json())
+    fetch(`${API_BASE_URL}/api/food-data`, {
+      headers: { Accept: "application/json" }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then((result) => {
         setFoodItems(result.data || []);
       })
       .catch((error) => {
-        console.log("Error Fetching API:", error);
+        console.log("Error Fetching food-data API:", error);
       });
   }, []);
 
@@ -149,33 +154,28 @@ const removeFromWishlist = async (foodId) => {
   }
 };
 
-useEffect(() => {
-  fetchWishlist();
-}, []);
-
-
-const fetchCart = async () => {
-  try {
-    const res = await axios.get("/api/cart");
-
-    const data = res.data;
-
-    if (data.success) {
-      const formattedCart = data.cartItems.map((item) => ({
-        id: item.food_item_id,
-        qty: item.quantity,
-      }));
-
-      setCartItems(formattedCart);
+  const fetchCart = async () => {
+    try {
+      const res = await axios.get("/api/cart");
+      const data = res.data;
+      if (data.success) {
+        const formattedCart = data.cartItems.map((item) => ({
+          id: item.food_item_id,
+          qty: item.quantity,
+        }));
+        setCartItems(formattedCart);
+      }
+    } catch (error) {
+      console.error(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
-};
+  };
 
   useEffect(() => {
-    fetchCart();
-  }, []);
+    if (user) {
+      fetchWishlist();
+      fetchCart();
+    }
+  }, [user]);
 
 
   return (

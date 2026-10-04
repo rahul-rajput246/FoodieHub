@@ -14,6 +14,8 @@ import { API_BASE_URL } from "./config";
 
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common["Accept"] = "application/json";
+axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
