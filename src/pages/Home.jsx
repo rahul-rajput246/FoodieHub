@@ -85,7 +85,7 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
   return (
     <div className="text-center bg-transparent py-5">
       <div className="spinner">
-        <img src="public/assets/favicon/favicon.png" alt="loading..."/>
+        <img src="/assets/favicon/favicon.png" alt="loading..."/>
       </div>
     </div>
   );

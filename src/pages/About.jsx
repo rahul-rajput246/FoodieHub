@@ -40,7 +40,7 @@ function AboutPage({ totalQty, user }){
       return (
         <div className="text-center py-5">
           <div className="spinner">
-            <img src="public/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
+            <img src="/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
           </div>
         </div>
       );

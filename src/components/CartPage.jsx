@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
 
@@ -26,11 +27,11 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
   
   const handleCheckout = async () => {
     try {
-      await fetch("http://localhost:8000/sanctum/csrf-cookie", {
+      await fetch(`${API_BASE_URL}/sanctum/csrf-cookie`, {
         credentials: "include",
       });
 
-      const res = await fetch("http://localhost:8000/api/user", {
+      const res = await fetch(`${API_BASE_URL}/api/user`, {
         credentials: "include",
       });
 
@@ -38,7 +39,7 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
         navigate("/checkout");
       }
     } catch (error) {
-      window.location.href = "http://localhost:8000/login";
+      window.location.href = `${API_BASE_URL}/login`;
     }
   };
 

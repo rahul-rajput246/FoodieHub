@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config";
+
 function Specialities({details}) {
   return (
     <section className="specialities_section py-5">
@@ -16,7 +18,7 @@ function Specialities({details}) {
               <div className="speciality_card h-100">
                 <div className="speciality_img_box">
                   <img
-                    src={`http://127.0.0.1:8000/storage/${item.image}`}
+                    src={`${API_BASE_URL}/storage/${item.image}`}
                     alt={item.title}
                     className="speciality_img"
                     loading="lazy"

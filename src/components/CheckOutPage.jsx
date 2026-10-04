@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 {/* <script src="https://checkout.razorpay.com/v1/checkout.js"></script> */ }
 
@@ -12,7 +13,7 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [notes, setNotes] = useState("");
 
-  const BACKEND_URL = "http://localhost:8000";
+  const BACKEND_URL = API_BASE_URL;
 
 
   const cartPayload = addToCart.map(item => ({

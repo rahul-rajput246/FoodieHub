@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config";
+
 function TestomonialSection({ details }) {
   return (
     <div className="testomonial_section py-3">
@@ -25,7 +27,7 @@ function TestomonialSection({ details }) {
                 <div className="testimonial_user">
                   <div className="testimonial_img_box">
                     <img
-                      src={`http://127.0.0.1:8000/storage/${props.image}`}
+                      src={`${API_BASE_URL}/storage/${props.image}`}
                       alt="User Image"
                       className="testimonial_img"
                       loading="lazy"

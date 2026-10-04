@@ -1,5 +1,6 @@
 import "../pages/About.css";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 function AboutStory({ details }) {
 
@@ -12,7 +13,7 @@ function AboutStory({ details }) {
           <div className="col-lg-6 mb-4 mb-lg-0">
             <div className="about_img_box">
               <img 
-                src={`http://127.0.0.1:8000/storage/${details?.content?.about_our_story?.image}`} 
+                src={`${API_BASE_URL}/storage/${details?.content?.about_our_story?.image}`} 
                 alt="about"
                 className="about_img"
                 loading="lazy"

@@ -10,7 +10,9 @@ import ScrollToHash from "./components/ScrollToHash";
 import OrderSuccess from "./pages/OrderSuccess";
 
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:8000";
+import { API_BASE_URL } from "./config";
+
+axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
@@ -49,7 +51,7 @@ useEffect(() => {
   const [foodItems, setFoodItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/food-data")
+    fetch(`${API_BASE_URL}/api/food-data`)
       .then((res) => res.json())
       .then((result) => {
         setFoodItems(result.data || []);

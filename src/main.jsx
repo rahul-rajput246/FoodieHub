@@ -10,8 +10,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./index.css";
 import "./pages/Home.css";
 import axios from "axios";
+import { API_BASE_URL } from "./config";
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById('root')).render(

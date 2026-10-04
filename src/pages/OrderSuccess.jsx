@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "./OrderSuccess.css";
+import { API_BASE_URL } from "../config";
 
 function OrderSuccess() {
   const location = useLocation();
@@ -37,9 +38,9 @@ function OrderSuccess() {
 
           {/* Buttons */}
           <div className="success_actions">
-            <Link to="http://localhost:8000/orders" className="btn_primary">
+            <a href={`${API_BASE_URL}/orders`} className="btn_primary">
               View My Orders
-            </Link>
+            </a>
 
             <Link to="/menu" className="btn_outline">
               Order More Food

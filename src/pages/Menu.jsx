@@ -3,6 +3,7 @@ import HomeBanner from "../components/HomeBanner";
 import MenuFilter from "../components/MenuFilter";
 import Footer from "../components/Footer";
 import { useState, useEffect, useMemo } from "react";
+import { API_BASE_URL } from "../config";
 
 
 function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wishList, addToWishlist, removeFromWishlist, foodItems }) {
@@ -12,7 +13,7 @@ function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wish
 
   useEffect(() => {
 
-    fetch('http://127.0.0.1:8000/api/home-data/menu')
+    fetch(`${API_BASE_URL}/api/home-data/menu`)
       .then((res) => res.json())
       .then((result) => {
         console.log("Api Data:", result);
@@ -51,7 +52,7 @@ function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wish
   return (
     <div className="text-center py-5">
       <div className="spinner">
-        <img src="public/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
+        <img src="/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
       </div>
     </div>
   );

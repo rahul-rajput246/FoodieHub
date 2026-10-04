@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { API_BASE_URL } from "../config";
 
 function Navbar({totalQty , user}) {
   return (
@@ -33,18 +34,18 @@ function Navbar({totalQty , user}) {
           <div className="right_nav_box">
             {user ? (
               user.roles?.includes("admin") ? (
-                <Link to="http://localhost:8000/admin/dashboard" className="login_btn">
+                <a href={`${API_BASE_URL}/admin/dashboard`} className="login_btn">
                   <FaUser /> {user.name}
-                </Link>
+                </a>
               ) : (
-                <Link to="http://localhost:8000/dashboard" className="login_btn">
+                <a href={`${API_BASE_URL}/dashboard`} className="login_btn">
                   <FaUser /> {user.name}
-                </Link>
+                </a>
               )
             ) : (
-              <Link to="http://localhost:8000/login" className="login_btn">
+              <a href={`${API_BASE_URL}/login`} className="login_btn">
                 <FaUser /> Login
-              </Link>
+              </a>
             )}
             <Link to="/cart" className="cart_btn">
               <FaShoppingCart /> Cart

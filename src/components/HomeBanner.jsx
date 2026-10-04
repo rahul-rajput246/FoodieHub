@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../config";
+
 function HomeBanner({ details, bannerKey}){
 
   const banner = details?.content?.[bannerKey];
@@ -6,7 +8,7 @@ function HomeBanner({ details, bannerKey}){
     return(
       <div className="banner_section">
         <div className="banner_img_box">
-          <img src={`http://127.0.0.1:8000/storage/${banner?.image}`} loading="lazy" alt="banner_Img.." className="banner_img" />
+          <img src={`${API_BASE_URL}/storage/${banner?.image}`} loading="lazy" alt="banner_Img.." className="banner_img" />
         </div>
         <div className="banner_overlay">
           <div className="container">

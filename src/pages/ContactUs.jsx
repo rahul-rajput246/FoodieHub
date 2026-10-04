@@ -6,15 +6,15 @@ import ContactForm from "../components/ContactUsForm";
 import CTASection from "../components/CTASection";
 import ContactMap from "../components/ContactMap";
 import "./ContactUs.css";
-
 import {useEffect , useState} from 'react';
+import { API_BASE_URL } from "../config";
 
 function ContactUs({  totalQty, user }) {
 
     const [contactData , setContactData] = useState(null);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/home-data/contact')
+        fetch(`${API_BASE_URL}/api/home-data/contact`)
         .then((res) => res.json())
         .then((result) => {
             console.log("Fatching API:" , result);
@@ -28,7 +28,7 @@ function ContactUs({  totalQty, user }) {
     const [aboutData , setAboutData] = useState(null);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/home-data/about')
+        fetch(`${API_BASE_URL}/api/home-data/about`)
         .then((res) => res.json())
         .then((result) => {
             console.log('Apt Data:',result)
@@ -66,7 +66,7 @@ function ContactUs({  totalQty, user }) {
         return (
             <div className="text-center py-5">
             <div className="spinner">
-                <img src="public/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
+                <img src="/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
             </div>
             </div>
         );
