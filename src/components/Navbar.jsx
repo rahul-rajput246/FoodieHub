@@ -33,15 +33,9 @@ function Navbar({totalQty , user}) {
 
           <div className="right_nav_box">
             {user ? (
-              user.roles?.includes("admin") ? (
-                <a href={`${API_BASE_URL}/admin/dashboard`} className="login_btn">
-                  <FaUser /> {user.name}
-                </a>
-              ) : (
-                <a href={`${API_BASE_URL}/dashboard`} className="login_btn">
-                  <FaUser /> {user.name}
-                </a>
-              )
+              <a href={`${API_BASE_URL}/admin/dashboard`} className="login_btn">
+                <FaUser /> {user.name}
+              </a>
             ) : (
               <a href={`${API_BASE_URL}/login`} className="login_btn">
                 <FaUser /> Login

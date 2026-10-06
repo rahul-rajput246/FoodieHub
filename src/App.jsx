@@ -72,47 +72,85 @@ useEffect(() => {
     return savedItems ? JSON.parse(savedItems) : [];
   });
 
- const add_cart = async (id) => {
-  const product = foodItems.find((item) => item.id === id);
-  if (!product) return;
+  const add_cart = async (id) => {
+    const product = foodItems.find((item) => item.id === id);
+    if (!product) return;
 
-  try {
-    await axios.post("/api/cart/add", {
-      food_item_id: product.id,
-      quantity: 1,
-    });
-
-    fetchCart();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
+    if (user) {
+      try {
+        await axios.post("/api/cart/add", {
+          food_item_id: product.id,
+          quantity: 1,
+        });
+        await fetchCart();
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      }
+    } else {
+      const existing = cartItems.find((item) => item.id === id);
+      if (existing) {
+        setCartItems(
+          cartItems.map((item) =>
+            item.id === id ? { ...item, qty: item.qty + 1 } : item
+          )
+        );
+      } else {
+        setCartItems([...cartItems, { id: product.id, qty: 1 }]);
+      }
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem("foodCart", JSON.stringify(cartItems));
-  }, [cartItems])
+  }, [cartItems]);
 
-  const plus_cart = (id) => {
-    const newCart = cartItems.map((item) =>
-      item.id === id ? { ...item, qty: item.qty + 1 } : item
+  const plus_cart = async (id) => {
+    const cartItem = cartItems.find((item) => item.id === id);
+    const newQty = (cartItem ? cartItem.qty : 0) + 1;
+
+    setCartItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, qty: newQty } : item))
     );
-    setCartItems(newCart);
+
+    if (user) {
+      try {
+        await axios.post(`/api/cart/update/${id}`, { quantity: newQty });
+      } catch (error) {
+        console.error("Error updating cart:", error);
+        fetchCart();
+      }
+    }
   };
 
-  const minus_cart = (id) => {
+  const minus_cart = async (id) => {
     const cartItem = cartItems.find((item) => item.id === id);
-
     if (!cartItem) return;
 
     if (cartItem.qty === 1) {
-      const updatedCart = cartItems.filter((item) => item.id !== id);
-      setCartItems(updatedCart);
+      setCartItems((prev) => prev.filter((item) => item.id !== id));
+
+      if (user) {
+        try {
+          await axios.delete(`/api/cart/remove/${id}`);
+        } catch (error) {
+          console.error("Error removing from cart:", error);
+          fetchCart();
+        }
+      }
     } else {
-      const updatedCart = cartItems.map((item) =>
-        item.id === id ? { ...item, qty: item.qty - 1 } : item
+      const newQty = cartItem.qty - 1;
+      setCartItems((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, qty: newQty } : item))
       );
-      setCartItems(updatedCart);
+
+      if (user) {
+        try {
+          await axios.post(`/api/cart/update/${id}`, { quantity: newQty });
+        } catch (error) {
+          console.error("Error updating cart:", error);
+          fetchCart();
+        }
+      }
     }
   };
 
