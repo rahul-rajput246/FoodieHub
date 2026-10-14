@@ -267,23 +267,26 @@ function TrackOrder({ user, totalQty }) {
                   </div>
                 </div>
 
-                {/* Delivery Partner Profile Card (Shown when preparing or out for delivery) */}
+                {/* Delivery Partner / Restaurant Support Profile Card */}
                 {orderData.delivery_partner && (
                   <div className="delivery_partner_card">
                     <div className="partner_avatar">
-                      👨‍🍳
+                      {orderData.delivery_partner.is_assigned ? "🛵" : "👨‍🍳"}
                     </div>
                     <div className="partner_details">
                       <div className="partner_top">
                         <h4 className="partner_name">{orderData.delivery_partner.name}</h4>
                         <span className="partner_rating">{orderData.delivery_partner.rating}</span>
                       </div>
-                      <p className="partner_vehicle">🛵 {orderData.delivery_partner.vehicle}</p>
+                      <p className="partner_vehicle">
+                        {orderData.delivery_partner.is_assigned ? "🛵 " : "📞 "}
+                        {orderData.delivery_partner.vehicle}
+                      </p>
                       <span className="partner_deliveries">{orderData.delivery_partner.deliveries}</span>
                     </div>
                     <div className="partner_actions">
                       <a href={`tel:${orderData.delivery_partner.phone}`} className="partner_call_btn">
-                        📞 Call Partner
+                        📞 {orderData.delivery_partner.is_assigned ? "Call Partner" : "Call Support"}
                       </a>
                     </div>
                   </div>
