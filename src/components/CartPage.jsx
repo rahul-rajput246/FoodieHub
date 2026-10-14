@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 
-function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
+function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
 
   const cartItems = foodItems.filter((product) =>
     addToCart.some((item) => item.id === product.id)
@@ -22,10 +22,17 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
   const totalAmount = subtotal + deliveryFee - discount;
 
   // login state check
-
   const navigate = useNavigate();
   
   const handleCheckout = async () => {
+    const checkoutUrl = window.location.origin + "/checkout";
+    const loginWithRedirect = `${API_BASE_URL}/login?redirect=${encodeURIComponent(checkoutUrl)}`;
+
+    if (user) {
+      navigate("/checkout");
+      return;
+    }
+
     try {
       await fetch(`${API_BASE_URL}/sanctum/csrf-cookie`, {
         credentials: "include",
@@ -33,13 +40,16 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [] }) {
 
       const res = await fetch(`${API_BASE_URL}/api/user`, {
         credentials: "include",
+        headers: { Accept: "application/json" },
       });
 
       if (res.ok) {
         navigate("/checkout");
+      } else {
+        window.location.href = loginWithRedirect;
       }
     } catch (error) {
-      window.location.href = `${API_BASE_URL}/login`;
+      window.location.href = loginWithRedirect;
     }
   };
 

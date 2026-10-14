@@ -13,8 +13,8 @@ function TestomonialSection({ details }) {
         </div>
 
         <div className="row">
-          {details?.content?.home_testom?.items?.map((props) => (
-            <div className="col-lg-4 col-md-6 col-12 mb-4" key={props.id}>
+          {details?.content?.home_testom?.items?.map((props, index) => (
+            <div className="col-lg-4 col-md-6 col-12 mb-4" key={props.id || index}>
               <div className="testomonial_box">
                 <div className="quote_icon">❝</div>
 

@@ -19,6 +19,7 @@ axios.defaults.withXSRFToken = true;
 function App() {
 
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
   
   const [wishList, setWishList] = useState(() => {
     const savedWishlist = localStorage.getItem("foodWishlist");
@@ -33,6 +34,8 @@ useEffect(() => {
       setUser(res.data);
     } catch {
       setUser(null);
+    } finally {
+      setAuthLoading(false);
     }
   };
 
@@ -371,7 +374,7 @@ useEffect(() => {
               plus_cart={plus_cart}
               minus_cart={minus_cart}
               add_cart={add_cart}
-              // totalQty={totalQty}
+              totalQty={totalQty}
               foodItems={foodItems}
               user={user} 
             />
@@ -383,13 +386,14 @@ useEffect(() => {
           element={
             <CheckOut
               addToCart={cartItems}
-              //totalQty={totalQty}
+              totalQty={totalQty}
               setAddToCart={setCartItems}
               foodItems={foodItems}
               plus_cart={plus_cart}
               minus_cart={minus_cart}
               add_cart={add_cart}
-              user={user} 
+              user={user}
+              authLoading={authLoading}
             />
 
           }
