@@ -20,8 +20,11 @@ function App() {
 
   const [user, setUser] = useState(null);
   
-  const [wishList, setWishList] = useState([]);
-const [wishlistItems, setWishlistItems] = useState([]);
+  const [wishList, setWishList] = useState(() => {
+    const savedWishlist = localStorage.getItem("foodWishlist");
+    return savedWishlist ? JSON.parse(savedWishlist) : [];
+  });
+  const [wishlistItems, setWishlistItems] = useState([]);
 
 useEffect(() => {
   const fetchUser = async () => {
@@ -157,40 +160,75 @@ useEffect(() => {
  const totalQty = cartItems.reduce((total, item) => total + item.qty, 0);
 
 
+  // Save guest wishlist to localStorage when not logged in
+  useEffect(() => {
+    if (!user) {
+      localStorage.setItem("foodWishlist", JSON.stringify(wishList));
+    }
+  }, [wishList, user]);
+
   // Add to wishlist
+  const addToWishlist = async (foodId) => {
+    if (user) {
+      try {
+        await axios.post("/api/wishlist/add", {
+          food_item_id: foodId,
+        });
+        fetchWishlist();
+      } catch (error) {
+        console.error("Error adding to wishlist:", error);
+        if (error.response?.status === 401) {
+          setUser(null);
+          setWishList((prev) => (prev.includes(foodId) ? prev : [...prev, foodId]));
+        }
+      }
+    } else {
+      setWishList((prev) => {
+        if (prev.includes(foodId)) return prev;
+        const updated = [...prev, foodId];
+        localStorage.setItem("foodWishlist", JSON.stringify(updated));
+        return updated;
+      });
+    }
+  };
 
- const addToWishlist = async (foodId) => {
-  try {
-    await axios.post("/api/wishlist/add", {
-      food_item_id: foodId,
-    });
-    fetchWishlist();
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const fetchWishlist = async () => {
+    try {
+      const res = await axios.get("/api/wishlist");
+      setWishlistItems(res.data.wishlistItems || []);
+      setWishList((res.data.wishlistItems || []).map((i) => i.food_item_id));
+    } catch (error) {
+      if (error.response?.status === 401) {
+        setUser(null);
+      } else {
+        console.error("Error fetching wishlist:", error);
+      }
+    }
+  };
 
-const fetchWishlist = async () => {
-  try {
-    const res = await axios.get("/api/wishlist");
-    setWishlistItems(res.data.wishlistItems || []);
-    setWishList((res.data.wishlistItems || []).map(i => i.food_item_id));
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const removeFromWishlist = async (foodId) => {
+    if (user) {
+      const item = wishlistItems.find((i) => i.food_item_id === foodId);
+      const targetId = item ? item.id : foodId;
 
-const removeFromWishlist = async (foodId) => {
-  const item = wishlistItems.find(i => i.food_item_id === foodId);
-  if (!item) return;
-
-  try {
-    await axios.delete(`/api/wishlist/remove/${item.id}`);
-    fetchWishlist();
-  } catch (error) {
-    console.error(error);
-  }
-};
+      try {
+        await axios.delete(`/api/wishlist/remove/${targetId}`);
+        fetchWishlist();
+      } catch (error) {
+        console.error("Error removing from wishlist:", error);
+        if (error.response?.status === 401) {
+          setUser(null);
+          setWishList((prev) => prev.filter((id) => id !== foodId));
+        }
+      }
+    } else {
+      setWishList((prev) => {
+        const updated = prev.filter((id) => id !== foodId);
+        localStorage.setItem("foodWishlist", JSON.stringify(updated));
+        return updated;
+      });
+    }
+  };
 
   const fetchCart = async () => {
     try {
@@ -204,12 +242,34 @@ const removeFromWishlist = async (foodId) => {
         setCartItems(formattedCart);
       }
     } catch (error) {
-      console.error(error);
+      if (error.response?.status === 401) {
+        setUser(null);
+      } else {
+        console.error(error);
+      }
     }
   };
 
   useEffect(() => {
     if (user) {
+      const savedGuestWishlist = localStorage.getItem("foodWishlist");
+      if (savedGuestWishlist) {
+        try {
+          const guestIds = JSON.parse(savedGuestWishlist);
+          if (Array.isArray(guestIds) && guestIds.length > 0) {
+            Promise.allSettled(
+              guestIds.map((id) =>
+                axios.post("/api/wishlist/add", { food_item_id: id })
+              )
+            ).finally(() => {
+              localStorage.removeItem("foodWishlist");
+              fetchWishlist();
+            });
+          }
+        } catch {
+          localStorage.removeItem("foodWishlist");
+        }
+      }
       fetchWishlist();
       fetchCart();
     }

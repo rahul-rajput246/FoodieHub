@@ -2,7 +2,7 @@ import { allPrice, sortData, ratingData, typeDishData } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import '../pages/Menu.css';
 
-function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, foods }) {
+function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, removeFromWishlist, foods }) {
 
   {/* Category Filter */ }
 
@@ -219,7 +219,13 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                         />
                         <button
                           className="food_badge"
-                          onClick={() => addToWishlist(item.id)}
+                          onClick={() => {
+                            if (wishList.includes(item.id)) {
+                              removeFromWishlist(item.id);
+                            } else {
+                              addToWishlist(item.id);
+                            }
+                          }}
                         >
                           {!wishList.includes(item.id) ? (
                             <i className="bi bi-heart"></i>
