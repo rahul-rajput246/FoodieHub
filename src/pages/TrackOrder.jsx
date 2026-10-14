@@ -4,6 +4,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import LiveOrderMap from "../components/LiveOrderMap";
 import "./TrackOrder.css";
 
 function TrackOrder({ user, totalQty }) {
@@ -56,6 +57,15 @@ function TrackOrder({ user, totalQty }) {
       if (!isSilent) setLoading(false);
     }
   }, []);
+
+  // Keep activeOrderId synced when URL route param or query changes
+  useEffect(() => {
+    const nextId = paramOrderId || queryOrderId;
+    if (nextId) {
+      setOrderIdInput(nextId);
+      setActiveOrderId(nextId);
+    }
+  }, [paramOrderId, queryOrderId]);
 
   // On active order ID change
   useEffect(() => {
@@ -175,62 +185,8 @@ function TrackOrder({ user, totalQty }) {
               {/* Left/Main Column: Stepper & Status Banner */}
               <div className="track_main_col">
                 
-                {/* Live Status Hero Card */}
-                <div className={`status_hero_card status_${orderData.status}`}>
-                  <div className="hero_top_row">
-                    <div>
-                      <span className="hero_order_num">ORDER #{orderData.order_number}</span>
-                      <h2 className="hero_status_heading">{orderData.status_label}</h2>
-                      <p className="hero_status_desc">{orderData.status_message}</p>
-                    </div>
-
-                    <div className="live_indicator_badge">
-                      <span className="live_pulse_dot"></span>
-                      <span>LIVE</span>
-                    </div>
-                  </div>
-
-                  {/* Dynamic Progress Bar with Rider Indicator */}
-                  {!orderData.is_cancelled && (
-                    <div className="progress_track_container">
-                      <div className="progress_meta_row">
-                        <span className="progress_eta_text">
-                          ⏱️ Estimated Delivery: <strong>{orderData.estimated_delivery}</strong>
-                        </span>
-                        <span className="progress_pct_text">{orderData.progress_percentage}% Completed</span>
-                      </div>
-
-                      <div className="progress_track_bar">
-                        <div 
-                          className="progress_track_fill" 
-                          style={{ width: `${orderData.progress_percentage}%` }}
-                        ></div>
-                        <div 
-                          className="rider_moving_icon" 
-                          style={{ left: `calc(${orderData.progress_percentage}% - 16px)` }}
-                          title="Current Delivery Progress"
-                        >
-                          🛵
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Polling bar update time */}
-                  <div className="hero_footer_row">
-                    <span className="last_sync_text">
-                      {lastUpdated ? `Auto-updated at ${lastUpdated}` : "Real-time sync active"}
-                    </span>
-                    <button 
-                      type="button" 
-                      onClick={handleManualRefresh} 
-                      className="refresh_sync_btn"
-                      title="Refresh status now"
-                    >
-                      🔄 Refresh Status
-                    </button>
-                  </div>
-                </div>
+                {/* Real Map GPS Tracking (Zomato Style) */}
+                <LiveOrderMap orderData={orderData} />
 
                 {/* Vertical Live Stepper */}
                 <div className="track_stepper_card">
