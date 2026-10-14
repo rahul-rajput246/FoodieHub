@@ -1,15 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./OrderSuccess.css";
 import { API_BASE_URL } from "../config";
+import axios from "axios";
 
 function OrderSuccess() {
   const location = useLocation();
-  const orderId = location.state?.orderId || "N/A";
+  const orderId = location.state?.orderId || localStorage.getItem("lastFoodieOrderId") || "N/A";
 
   const [downloading, setDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [orderTracking, setOrderTracking] = useState(null);
+
+  // Store last order ID in localStorage for easy lookup
+  useEffect(() => {
+    if (orderId && orderId !== "N/A") {
+      localStorage.setItem("lastFoodieOrderId", orderId);
+    }
+  }, [orderId]);
+
+  // Fetch live tracking data with polling
+  useEffect(() => {
+    if (!orderId || orderId === "N/A") return;
+
+    const fetchStatus = async () => {
+      try {
+        const res = await axios.get(`${API_BASE_URL}/orders/${orderId}/tracking`);
+        if (res.data?.success && res.data.order) {
+          setOrderTracking(res.data.order);
+        }
+      } catch (e) {
+        console.error("Live order polling error:", e);
+      }
+    };
+
+    fetchStatus();
+
+    const interval = setInterval(fetchStatus, 6000);
+    return () => clearInterval(interval);
+  }, [orderId]);
 
   // Fast asynchronous invoice download with live visual feedback
   const handleDownloadInvoice = async () => {
@@ -40,7 +70,6 @@ function OrderSuccess() {
       setTimeout(() => setDownloadSuccess(false), 3500);
     } catch (err) {
       console.error("PDF download error:", err);
-      // Fallback to opening direct URL
       window.open(`${API_BASE_URL}/orders/${orderId}/invoice`, "_blank");
     } finally {
       setDownloading(false);
@@ -54,6 +83,8 @@ function OrderSuccess() {
       setTimeout(() => setCopied(false), 2000);
     }
   };
+
+  const currentStepNum = orderTracking?.current_step || 2;
 
   return (
     <section className="order_success_section">
@@ -75,31 +106,56 @@ function OrderSuccess() {
           </div>
 
           {/* Heading and Subtitle */}
-          <span className="success_pill">Order Confirmed</span>
+          <span className="success_pill">
+            {orderTracking?.status_label ? `Status: ${orderTracking.status_label}` : "Order Confirmed"}
+          </span>
           <h1 className="success_title">Order Placed Successfully!</h1>
           <p className="success_subtitle">
-            Sit back and relax! Our chefs have started preparing your delicious food with fresh ingredients.
+            {orderTracking?.status_message || "Sit back and relax! Our chefs have started preparing your delicious food with fresh ingredients."}
           </p>
 
-          {/* Progress Order Stepper */}
+          {/* Dynamic Live Stepper */}
           <div className="order_stepper">
-            <div className="step_item completed">
-              <div className="step_dot">✓</div>
+            <div className={`step_item ${currentStepNum >= 1 ? "completed" : ""} ${currentStepNum === 1 ? "current" : ""}`}>
+              <div className={`step_dot ${currentStepNum === 1 ? "pulse_dot" : ""}`}>
+                {currentStepNum > 1 ? "✓" : "1"}
+              </div>
               <span className="step_text">Placed</span>
             </div>
-            <div className="step_line active"></div>
-            <div className="step_item current">
-              <div className="step_dot pulse_dot">2</div>
+
+            <div className={`step_line ${currentStepNum >= 2 ? "active" : ""}`}></div>
+
+            <div className={`step_item ${currentStepNum >= 2 ? "completed" : ""} ${currentStepNum === 2 ? "current" : ""}`}>
+              <div className={`step_dot ${currentStepNum === 2 ? "pulse_dot" : ""}`}>
+                {currentStepNum > 2 ? "✓" : "2"}
+              </div>
               <span className="step_text">Confirmed</span>
             </div>
-            <div className="step_line"></div>
-            <div className="step_item">
-              <div className="step_dot">3</div>
+
+            <div className={`step_line ${currentStepNum >= 3 ? "active" : ""}`}></div>
+
+            <div className={`step_item ${currentStepNum >= 3 ? "completed" : ""} ${currentStepNum === 3 ? "current" : ""}`}>
+              <div className={`step_dot ${currentStepNum === 3 ? "pulse_dot" : ""}`}>
+                {currentStepNum > 3 ? "✓" : "3"}
+              </div>
               <span className="step_text">Preparing</span>
             </div>
-            <div className="step_line"></div>
-            <div className="step_item">
-              <div className="step_dot">4</div>
+
+            <div className={`step_line ${currentStepNum >= 4 ? "active" : ""}`}></div>
+
+            <div className={`step_item ${currentStepNum >= 4 ? "completed" : ""} ${currentStepNum === 4 ? "current" : ""}`}>
+              <div className={`step_dot ${currentStepNum === 4 ? "pulse_dot" : ""}`}>
+                {currentStepNum > 4 ? "✓" : "4"}
+              </div>
+              <span className="step_text">Out for Delivery</span>
+            </div>
+
+            <div className={`step_line ${currentStepNum >= 5 ? "active" : ""}`}></div>
+
+            <div className={`step_item ${currentStepNum === 5 ? "completed" : ""}`}>
+              <div className={`step_dot ${currentStepNum === 5 ? "pulse_dot" : ""}`}>
+                {currentStepNum === 5 ? "✓" : "5"}
+              </div>
               <span className="step_text">Delivered</span>
             </div>
           </div>
@@ -125,7 +181,7 @@ function OrderSuccess() {
             <div className="info_tile">
               <span className="tile_label">ESTIMATED DELIVERY</span>
               <span className="tile_value highlight_time">
-                <span className="scooter_icon">🛵</span> 25–30 Mins
+                <span className="scooter_icon">🛵</span> {orderTracking?.estimated_delivery || "25–30 Mins"}
               </span>
             </div>
           </div>
@@ -141,6 +197,17 @@ function OrderSuccess() {
 
           {/* Action Buttons */}
           <div className="success_actions_group">
+            {orderId && orderId !== "N/A" && (
+              <Link 
+                to={`/track-order/${orderId}`} 
+                className="action_btn" 
+                style={{ background: "linear-gradient(135deg, #ff7e00 0%, #ea580c 100%)", color: "#ffffff", fontWeight: 700 }}
+              >
+                <span>🛵 Track Order Live</span>
+                <span>→</span>
+              </Link>
+            )}
+
             {orderId && orderId !== "N/A" && (
               <button
                 type="button"

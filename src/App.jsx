@@ -8,6 +8,7 @@ import Cart from "./pages/Cart";
 import CheckOut from "./pages/CheckOut";
 import ScrollToHash from "./components/ScrollToHash";
 import OrderSuccess from "./pages/OrderSuccess";
+import TrackOrder from "./pages/TrackOrder";
 
 import axios from "axios";
 import { API_BASE_URL } from "./config";
@@ -403,6 +404,20 @@ useEffect(() => {
           path="/order-success"
           element={
             <OrderSuccess user={user} />
+          }
+        />
+
+        <Route
+          path="/track-order"
+          element={
+            <TrackOrder user={user} totalQty={totalQty} />
+          }
+        />
+
+        <Route
+          path="/track-order/:orderId"
+          element={
+            <TrackOrder user={user} totalQty={totalQty} />
           }
         />
 

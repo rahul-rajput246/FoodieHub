@@ -29,6 +29,7 @@ function Navbar({totalQty , user}) {
             <Link to="/Menu">Menu</Link>
             <Link to="/About">About</Link>
             <Link to="/Contact">Contact</Link>
+            <Link to="/track-order">Track Order</Link>
           </div>
 
           <div className="right_nav_box">
