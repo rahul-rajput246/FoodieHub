@@ -1,11 +1,11 @@
 import { useState } from "react";
+import axios from "axios";
 import {
   FaUser,
   FaEnvelope,
   FaPhoneAlt,
   FaRegCommentDots,
 } from "react-icons/fa";
-import { API_BASE_URL } from "../config";
 
 function ContactFormSection({ details }) {
   const [formData, setFormData] = useState({
@@ -37,34 +37,30 @@ function ContactFormSection({ details }) {
 
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE_URL}/api/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await axios.post("/api/contact", formData);
 
-      const data = await res.json();
-
-      if (res.ok && data.success) {
+      if (res.data && res.data.success) {
         setFeedback({
           type: "success",
-          message: data.message || "Thank you! Your message has been sent successfully.",
+          message: res.data.message || "Thank you! Your message has been sent successfully.",
         });
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        const errMsg =
-          data.message ||
-          (data.errors ? Object.values(data.errors)[0][0] : "Failed to send message.");
-        setFeedback({ type: "error", message: errMsg });
+        setFeedback({
+          type: "error",
+          message: res.data?.message || "Failed to send message.",
+        });
       }
     } catch (err) {
       console.error("Contact submission error:", err);
+      const errMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors
+          ? Object.values(err.response.data.errors)[0][0]
+          : "Failed to send message. Please try again.");
       setFeedback({
         type: "error",
-        message: "Failed to connect to the server. Please check your network and try again.",
+        message: errMsg,
       });
     } finally {
       setLoading(false);
