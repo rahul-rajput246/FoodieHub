@@ -12,7 +12,9 @@ function TrackOrder({ user, totalQty }) {
   const [searchParams] = useSearchParams();
   const queryOrderId = searchParams.get("orderId");
 
-  const initialOrderId = paramOrderId || queryOrderId || localStorage.getItem("lastFoodieOrderId") || "";
+  const rawStored = localStorage.getItem("lastFoodieOrderId") || "";
+  const validStored = /^\d+$/.test(rawStored) ? "" : rawStored;
+  const initialOrderId = paramOrderId || queryOrderId || validStored || "";
 
   const [orderIdInput, setOrderIdInput] = useState(initialOrderId);
   const [activeOrderId, setActiveOrderId] = useState(initialOrderId);
@@ -28,6 +30,16 @@ function TrackOrder({ user, totalQty }) {
     const cleanId = id.toString().trim().replace(/^#/, "");
     if (!cleanId) return;
 
+    // Security check: Block numeric IDs to prevent user enumeration
+    if (/^\d+$/.test(cleanId)) {
+      if (!isSilent) {
+        setError("For security and privacy reasons, tracking by numeric ID (1, 2, 3...) is disabled. Please enter your unique Order Number (e.g., ORD-2026-XXXXX) from your receipt or confirmation email.");
+        setOrderData(null);
+        setLoading(false);
+      }
+      return;
+    }
+
     if (!isSilent) setLoading(true);
     setError(null);
 
@@ -42,7 +54,7 @@ function TrackOrder({ user, totalQty }) {
       if (res?.data?.success && res.data.order) {
         setOrderData(res.data.order);
         setLastUpdated(new Date().toLocaleTimeString());
-        localStorage.setItem("lastFoodieOrderId", res.data.order.id);
+        localStorage.setItem("lastFoodieOrderId", res.data.order.order_number);
         setError(null);
       } else {
         throw new Error(res?.data?.message || "Order not found");
@@ -50,7 +62,7 @@ function TrackOrder({ user, totalQty }) {
     } catch (err) {
       console.error("Tracking fetch error:", err);
       if (!isSilent) {
-        setError(err.response?.data?.message || `Could not find order "${cleanId}". Please verify your Order ID or Order Number.`);
+        setError(err.response?.data?.message || `Could not find order "${cleanId}". Please check your receipt or confirmation email.`);
         setOrderData(null);
       }
     } finally {
@@ -90,6 +102,13 @@ function TrackOrder({ user, totalQty }) {
     e.preventDefault();
     const cleanId = orderIdInput.trim().replace(/^#/, "");
     if (!cleanId) return;
+
+    if (/^\d+$/.test(cleanId)) {
+      setError("For security and privacy reasons, tracking by numeric ID (1, 2, 3...) is disabled. Please enter your unique Order Number (e.g., ORD-2026-XXXXX) from your receipt or confirmation email.");
+      setOrderData(null);
+      return;
+    }
+
     setActiveOrderId(cleanId);
   };
 
@@ -101,8 +120,9 @@ function TrackOrder({ user, totalQty }) {
 
   // Download PDF Invoice helper
   const handleDownloadInvoice = () => {
-    if (!orderData?.id) return;
-    window.open(`${API_BASE_URL}/orders/${orderData.id}/invoice`, "_blank");
+    if (!orderData?.id && !orderData?.order_number) return;
+    const invId = orderData.order_number || orderData.id;
+    window.open(`${API_BASE_URL}/orders/${invId}/invoice`, "_blank");
   };
 
   return (
@@ -142,7 +162,7 @@ function TrackOrder({ user, totalQty }) {
                 <span className="search_prefix_icon">🔍</span>
                 <input
                   type="text"
-                  placeholder="Enter Order ID or Number (e.g. 1 or ORD-2026-69F350D5D3BF9)"
+                  placeholder="Enter Unique Order Number (e.g. ORD-2026-69F350D5D3BF9)"
                   value={orderIdInput}
                   onChange={(e) => setOrderIdInput(e.target.value)}
                   className="track_search_input"
@@ -155,7 +175,7 @@ function TrackOrder({ user, totalQty }) {
             </form>
 
             <div className="track_quick_tips">
-              <span>💡 Quick Tip:</span> You can search by numeric ID (e.g. <strong>1</strong>) or your receipt order number (e.g. <strong>ORD-2026-69F350D5D3BF9</strong>).
+              <span>🔒 Privacy Protected:</span> To protect customer and delivery rider privacy, tracking requires your unique <strong>Order Number</strong> (e.g. <strong>ORD-2026-69F350D5D3BF9</strong>) found on your receipt or email. Numeric IDs (1, 2, 3...) cannot be tracked.
             </div>
           </div>
 

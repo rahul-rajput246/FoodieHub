@@ -6,7 +6,9 @@ import axios from "axios";
 
 function OrderSuccess() {
   const location = useLocation();
-  const orderId = location.state?.orderId || localStorage.getItem("lastFoodieOrderId") || "N/A";
+  const rawStored = localStorage.getItem("lastFoodieOrderId") || "";
+  const validStored = /^\d+$/.test(rawStored) ? "" : rawStored;
+  const orderId = location.state?.orderId || validStored || "N/A";
 
   const [downloading, setDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
@@ -15,20 +17,23 @@ function OrderSuccess() {
 
   // Store last order ID in localStorage for easy lookup
   useEffect(() => {
-    if (orderId && orderId !== "N/A") {
+    if (orderId && orderId !== "N/A" && !/^\d+$/.test(orderId)) {
       localStorage.setItem("lastFoodieOrderId", orderId);
     }
   }, [orderId]);
 
   // Fetch live tracking data with polling
   useEffect(() => {
-    if (!orderId || orderId === "N/A") return;
+    if (!orderId || orderId === "N/A" || /^\d+$/.test(orderId)) return;
 
     const fetchStatus = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/orders/${orderId}/tracking`);
         if (res.data?.success && res.data.order) {
           setOrderTracking(res.data.order);
+          if (res.data.order.order_number) {
+            localStorage.setItem("lastFoodieOrderId", res.data.order.order_number);
+          }
         }
       } catch (e) {
         console.error("Live order polling error:", e);
@@ -199,7 +204,7 @@ function OrderSuccess() {
           <div className="success_actions_group">
             {orderId && orderId !== "N/A" && (
               <Link 
-                to={`/track-order/${orderId}`} 
+                to={`/track-order/${orderTracking?.order_number || orderId}`} 
                 className="action_btn" 
                 style={{ background: "linear-gradient(135deg, #ff7e00 0%, #ea580c 100%)", color: "#ffffff", fontWeight: 700 }}
               >

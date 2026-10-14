@@ -182,7 +182,7 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
         setAddToCart([]);
 
         navigate("/order-success", {
-          state: { orderId: response.data.order_id },
+          state: { orderId: response.data.order_number || response.data.order_id },
         });
       } else {
         alert(response.data.message || "COD order failed");
@@ -259,7 +259,7 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
               setAddToCart([]);
 
               navigate("/order-success", {
-                state: { orderId: verifyResponse.data.order_id },
+                state: { orderId: verifyResponse.data.order_number || verifyResponse.data.order_id },
               });
             } else {
               alert(verifyResponse.data.message || "Payment verification failed");
