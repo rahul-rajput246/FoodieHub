@@ -38,6 +38,16 @@ function OrderSuccess() {
 
           {/* Buttons */}
           <div className="success_actions">
+            {orderId && orderId !== "N/A" && (
+              <a
+                href={`${API_BASE_URL}/orders/${orderId}/invoice`}
+                className="btn_primary"
+                style={{ backgroundColor: "#2563eb" }}
+              >
+                📄 Download Invoice (PDF)
+              </a>
+            )}
+
             <a href={`${API_BASE_URL}/orders`} className="btn_primary">
               View My Orders
             </a>
