@@ -46,10 +46,10 @@ function Footer() {
             <div className="footer_box">
               <h4>Support</h4>
               <ul>
-                <li><Link to="/about#faq" href="#faq">FAQ</Link></li>
-                <li><a href="#">Track Order</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms</a></li>
+                <li><Link to="/about#faq">FAQ</Link></li>
+                <li><Link to="/track-order">Track Order</Link></li>
+                <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+                <li><Link to="/terms">Terms & Conditions</Link></li>
               </ul>
             </div>
           </div>

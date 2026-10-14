@@ -9,6 +9,8 @@ import CheckOut from "./pages/CheckOut";
 import ScrollToHash from "./components/ScrollToHash";
 import OrderSuccess from "./pages/OrderSuccess";
 import TrackOrder from "./pages/TrackOrder";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 import axios from "axios";
 import { API_BASE_URL } from "./config";
@@ -418,6 +420,27 @@ useEffect(() => {
           path="/track-order/:orderId"
           element={
             <TrackOrder user={user} totalQty={totalQty} />
+          }
+        />
+
+        <Route
+          path="/privacy-policy"
+          element={
+            <PrivacyPolicy user={user} totalQty={totalQty} />
+          }
+        />
+
+        <Route
+          path="/terms"
+          element={
+            <TermsAndConditions user={user} totalQty={totalQty} />
+          }
+        />
+
+        <Route
+          path="/terms-and-conditions"
+          element={
+            <TermsAndConditions user={user} totalQty={totalQty} />
           }
         />
 
