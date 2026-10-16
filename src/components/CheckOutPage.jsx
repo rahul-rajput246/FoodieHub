@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import CouponSection from "./CouponSection";
 
 {/* <script src="https://checkout.razorpay.com/v1/checkout.js"></script> */ }
 
@@ -12,6 +13,25 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [notes, setNotes] = useState("");
+
+  const [appliedCoupon, setAppliedCoupon] = useState(() => {
+    try {
+      const saved = localStorage.getItem("appliedCoupon");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const handleApplyCoupon = (couponData) => {
+    setAppliedCoupon(couponData);
+    localStorage.setItem("appliedCoupon", JSON.stringify(couponData));
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    localStorage.removeItem("appliedCoupon");
+  };
 
   const BACKEND_URL = API_BASE_URL;
 
@@ -43,9 +63,30 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
     return total + Number(product.food_price) * getQty(product.id);
   }, 0);
 
-  const deliveryFee = subtotal > 499 ? 0 : 40;
-  const discount = subtotal > 999 ? 100 : 0;
-  const totalAmount = subtotal + deliveryFee - discount;
+  // Dynamic discount calculation
+  let discount = 0;
+  let couponWarning = null;
+
+  if (appliedCoupon) {
+    const minReq = Number(appliedCoupon.min_order_amount || 0);
+    if (subtotal < minReq) {
+      couponWarning = `Add ₹${Math.ceil(minReq - subtotal)} more to activate ${appliedCoupon.code}`;
+      discount = 0;
+    } else {
+      if (appliedCoupon.discount_type === "percentage") {
+        let calc = (subtotal * Number(appliedCoupon.discount_value)) / 100;
+        if (appliedCoupon.max_discount_amount) {
+          calc = Math.min(calc, Number(appliedCoupon.max_discount_amount));
+        }
+        discount = Math.min(subtotal, calc);
+      } else {
+        discount = Math.min(subtotal, Number(appliedCoupon.discount_value));
+      }
+    }
+  }
+
+  const deliveryFee = subtotal > 499 ? 0 : (subtotal > 0 ? 40 : 0);
+  const totalAmount = Math.max(0, subtotal + deliveryFee - discount);
 
   const navigate = useNavigate();
 
@@ -174,12 +215,15 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
         address_id: selectedAddressId,
         payment_method: "cod",
         cart: cartPayload,
+        coupon_code: discount > 0 && appliedCoupon ? appliedCoupon.code : null,
         notes,
       });
 
       if (response.data.success) {
         localStorage.removeItem("foodCart");
+        localStorage.removeItem("appliedCoupon");
         setAddToCart([]);
+        setAppliedCoupon(null);
 
         navigate("/order-success", {
           state: { orderId: response.data.order_number || response.data.order_id },
@@ -221,6 +265,7 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
         address_id: selectedAddressId,
         payment_method: "razorpay",
         cart: cartPayload,
+        coupon_code: discount > 0 && appliedCoupon ? appliedCoupon.code : null,
         notes,
       });
 
@@ -256,7 +301,9 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
 
             if (verifyResponse.data.success) {
               localStorage.removeItem("foodCart");
+              localStorage.removeItem("appliedCoupon");
               setAddToCart([]);
+              setAppliedCoupon(null);
 
               navigate("/order-success", {
                 state: { orderId: verifyResponse.data.order_number || verifyResponse.data.order_id },
@@ -389,6 +436,13 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
           </div>
 
           <div className="col-lg-4">
+            <CouponSection
+              subtotal={subtotal}
+              appliedCoupon={appliedCoupon}
+              onApplyCoupon={handleApplyCoupon}
+              onRemoveCoupon={handleRemoveCoupon}
+            />
+
             <div className="checkout_summary_box">
               <h3>Order Summary</h3>
 
@@ -399,7 +453,7 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
 
               <div className="summary_row">
                 <span>Subtotal</span>
-                <span>₹{subtotal}</span>
+                <span>₹{subtotal.toFixed(0)}</span>
               </div>
 
               <div className="summary_row">
@@ -407,14 +461,20 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
                 <span>{deliveryFee === 0 ? "Free" : `₹${deliveryFee}`}</span>
               </div>
 
-              <div className="summary_row">
-                <span>Discount</span>
-                <span>- ₹{discount}</span>
-              </div>
+              {discount > 0 ? (
+                <div className="summary_row" style={{ color: "#059669", fontWeight: "600" }}>
+                  <span>Coupon Discount ({appliedCoupon?.code})</span>
+                  <span style={{ color: "#059669" }}>- ₹{Math.round(discount)}</span>
+                </div>
+              ) : couponWarning ? (
+                <div style={{ fontSize: "12px", color: "#d97706", background: "#fef3c7", padding: "6px 10px", borderRadius: "8px", marginBottom: "12px" }}>
+                  ⚠️ {couponWarning}
+                </div>
+              ) : null}
 
               <div className="summary_total">
                 <span>Total</span>
-                <span>₹{totalAmount}</span>
+                <span>₹{Math.round(totalAmount)}</span>
               </div>
 
               <button

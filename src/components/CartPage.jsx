@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
+import CouponSection from "./CouponSection";
 
 function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
 
@@ -17,9 +19,49 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
     return total + Number(product.food_price) * getQty(product.id);
   }, 0);
 
-  const deliveryFee = subtotal > 499 ? 0 : 40;
-  const discount = subtotal > 999 ? 100 : 0;
-  const totalAmount = subtotal + deliveryFee - discount;
+  const [appliedCoupon, setAppliedCoupon] = useState(() => {
+    try {
+      const saved = localStorage.getItem("appliedCoupon");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const handleApplyCoupon = (couponData) => {
+    setAppliedCoupon(couponData);
+    localStorage.setItem("appliedCoupon", JSON.stringify(couponData));
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    localStorage.removeItem("appliedCoupon");
+  };
+
+  // Dynamic discount calculation
+  let discount = 0;
+  let couponWarning = null;
+
+  if (appliedCoupon) {
+    const minReq = Number(appliedCoupon.min_order_amount || 0);
+    if (subtotal < minReq) {
+      couponWarning = `Add ₹${Math.ceil(minReq - subtotal)} more to activate ${appliedCoupon.code}`;
+      discount = 0;
+    } else {
+      if (appliedCoupon.discount_type === "percentage") {
+        let calc = (subtotal * Number(appliedCoupon.discount_value)) / 100;
+        if (appliedCoupon.max_discount_amount) {
+          calc = Math.min(calc, Number(appliedCoupon.max_discount_amount));
+        }
+        discount = Math.min(subtotal, calc);
+      } else {
+        discount = Math.min(subtotal, Number(appliedCoupon.discount_value));
+      }
+    }
+  }
+
+  const deliveryFee = subtotal > 499 ? 0 : (subtotal > 0 ? 40 : 0);
+  const totalAmount = Math.max(0, subtotal + deliveryFee - discount);
 
   // login state check
   const navigate = useNavigate();
@@ -63,7 +105,7 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
               {/* Left Side - Cart Items */}
               <div className="col-lg-8">
                 <div className="cart_items_box">
-                  <h3 className="cart_section_title">Cart Items</h3>
+                  <h3 className="cart_section_title">Cart Items ({cartItems.length})</h3>
 
                   {cartItems.map((product) => (
                     <div className="cart_item_card" key={product.id}>
@@ -91,14 +133,21 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
                 </div>
               </div>
 
-              {/* Right Side - Summary */}
+              {/* Right Side - Summary & Coupon */}
               <div className="col-lg-4">
+                <CouponSection
+                  subtotal={subtotal}
+                  appliedCoupon={appliedCoupon}
+                  onApplyCoupon={handleApplyCoupon}
+                  onRemoveCoupon={handleRemoveCoupon}
+                />
+
                 <div className="cart_summary_box">
                   <h3>Order Summary</h3>
 
                   <div className="summary_row">
                     <span>Subtotal</span>
-                    <span>₹{subtotal}</span>
+                    <span>₹{subtotal.toFixed(0)}</span>
                   </div>
 
                   <div className="summary_row">
@@ -106,14 +155,20 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
                     <span>{deliveryFee === 0 ? "Free" : `₹${deliveryFee}`}</span>
                   </div>
 
-                  <div className="summary_row">
-                    <span>Discount</span>
-                    <span>- ₹{discount}</span>
-                  </div>
+                  {discount > 0 ? (
+                    <div className="summary_row" style={{ color: "#059669", fontWeight: "600" }}>
+                      <span>Coupon Discount ({appliedCoupon?.code})</span>
+                      <span style={{ color: "#059669" }}>- ₹{Math.round(discount)}</span>
+                    </div>
+                  ) : couponWarning ? (
+                    <div style={{ fontSize: "12px", color: "#d97706", background: "#fef3c7", padding: "6px 10px", borderRadius: "8px", marginBottom: "12px" }}>
+                      ⚠️ {couponWarning}
+                    </div>
+                  ) : null}
 
                   <div className="summary_total">
                     <span>Total</span>
-                    <span>₹{totalAmount}</span>
+                    <span>₹{Math.round(totalAmount)}</span>
                   </div>
 
                   <button onClick={handleCheckout} className="checkout_btn">
