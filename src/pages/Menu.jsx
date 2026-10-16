@@ -6,7 +6,7 @@ import { useState, useEffect, useMemo } from "react";
 import { API_BASE_URL } from "../config";
 
 
-function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wishList, addToWishlist, removeFromWishlist, foodItems }) {
+function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wishList, addToWishlist, removeFromWishlist, foodItems, openCustomise, add_customized_cart }) {
 
 
   const [menuData, setmenuData] = useState(null);
@@ -24,29 +24,6 @@ function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wish
       });
 
   }, []);
-
-  // useEffect(() => {
-  // const fetchUser = async () => {
-  //   try {
-  //     await fetch("http://localhost:8000/sanctum/csrf-cookie", {
-  //       credentials: "include",
-  //     });
-
-  //     const res = await fetch("http://localhost:8000/api/user", {
-  //       credentials: "include",
-  //     });
-
-  //     if (!res.ok) throw new Error("Not logged in");
-
-  //     const data = await res.json();
-  //     setUser(data);
-  //   } catch (err) {
-  //     setUser(null);
-  //   }
-  // };
-
-  // fetchUser();
-  // }, []);
 
    if (!menuData) {
   return (
@@ -73,6 +50,7 @@ function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wish
         addToWishlist={addToWishlist}
         removeFromWishlist={removeFromWishlist}
         minus_cart={minus_cart}
+        openCustomise={openCustomise}
       />
 
       <Footer />

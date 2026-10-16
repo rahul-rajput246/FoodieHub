@@ -185,15 +185,28 @@ function OrderSuccess() {
 
             <div className="info_tile">
               <span className="tile_label">ESTIMATED DELIVERY</span>
-              <span className="tile_value highlight_time">
-                <span className="scooter_icon">🛵</span> {orderTracking?.estimated_delivery || "25–30 Mins"}
+              <span className="tile_value highlight_time" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="5.5" cy="17.5" r="3.5" />
+                  <circle cx="18.5" cy="17.5" r="3.5" />
+                  <path d="M15 6h4l2 5.5-2.5 1" />
+                  <path d="M9 17.5h6" />
+                  <path d="M12 9l-3 8.5" />
+                  <path d="M7 6h5" />
+                </svg>
+                <span>{orderTracking?.estimated_delivery || "25–30 Mins"}</span>
               </span>
             </div>
           </div>
 
           {/* Email Notification Banner */}
           <div className="email_notice_box">
-            <span className="notice_icon">✉️</span>
+            <span className="notice_icon" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </span>
             <div className="notice_text">
               <strong>Order Receipt & Invoice Sent</strong>
               <p>We've dispatched an order confirmation email with your PDF tax invoice.</p>
@@ -206,9 +219,17 @@ function OrderSuccess() {
               <Link 
                 to={`/track-order/${orderTracking?.order_number || orderId}`} 
                 className="action_btn" 
-                style={{ background: "linear-gradient(135deg, #ff7e00 0%, #ea580c 100%)", color: "#ffffff", fontWeight: 700 }}
+                style={{ background: "linear-gradient(135deg, #ff7e00 0%, #ea580c 100%)", color: "#ffffff", fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
               >
-                <span>🛵 Track Order Live</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="5.5" cy="17.5" r="3.5" />
+                  <circle cx="18.5" cy="17.5" r="3.5" />
+                  <path d="M15 6h4l2 5.5-2.5 1" />
+                  <path d="M9 17.5h6" />
+                  <path d="M12 9l-3 8.5" />
+                  <path d="M7 6h5" />
+                </svg>
+                <span>Track Order Live</span>
                 <span>→</span>
               </Link>
             )}

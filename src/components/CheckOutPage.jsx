@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
-// import { menuItems } from "../data/Menudata";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import CouponSection from "./CouponSection";
+import VegBadge from "./VegBadge";
 
-{/* <script src="https://checkout.razorpay.com/v1/checkout.js"></script> */ }
-
-
-function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
+function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems = [] }) {
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [notes, setNotes] = useState("");
@@ -35,10 +32,30 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
 
   const BACKEND_URL = API_BASE_URL;
 
+  const detailedCartItems = addToCart.map((cartItem) => {
+    const product = foodItems.find((p) => p.id === cartItem.id) || {};
+    const itemKey = cartItem.cart_key || `item_${cartItem.id}`;
+    const unitPrice =
+      cartItem.item_price !== undefined
+        ? Number(cartItem.item_price)
+        : Number(product.food_price || 0);
 
-  const cartPayload = addToCart.map(item => ({
+    return {
+      ...product,
+      ...cartItem,
+      cart_key: itemKey,
+      unitPrice,
+      lineTotal: unitPrice * cartItem.qty,
+    };
+  });
+
+  const cartPayload = detailedCartItems.map((item) => ({
     id: item.id,
-    qty: item.qty
+    qty: item.qty,
+    cart_key: item.cart_key,
+    selected_variation: item.selected_variation || null,
+    selected_addons: item.selected_addons || null,
+    item_price: item.unitPrice,
   }));
 
   function getCookie(name) {
@@ -50,18 +67,7 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
     return null;
   }
 
-  const checkoutItems = foodItems.filter((product) =>
-    addToCart.some((item) => item.id === product.id)
-  );
-
-  const getQty = (id) => {
-    const cartItem = addToCart.find((item) => item.id === id);
-    return cartItem ? cartItem.qty : 0;
-  };
-
-  const subtotal = checkoutItems.reduce((total, product) => {
-    return total + Number(product.food_price) * getQty(product.id);
-  }, 0);
+  const subtotal = detailedCartItems.reduce((total, item) => total + item.lineTotal, 0);
 
   // Dynamic discount calculation
   let discount = 0;
@@ -446,6 +452,37 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
             <div className="checkout_summary_box">
               <h3>Order Summary</h3>
 
+              {/* Items Breakdown */}
+              <div className="checkout_items_preview mb-3">
+                {detailedCartItems.map((item) => (
+                  <div
+                    key={item.cart_key || item.id}
+                    className="d-flex align-items-start justify-content-between py-2 border-bottom"
+                  >
+                    <div className="d-flex align-items-start gap-2">
+                      <VegBadge isVeg={item.is_veg} dietaryType={item.dietary_type} size="sm" className="mt-1" />
+                      <div>
+                        <div className="fw-semibold small">
+                          {item.food_name || "Food Item"}{" "}
+                          <span className="text-muted">× {item.qty}</span>
+                        </div>
+                        {item.selected_variation && (
+                          <div className="text-muted" style={{ fontSize: "11px" }}>
+                            {item.selected_variation.name}
+                          </div>
+                        )}
+                        {Array.isArray(item.selected_addons) && item.selected_addons.length > 0 && (
+                          <div className="text-muted" style={{ fontSize: "11px" }}>
+                            + {item.selected_addons.map((a) => a.name).join(", ")}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <span className="fw-bold small">₹{item.lineTotal}</span>
+                  </div>
+                ))}
+              </div>
+
               <div className="summary_row">
                 <span>Items</span>
                 <span>{addToCart.length}</span>
@@ -467,8 +504,13 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems }) {
                   <span style={{ color: "#059669" }}>- ₹{Math.round(discount)}</span>
                 </div>
               ) : couponWarning ? (
-                <div style={{ fontSize: "12px", color: "#d97706", background: "#fef3c7", padding: "6px 10px", borderRadius: "8px", marginBottom: "12px" }}>
-                  ⚠️ {couponWarning}
+                <div style={{ fontSize: "12px", color: "#d97706", background: "#fef3c7", padding: "6px 10px", borderRadius: "8px", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                  <span>{couponWarning}</span>
                 </div>
               ) : null}
 

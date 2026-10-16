@@ -11,6 +11,7 @@ import OrderSuccess from "./pages/OrderSuccess";
 import TrackOrder from "./pages/TrackOrder";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import CustomiseItemModal from "./components/CustomiseItemModal";
 
 import axios from "axios";
 import { API_BASE_URL } from "./config";
@@ -76,54 +77,123 @@ useEffect(() => {
   }, []);
 
 
+  const [customiseItem, setCustomiseItem] = useState(null);
+
   const [cartItems, setCartItems] = useState(() => {
     const savedItems = localStorage.getItem("foodCart");
     return savedItems ? JSON.parse(savedItems) : [];
   });
 
-  const add_cart = async (id) => {
+  const openCustomise = (product) => {
+    setCustomiseItem(product);
+  };
+
+  const add_customized_cart = async (customized) => {
+    const { id, cart_key, qty, selected_variation, selected_addons, item_price } = customized;
     const product = foodItems.find((item) => item.id === id);
     if (!product) return;
+
+    const unitPrice = item_price !== undefined ? Number(item_price) : Number(product.food_price);
+    const key = cart_key || `item_${product.id}`;
+    const addQuantity = qty || 1;
 
     if (user) {
       try {
         await axios.post("/api/cart/add", {
           food_item_id: product.id,
-          quantity: 1,
+          quantity: addQuantity,
+          cart_key: key,
+          selected_variation: selected_variation || null,
+          selected_addons: selected_addons || null,
+          item_price: unitPrice,
         });
         await fetchCart();
       } catch (error) {
         console.error("Error adding to cart:", error);
       }
     } else {
-      const existing = cartItems.find((item) => item.id === id);
-      if (existing) {
+      const existingIndex = cartItems.findIndex(
+        (item) => (item.cart_key ? item.cart_key === key : item.id === id)
+      );
+
+      if (existingIndex > -1) {
         setCartItems(
-          cartItems.map((item) =>
-            item.id === id ? { ...item, qty: item.qty + 1 } : item
+          cartItems.map((item, idx) =>
+            idx === existingIndex
+              ? { ...item, qty: item.qty + addQuantity }
+              : item
           )
         );
       } else {
-        setCartItems([...cartItems, { id: product.id, qty: 1 }]);
+        setCartItems([
+          ...cartItems,
+          {
+            id: product.id,
+            cart_key: key,
+            qty: addQuantity,
+            selected_variation: selected_variation || null,
+            selected_addons: selected_addons || null,
+            item_price: unitPrice,
+          },
+        ]);
       }
     }
+  };
+
+  const add_cart = async (idOrProduct) => {
+    const product =
+      typeof idOrProduct === "object"
+        ? idOrProduct
+        : foodItems.find((item) => item.id === idOrProduct);
+
+    if (!product) return;
+
+    // If item has customizations, open modal instead of adding directly
+    if (
+      product.has_customizations ||
+      (Array.isArray(product.variations) && product.variations.length > 0) ||
+      (Array.isArray(product.addons) && product.addons.length > 0)
+    ) {
+      setCustomiseItem(product);
+      return;
+    }
+
+    await add_customized_cart({
+      id: product.id,
+      cart_key: `item_${product.id}`,
+      qty: 1,
+      selected_variation: null,
+      selected_addons: null,
+      item_price: Number(product.food_price),
+      food_item: product,
+    });
   };
 
   useEffect(() => {
     localStorage.setItem("foodCart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const plus_cart = async (id) => {
-    const cartItem = cartItems.find((item) => item.id === id);
-    const newQty = (cartItem ? cartItem.qty : 0) + 1;
+  const plus_cart = async (keyOrId) => {
+    const cartItem = cartItems.find(
+      (item) => (item.cart_key && item.cart_key === keyOrId) || item.id === keyOrId
+    );
+    if (!cartItem) return;
+
+    const targetKey = cartItem.cart_key || cartItem.id;
+    const newQty = cartItem.qty + 1;
 
     setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, qty: newQty } : item))
+      prev.map((item) =>
+        (item.cart_key && item.cart_key === targetKey) ||
+        (!item.cart_key && item.id === targetKey)
+          ? { ...item, qty: newQty }
+          : item
+      )
     );
 
     if (user) {
       try {
-        await axios.post(`/api/cart/update/${id}`, { quantity: newQty });
+        await axios.post(`/api/cart/update/${targetKey}`, { quantity: newQty });
       } catch (error) {
         console.error("Error updating cart:", error);
         fetchCart();
@@ -131,16 +201,24 @@ useEffect(() => {
     }
   };
 
-  const minus_cart = async (id) => {
-    const cartItem = cartItems.find((item) => item.id === id);
+  const minus_cart = async (keyOrId) => {
+    const cartItem = cartItems.find(
+      (item) => (item.cart_key && item.cart_key === keyOrId) || item.id === keyOrId
+    );
     if (!cartItem) return;
 
+    const targetKey = cartItem.cart_key || cartItem.id;
+
     if (cartItem.qty === 1) {
-      setCartItems((prev) => prev.filter((item) => item.id !== id));
+      setCartItems((prev) =>
+        prev.filter((item) =>
+          item.cart_key ? item.cart_key !== targetKey : item.id !== targetKey
+        )
+      );
 
       if (user) {
         try {
-          await axios.delete(`/api/cart/remove/${id}`);
+          await axios.delete(`/api/cart/remove/${targetKey}`);
         } catch (error) {
           console.error("Error removing from cart:", error);
           fetchCart();
@@ -149,12 +227,17 @@ useEffect(() => {
     } else {
       const newQty = cartItem.qty - 1;
       setCartItems((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, qty: newQty } : item))
+        prev.map((item) =>
+          (item.cart_key && item.cart_key === targetKey) ||
+          (!item.cart_key && item.id === targetKey)
+            ? { ...item, qty: newQty }
+            : item
+        )
       );
 
       if (user) {
         try {
-          await axios.post(`/api/cart/update/${id}`, { quantity: newQty });
+          await axios.post(`/api/cart/update/${targetKey}`, { quantity: newQty });
         } catch (error) {
           console.error("Error updating cart:", error);
           fetchCart();
@@ -163,7 +246,7 @@ useEffect(() => {
     }
   };
 
- const totalQty = cartItems.reduce((total, item) => total + item.qty, 0);
+  const totalQty = cartItems.reduce((total, item) => total + item.qty, 0);
 
 
   // Save guest wishlist to localStorage when not logged in
@@ -244,6 +327,16 @@ useEffect(() => {
         const formattedCart = data.cartItems.map((item) => ({
           id: item.food_item_id,
           qty: item.quantity,
+          cart_key: item.cart_key || `item_${item.food_item_id}`,
+          selected_variation: item.selected_variation,
+          selected_addons: item.selected_addons,
+          item_price:
+            item.item_price !== null && item.item_price !== undefined
+              ? Number(item.item_price)
+              : item.food
+              ? Number(item.food.food_price)
+              : 0,
+          cart_item_id: item.id,
         }));
         setCartItems(formattedCart);
       }
@@ -300,6 +393,8 @@ useEffect(() => {
               foodItems={foodItems}
               user={user} 
               totalQty={totalQty}
+              openCustomise={openCustomise}
+              add_customized_cart={add_customized_cart}
             />
           }
         />
@@ -318,6 +413,8 @@ useEffect(() => {
               foodItems={foodItems}
               user={user} 
               totalQty={totalQty}
+              openCustomise={openCustomise}
+              add_customized_cart={add_customized_cart}
             />
           }
         />
@@ -336,6 +433,8 @@ useEffect(() => {
               foodItems={foodItems}
               user={user} 
               totalQty={totalQty}
+              openCustomise={openCustomise}
+              add_customized_cart={add_customized_cart}
             />
           }
         />
@@ -445,6 +544,13 @@ useEffect(() => {
         />
 
       </Routes>
+
+      <CustomiseItemModal
+        isOpen={!!customiseItem}
+        item={customiseItem}
+        onClose={() => setCustomiseItem(null)}
+        onAddToCart={add_customized_cart}
+      />
     </>
   );
 }

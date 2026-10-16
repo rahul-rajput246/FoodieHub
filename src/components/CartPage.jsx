@@ -3,21 +3,28 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 import CouponSection from "./CouponSection";
+import VegBadge from "./VegBadge";
 
-function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
+function Cart({ addToCart = [], plus_cart, minus_cart, foodItems = [], user }) {
 
-  const cartItems = foodItems.filter((product) =>
-    addToCart.some((item) => item.id === product.id)
-  );
+  const detailedCartItems = addToCart.map((cartItem) => {
+    const product = foodItems.find((p) => p.id === cartItem.id) || {};
+    const itemKey = cartItem.cart_key || `item_${cartItem.id}`;
+    const unitPrice =
+      cartItem.item_price !== undefined
+        ? Number(cartItem.item_price)
+        : Number(product.food_price || 0);
 
-  const getQty = (id) => {
-    const cartItem = addToCart.find((item) => item.id === id);
-    return cartItem ? cartItem.qty : 0;
-  };
+    return {
+      ...product,
+      ...cartItem,
+      cart_key: itemKey,
+      unitPrice,
+      lineTotal: unitPrice * cartItem.qty,
+    };
+  });
 
-  const subtotal = cartItems.reduce((total, product) => {
-    return total + Number(product.food_price) * getQty(product.id);
-  }, 0);
+  const subtotal = detailedCartItems.reduce((total, item) => total + item.lineTotal, 0);
 
   const [appliedCoupon, setAppliedCoupon] = useState(() => {
     try {
@@ -99,34 +106,64 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
 
       <section className="cart_main_section">
         <div className="container">
-          {cartItems.length > 0 ? (
+          {detailedCartItems.length > 0 ? (
             <div className="row g-4">
               
               {/* Left Side - Cart Items */}
               <div className="col-lg-8">
                 <div className="cart_items_box">
-                  <h3 className="cart_section_title">Cart Items ({cartItems.length})</h3>
+                  <h3 className="cart_section_title">Cart Items ({detailedCartItems.length})</h3>
 
-                  {cartItems.map((product) => (
-                    <div className="cart_item_card" key={product.id}>
+                  {detailedCartItems.map((item) => (
+                    <div className="cart_item_card" key={item.cart_key || item.id}>
                       <div className="cart_item_img">
-                        <img src={product.image_url} alt={product.food_name} loading="lazy" />
+                        <img src={item.image_url} alt={item.food_name} loading="lazy" />
                       </div>
 
                       <div className="cart_item_info">
-                        <h4>{product.food_name}</h4>
-                        <p>{product.food_subtitle}</p>
-                        <span className="cart_item_price">₹{product.food_price}</span>
+                        <div className="d-flex align-items-center gap-2 mb-1">
+                          <VegBadge isVeg={item.is_veg} dietaryType={item.dietary_type} size="sm" />
+                          <h4 className="mb-0">{item.food_name}</h4>
+                        </div>
+
+                        {item.food_subtitle && <p className="mb-1">{item.food_subtitle}</p>}
+
+                        {/* Variation Tag */}
+                        {item.selected_variation && (
+                          <div className="mb-1">
+                            <span className="badge bg-light text-dark border">
+                              {item.selected_variation.name}
+                              {Number(item.selected_variation.price || 0) > 0 &&
+                                ` (+₹${item.selected_variation.price})`}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Add-ons List */}
+                        {Array.isArray(item.selected_addons) && item.selected_addons.length > 0 && (
+                          <div className="text-muted small mb-1">
+                            <span className="fw-semibold text-secondary">Add-ons: </span>
+                            {item.selected_addons.map((addon, aIdx) => (
+                              <span key={addon.id || aIdx} className="me-2 d-inline-flex align-items-center gap-1">
+                                <VegBadge isVeg={addon.is_veg !== false} size="sm" />
+                                <span>{addon.name} (+₹{addon.price})</span>
+                                {aIdx < item.selected_addons.length - 1 && <span>,</span>}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        <span className="cart_item_price">₹{item.unitPrice}</span>
                       </div>
 
                       <div className="cart_item_actions">
                         <div className="qty_box">
-                          <button onClick={() => minus_cart(product.id)}>-</button>
-                          <span>{getQty(product.id)}</span>
-                          <button onClick={() => plus_cart(product.id)}>+</button>
+                          <button onClick={() => minus_cart(item.cart_key || item.id)}>-</button>
+                          <span>{item.qty}</span>
+                          <button onClick={() => plus_cart(item.cart_key || item.id)}>+</button>
                         </div>
 
-                        <h5>₹{Number(product.food_price) * getQty(product.id)}</h5>
+                        <h5>₹{item.lineTotal}</h5>
                       </div>
                     </div>
                   ))}
@@ -161,8 +198,13 @@ function Cart({ addToCart, plus_cart, minus_cart, foodItems = [], user }) {
                       <span style={{ color: "#059669" }}>- ₹{Math.round(discount)}</span>
                     </div>
                   ) : couponWarning ? (
-                    <div style={{ fontSize: "12px", color: "#d97706", background: "#fef3c7", padding: "6px 10px", borderRadius: "8px", marginBottom: "12px" }}>
-                      ⚠️ {couponWarning}
+                    <div style={{ fontSize: "12px", color: "#d97706", background: "#fef3c7", padding: "6px 10px", borderRadius: "8px", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px" }}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="12" />
+                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                      </svg>
+                      <span>{couponWarning}</span>
                     </div>
                   ) : null}
 

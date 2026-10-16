@@ -30,7 +30,14 @@ function CheckOut({ addToCart, totalQty, setAddToCart, foodItems, plus_cart, min
         <Navbar user={user} totalQty={totalQty} />
         <div className="container py-5 text-center">
           <div className="card shadow-sm p-5 mx-auto" style={{ maxWidth: "520px", borderRadius: "16px" }}>
-            <div className="mb-3" style={{ fontSize: "3rem" }}>🔒</div>
+            <div className="mb-3 d-flex justify-content-center">
+              <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#fff7ed", color: "#ea580c", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+              </div>
+            </div>
             <h3 className="mb-3 fw-bold">Login Required</h3>
             <p className="text-muted mb-4">
               Please log in to your FoodieHub account to proceed with checkout and complete your payment.

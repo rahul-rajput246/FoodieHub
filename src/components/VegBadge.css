@@ -1,0 +1,76 @@
+.veg_badge_wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.veg_badge_icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.veg_badge_wrapper:hover .veg_badge_icon {
+  transform: scale(1.06);
+}
+
+.veg_badge_icon.veg {
+  border: 1.6px solid #16a34a;
+  border-radius: 4px;
+}
+
+.veg_badge_icon.non_veg {
+  border: 1.6px solid #b91c1c;
+  border-radius: 4px;
+}
+
+/* Sizes */
+.veg_badge_icon.size-sm {
+  width: 14px;
+  height: 14px;
+  border-width: 1.4px;
+  border-radius: 3px;
+}
+
+.veg_badge_icon.size-md {
+  width: 17px;
+  height: 17px;
+  border-width: 1.6px;
+  border-radius: 4px;
+}
+
+.veg_badge_icon.size-lg {
+  width: 22px;
+  height: 22px;
+  border-width: 2px;
+  border-radius: 5px;
+}
+
+/* Optional text badge labels */
+.veg_badge_text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 12px;
+  line-height: 1.2;
+}
+
+.veg_badge_text.veg {
+  color: #15803d;
+  background-color: #dcfce7;
+  border: 1px solid #bbf7d0;
+}
+
+.veg_badge_text.non_veg {
+  color: #b91c1c;
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+}

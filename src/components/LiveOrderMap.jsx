@@ -213,12 +213,16 @@ function LiveOrderMap({ orderData }) {
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    // Custom Icon Badges
+    // Custom Icon Badges (Professional SVG Icons)
     const restaurantIcon = L.divIcon({
       className: "custom_leaflet_marker",
       html: `
         <div class="map_pin_badge pin_restaurant">
-          <span class="pin_icon">🍽️</span>
+          <span class="pin_icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">
+              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
+            </svg>
+          </span>
           <span class="pin_label">FoodieHub Kitchen</span>
         </div>
         <div class="pin_anchor_dot"></div>
@@ -231,7 +235,12 @@ function LiveOrderMap({ orderData }) {
       className: "custom_leaflet_marker",
       html: `
         <div class="map_pin_badge pin_destination">
-          <span class="pin_icon">🏠</span>
+          <span class="pin_icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </span>
           <span class="pin_label">Delivery Address</span>
         </div>
         <div class="pin_anchor_dot dot_dest"></div>
@@ -246,7 +255,14 @@ function LiveOrderMap({ orderData }) {
         <div class="map_rider_beacon">
           <div class="beacon_radar_ring"></div>
           <div class="beacon_radar_ring delay"></div>
-          <div class="rider_bubble_scooter">🛵</div>
+          <div class="rider_bubble_scooter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin:auto;">
+              <circle cx="18.5" cy="17.5" r="3.5"/>
+              <circle cx="5.5" cy="17.5" r="3.5"/>
+              <circle cx="15" cy="5" r="1"/>
+              <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+            </svg>
+          </div>
         </div>
       `,
       iconSize: [50, 50],
@@ -379,11 +395,23 @@ function LiveOrderMap({ orderData }) {
         </div>
 
         <div className="map_quick_controls">
-          <button type="button" onClick={handleRecenterRider} className="map_control_btn" title="Focus Rider">
-            🎯 Recenter Rider
+          <button type="button" onClick={handleRecenterRider} className="map_control_btn" title="Focus Rider" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="22" y1="12" x2="18" y2="12"/>
+              <line x1="6" y1="12" x2="2" y2="12"/>
+              <line x1="12" y1="6" x2="12" y2="2"/>
+              <line x1="12" y1="22" x2="12" y2="18"/>
+            </svg>
+            Recenter Rider
           </button>
-          <button type="button" onClick={handleFitRoute} className="map_control_btn" title="Show Full Route">
-            🗺️ Entire Route
+          <button type="button" onClick={handleFitRoute} className="map_control_btn" title="Show Full Route" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+              <line x1="9" y1="3" x2="9" y2="18"/>
+              <line x1="15" y1="6" x2="15" y2="21"/>
+            </svg>
+            Entire Route
           </button>
         </div>
       </div>
@@ -394,7 +422,14 @@ function LiveOrderMap({ orderData }) {
       {/* Map Bottom Floating Driver & ETA Card */}
       <div className="map_floating_bottom_card">
         <div className="rider_avatar_box">
-          <div className="avatar_img_wrap">🛵</div>
+          <div className="avatar_img_wrap" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18.5" cy="17.5" r="3.5"/>
+              <circle cx="5.5" cy="17.5" r="3.5"/>
+              <circle cx="15" cy="5" r="1"/>
+              <path d="M12 17.5V14l-3-3 4-3 2 3h2"/>
+            </svg>
+          </div>
           <span className="online_dot_indicator"></span>
         </div>
 
@@ -403,8 +438,11 @@ function LiveOrderMap({ orderData }) {
             <h4 className="rider_name_text">
               {orderData?.delivery_partner?.name || "FoodieHub Restaurant Support"}
             </h4>
-            <span className="rider_star_badge">
-              {orderData?.delivery_partner?.rating || "4.9 ★"}
+            <span className="rider_star_badge" style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" strokeWidth="1">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              <span>{orderData?.delivery_partner?.rating ? orderData.delivery_partner.rating.replace('★', '').trim() : "4.9"}</span>
             </span>
           </div>
           <p className="rider_sub_text">
@@ -416,14 +454,25 @@ function LiveOrderMap({ orderData }) {
           </p>
 
           <div className="live_telemetry_row">
-            <span className="telemetry_chip">
-              ⚡ <strong>{liveSpeed} km/h</strong> speed
+            <span className="telemetry_chip" style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <strong>{liveSpeed} km/h</strong> speed
             </span>
-            <span className="telemetry_chip">
-              📍 <strong>{distanceRemaining}</strong> away
+            <span className="telemetry_chip" style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <strong>{distanceRemaining}</strong> away
             </span>
-            <span className="telemetry_chip eta_highlight">
-              ⏱️ Arriving in <strong>{minutesRemaining} mins</strong>
+            <span className="telemetry_chip eta_highlight" style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              Arriving in <strong>{minutesRemaining} mins</strong>
             </span>
           </div>
         </div>
@@ -432,8 +481,12 @@ function LiveOrderMap({ orderData }) {
           <a
             href={`tel:${orderData?.delivery_partner?.phone || "+916284229435"}`}
             className="map_call_rider_btn"
+            style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}
           >
-            📞 Call
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            Call
           </a>
         </div>
       </div>

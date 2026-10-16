@@ -1,8 +1,9 @@
 import { allPrice, sortData, ratingData, typeDishData } from "../data/Menudata";
 import { useState, useMemo } from "react";
+import VegBadge from "./VegBadge";
 import '../pages/Menu.css';
 
-function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, removeFromWishlist, foods }) {
+function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, removeFromWishlist, foods, openCustomise }) {
 
   {/* Category Filter */ }
 
@@ -36,17 +37,39 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
         item.food_desc?.toLowerCase().includes(search.toLowerCase())
       );
 
+  /* Dietary Filter (All / Pure Veg / Non-Veg) */
+  const [dietaryFilter, setDietaryFilter] = useState("all");
+
+  const filterDietary =
+    dietaryFilter === "all"
+      ? searchFilter
+      : dietaryFilter === "veg"
+        ? searchFilter.filter(
+            (item) =>
+              item.is_veg === true ||
+              item.is_veg === 1 ||
+              item.is_veg === "1" ||
+              item.dietary_type === "veg"
+          )
+        : searchFilter.filter(
+            (item) =>
+              item.is_veg === false ||
+              item.is_veg === 0 ||
+              item.is_veg === "0" ||
+              item.dietary_type === "non_veg"
+          );
+
   /* Price Filter */
   const [activePrice, setPrice] = useState("All Prices");
 
   const filterPrice =
     activePrice === "All Prices"
-      ? searchFilter
+      ? filterDietary
       : activePrice === "Under 200"
-        ? searchFilter.filter((item) => Number(item.food_price) < 200)
+        ? filterDietary.filter((item) => Number(item.food_price) < 200)
         : activePrice === "200 - 300"
-          ? searchFilter.filter((item) => Number(item.food_price) >= 200 && Number(item.food_price) <= 300)
-          : searchFilter.filter((item) => Number(item.food_price) > 300);
+          ? filterDietary.filter((item) => Number(item.food_price) >= 200 && Number(item.food_price) <= 300)
+          : filterDietary.filter((item) => Number(item.food_price) > 300);
 
 
   /* Types Of Dishes Filter */
@@ -78,6 +101,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
     setSearch("");
     setPrice("All Prices");
     setRating("All");
+    setDietaryFilter("all");
     setSortBy("Sort By");
   };
 
@@ -115,6 +139,42 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                 />
+              </div>
+
+              {/* Dietary Preference Filter */}
+              <div className="mb-4">
+                <div className="category_heading_box">
+                  <h5>Dietary Preference</h5>
+                </div>
+                <div className="category_buttons">
+                  <button
+                    className={`menu_filter_btn d-flex align-items-center justify-content-between ${dietaryFilter === "all" ? "active" : ""}`}
+                    onClick={() => setDietaryFilter("all")}
+                  >
+                    <span>All Dishes</span>
+                    <span className="badge bg-light text-dark rounded-pill">All</span>
+                  </button>
+
+                  <button
+                    className={`menu_filter_btn d-flex align-items-center justify-content-between ${dietaryFilter === "veg" ? "active" : ""}`}
+                    onClick={() => setDietaryFilter("veg")}
+                  >
+                    <span className="d-inline-flex align-items-center gap-2">
+                      <VegBadge isVeg={true} size="sm" /> Pure Veg
+                    </span>
+                    <span className="badge bg-success bg-opacity-25 text-success rounded-pill">Veg</span>
+                  </button>
+
+                  <button
+                    className={`menu_filter_btn d-flex align-items-center justify-content-between ${dietaryFilter === "non_veg" ? "active" : ""}`}
+                    onClick={() => setDietaryFilter("non_veg")}
+                  >
+                    <span className="d-inline-flex align-items-center gap-2">
+                      <VegBadge isVeg={false} size="sm" /> Non-Veg
+                    </span>
+                    <span className="badge bg-danger bg-opacity-25 text-danger rounded-pill">Non-Veg</span>
+                  </button>
+                </div>
               </div>
 
               <div className="mb-4">
@@ -190,22 +250,46 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
           </div>
 
           <div className="col-lg-9">
-            <div className="menu_top_bar d-flex justify-content-between align-items-center mb-4">
+            <div className="menu_top_bar d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
               <div>
                 <h4 className="mb-1">Our Delicious Menu</h4>
-                <p className="mb-0">Showing {sortFilter.length} food items</p>
+                <p className="mb-0 text-muted">Showing {sortFilter.length} food items</p>
               </div>
 
-              <select className="form-select menu_sort_select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                {sortData.map((item) =>
-                  <option key={item.id}>{item.title}</option>
-                )}
-              </select>
+              <div className="d-flex align-items-center gap-3">
+                {/* Quick Veg Only Switch */}
+                <div className="veg_only_switch_container d-flex align-items-center gap-2">
+                  <label className="veg_toggle_switch" title="Toggle Pure Veg Dishes">
+                    <input
+                      type="checkbox"
+                      checked={dietaryFilter === "veg"}
+                      onChange={(e) => setDietaryFilter(e.target.checked ? "veg" : "all")}
+                    />
+                    <span className="veg_toggle_slider"></span>
+                  </label>
+                  <span
+                    className="veg_toggle_label d-flex align-items-center gap-1"
+                    onClick={() => setDietaryFilter(dietaryFilter === "veg" ? "all" : "veg")}
+                  >
+                    <VegBadge isVeg={true} size="sm" /> Veg Only
+                  </span>
+                </div>
+
+                <select className="form-select menu_sort_select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  {sortData.map((item) =>
+                    <option key={item.id}>{item.title}</option>
+                  )}
+                </select>
+              </div>
             </div>
 
             <div className="row">
               {sortFilter.map((item) => {
                 const cartItem = addToCart.find((cart) => cart.id === item.id);
+                const isCustomisable =
+                  item.has_customizations ||
+                  (Array.isArray(item.variations) && item.variations.length > 0) ||
+                  (Array.isArray(item.addons) && item.addons.length > 0);
 
                 return (
                   <div className="col-md-6 col-lg-4 mb-4" key={item.id}>
@@ -236,17 +320,42 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                       </div>
 
                       <div className="menu_food_card_body">
-                        <div className="category_badge_box">
+                        <div className="category_badge_box mb-2">
                           <span className="menu_food_category">{item.category_name}</span>
                           <span className="rating">⭐{item.food_rating}</span>
                         </div>
-                        <h4>{item.food_name}</h4>
+
+                        <div className="d-flex align-items-center gap-2 mb-1">
+                          <VegBadge isVeg={item.is_veg} dietaryType={item.dietary_type} size="md" />
+                          <h4 className="mb-0">{item.food_name}</h4>
+                        </div>
+
                         <p>{item.food_subtitle}</p>
+
+                        {isCustomisable && (
+                          <div className="mb-2">
+                            <span
+                              className="customisable_chip"
+                              role="button"
+                              onClick={() => openCustomise ? openCustomise(item) : add_cart(item)}
+                            >
+                              <i className="bi bi-sliders"></i> Customisable
+                            </span>
+                          </div>
+                        )}
 
                         <div className="menu_food_card_bottom">
                           <strong className="menu_food_price">₹{item.food_price}</strong>
 
-                          {cartItem ? (
+                          {isCustomisable ? (
+                            <button
+                              className="menu_add_btn"
+                              onClick={() => openCustomise ? openCustomise(item) : add_cart(item)}
+                              title="Customise this item"
+                            >
+                              {cartItem ? `Add (${cartItem.qty}) +` : "Add +"}
+                            </button>
+                          ) : cartItem ? (
                             <div className="d-flex align-items-center gap-2">
                               <button
                                 className="menu_add_btn"
@@ -267,7 +376,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                           ) : (
                             <button
                               className="menu_add_btn"
-                              onClick={() => add_cart(item.id)}
+                              onClick={() => add_cart(item)}
                             >
                               Add
                             </button>

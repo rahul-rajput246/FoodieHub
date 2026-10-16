@@ -86,7 +86,7 @@ export default function CouponSection({
 
         setMessage({
           type: "success",
-          text: `🎉 Code '${code}' applied! You saved ₹${response.data.discount_amount}.`,
+          text: `Code '${code}' applied! You saved ₹${response.data.discount_amount}.`,
         });
         setCouponInput("");
       } else {
@@ -117,8 +117,14 @@ export default function CouponSection({
   return (
     <div className="coupon_component_wrapper">
       <div className="coupon_section_header">
-        <h4>
-          <span>🎟️</span> Coupons & Offers
+        <h4 style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: "#ea580c" }}>
+            <rect x="3" y="6" width="18" height="12" rx="2" />
+            <circle cx="8" cy="12" r="2" />
+            <path d="M14 9h4" />
+            <path d="M14 15h4" />
+          </svg>
+          Coupons & Offers
         </h4>
         {availableCoupons.length > 0 && (
           <span className="coupon_header_badge">
@@ -131,7 +137,11 @@ export default function CouponSection({
         /* Applied Coupon Pill / Card */
         <div className="applied_coupon_card">
           <div className="applied_coupon_left">
-            <div className="applied_icon">✓</div>
+            <div className="applied_icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
             <div className="applied_coupon_details">
               <h5>{appliedCoupon.code}</h5>
               <p>
@@ -144,15 +154,25 @@ export default function CouponSection({
             className="remove_coupon_btn"
             onClick={handleRemove}
             title="Remove applied coupon"
+            style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}
           >
-            ✕ Remove
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+            Remove
           </button>
         </div>
       ) : (
         /* Coupon Input Form */
         <div className="coupon_input_group">
           <div className="coupon_input_wrapper">
-            <span className="coupon_input_icon">🏷️</span>
+            <span className="coupon_input_icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                <line x1="7" y1="7" x2="7.01" y2="7" />
+              </svg>
+            </span>
             <input
               type="text"
               className="coupon_input_field"
@@ -184,7 +204,19 @@ export default function CouponSection({
       {/* Inline Feedback Message */}
       {message && (
         <div className={`coupon_message_box ${message.type}`}>
-          <span>{message.type === "success" ? "✓" : "⚠️"}</span>
+          <span style={{ display: "inline-flex", alignItems: "center" }}>
+            {message.type === "success" ? (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            )}
+          </span>
           <span>{message.text}</span>
         </div>
       )}
@@ -197,7 +229,12 @@ export default function CouponSection({
             className="available_offers_toggle"
             onClick={() => setShowOffers((prev) => !prev)}
           >
-            <span>{showOffers ? "Hide Available Offers ▲" : "View Available Offers ▼"}</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+              {showOffers ? "Hide Available Offers" : "View Available Offers"}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: showOffers ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </span>
             <span style={{ fontSize: "12px", opacity: 0.8 }}>
               {showOffers ? "Close" : `Tap to view ${availableCoupons.length} promo codes`}
             </span>
@@ -236,8 +273,11 @@ export default function CouponSection({
 
                     <div>
                       {isApplied ? (
-                        <button type="button" className="offer_action_btn applied" disabled>
-                          Applied ✓
+                        <button type="button" className="offer_action_btn applied" disabled style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                          Applied
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
                         </button>
                       ) : coupon.is_used_up ? (
                         <button type="button" className="offer_action_btn" disabled>

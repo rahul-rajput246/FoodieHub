@@ -1,10 +1,16 @@
-function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wishList, removeFromWishlist, addToWishlist, foods }) {
+import VegBadge from "./VegBadge";
+
+function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wishList, removeFromWishlist, addToWishlist, foods, openCustomise }) {
 
   return (
     <div className="category_block">
       <div className="row">
         {items.map((props) => {
           const cartItem = addToCart.find((c) => c.id === props.id);
+          const isCustomisable =
+            props.has_customizations ||
+            (Array.isArray(props.variations) && props.variations.length > 0) ||
+            (Array.isArray(props.addons) && props.addons.length > 0);
 
           return (
             <div className="col-lg-3 col-md-6 mb-3" key={props.id}>
@@ -31,16 +37,40 @@ function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wi
                 </div>
 
                 <div className="food_card_body">
-                  <div className="category_badge_box">
-                    <h4 className="food_title">{props.food_name}</h4>
+                  <div className="category_badge_box align-items-center">
+                    <div className="d-flex align-items-center gap-2">
+                      <VegBadge isVeg={props.is_veg} dietaryType={props.dietary_type} size="md" />
+                      <h4 className="food_title mb-0">{props.food_name}</h4>
+                    </div>
                     <span className="rating">⭐{props.food_rating}</span>
                   </div>
+
                   <p className="food_desc">{props.food_subtitle}</p>
+
+                  {isCustomisable && (
+                    <div className="mb-2">
+                      <span
+                        className="customisable_chip"
+                        role="button"
+                        onClick={() => openCustomise ? openCustomise(props) : add_cart(props)}
+                      >
+                        <i className="bi bi-sliders"></i> Customisable
+                      </span>
+                    </div>
+                  )}
 
                   <div className="food_card_bottom">
                     <span className="food_price">₹{props.food_price}</span>
 
-                    {cartItem ? (
+                    {isCustomisable ? (
+                      <button
+                        className="food_add_btn"
+                        onClick={() => openCustomise ? openCustomise(props) : add_cart(props)}
+                        title="Customise this dish"
+                      >
+                        {cartItem ? `Add (${cartItem.qty}) +` : "Add +"}
+                      </button>
+                    ) : cartItem ? (
                       <div className="d-flex align-items-center gap-2">
                         <button
                           className="food_add_btn"
@@ -61,7 +91,7 @@ function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wi
                     ) : (
                       <button
                         className="food_add_btn"
-                        onClick={() => add_cart(props.id)}
+                        onClick={() => add_cart(props)}
                       >
                         Add
                       </button>

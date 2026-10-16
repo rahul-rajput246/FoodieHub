@@ -56,11 +56,18 @@ function PrivacyPolicy({ totalQty, user }) {
             <article className="legal_content_wrapper">
               
               <div className="legal_meta_header">
-                <span className="legal_meta_badge">
-                  🛡️ Last Updated: October 2026
+                <span className="legal_meta_badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                  Last Updated: October 2026
                 </span>
-                <span className="legal_jurisdiction_badge">
-                  📍 Applicable Jurisdiction: Chandigarh, India
+                <span className="legal_jurisdiction_badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Applicable Jurisdiction: Chandigarh, India
                 </span>
               </div>
 
@@ -118,7 +125,13 @@ function PrivacyPolicy({ totalQty, user }) {
                   FoodieHub features a live GPS order tracking system powered by road-snapped OpenStreetMap and OSRM routing. Here is how your location data is handled:
                 </p>
                 <div className="legal_callout_box callout_security">
-                  <h6>🔒 Unique Order ID Security Shield</h6>
+                  <h6 style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                    Unique Order ID Security Shield
+                  </h6>
                   <p>
                     Live tracking requires your secret, high-entropy <strong>Unique Order Number (e.g., ORD-2026-69F350D5D3BF9)</strong>. Sequential numeric IDs (1, 2, 3...) are strictly blocked to prevent unauthorized individuals from snooping on your delivery address or contact number.
                   </p>
@@ -199,17 +212,35 @@ function PrivacyPolicy({ totalQty, user }) {
 
                 <div className="legal_contact_grid">
                   <div className="legal_contact_card">
-                    <div className="legal_contact_icon">✉️</div>
+                    <div className="legal_contact_icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                      </svg>
+                    </div>
                     <strong>Email Support</strong>
                     <span>support@foodiehub.com</span>
                   </div>
                   <div className="legal_contact_card">
-                    <div className="legal_contact_icon">📞</div>
+                    <div className="legal_contact_icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                      </svg>
+                    </div>
                     <strong>Customer Helpline</strong>
                     <span>+91 98765 43210</span>
                   </div>
                   <div className="legal_contact_card">
-                    <div className="legal_contact_icon">🏢</div>
+                    <div className="legal_contact_icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 21h18" />
+                        <path d="M5 21V7l8-4v18" />
+                        <path d="M19 21V11l-6-3" />
+                        <path d="M9 9h1" />
+                        <path d="M9 13h1" />
+                        <path d="M9 17h1" />
+                      </svg>
+                    </div>
                     <strong>Headquarters</strong>
                     <span>Sector 25D, Chandigarh, India</span>
                   </div>

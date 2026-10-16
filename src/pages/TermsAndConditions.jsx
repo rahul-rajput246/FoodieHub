@@ -56,11 +56,19 @@ function TermsAndConditions({ totalQty, user }) {
             <article className="legal_content_wrapper">
               
               <div className="legal_meta_header">
-                <span className="legal_meta_badge">
-                  ⚖️ Last Revised: October 2026
+                <span className="legal_meta_badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2v20" />
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                  Last Revised: October 2026
                 </span>
-                <span className="legal_jurisdiction_badge">
-                  📍 Courts of Chandigarh, India
+                <span className="legal_jurisdiction_badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Courts of Chandigarh, India
                 </span>
               </div>
 
@@ -131,7 +139,17 @@ function TermsAndConditions({ totalQty, user }) {
                   We strive to deliver fresh, piping-hot meals within the estimated 25–40 minute window. However, delivery timelines are estimates and may vary due to traffic, weather, or rush hours.
                 </p>
                 <div className="legal_callout_box">
-                  <h6>🛵 Customer Availability at Drop Location</h6>
+                  <h6 style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="5.5" cy="17.5" r="3.5" />
+                      <circle cx="18.5" cy="17.5" r="3.5" />
+                      <path d="M15 6h4l2 5.5-2.5 1" />
+                      <path d="M9 17.5h6" />
+                      <path d="M12 9l-3 8.5" />
+                      <path d="M7 6h5" />
+                    </svg>
+                    Customer Availability at Drop Location
+                  </h6>
                   <p>
                     Please ensure you or an authorized representative is available at the provided mobile number and delivery address. If the rider cannot reach you after reasonable attempts, the order may be cancelled with applicable charges.
                   </p>
@@ -192,17 +210,31 @@ function TermsAndConditions({ totalQty, user }) {
 
                 <div className="legal_contact_grid">
                   <div className="legal_contact_card">
-                    <div className="legal_contact_icon">⚖️</div>
+                    <div className="legal_contact_icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2v20" />
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                      </svg>
+                    </div>
                     <strong>Legal Inquiries</strong>
                     <span>legal@foodiehub.com</span>
                   </div>
                   <div className="legal_contact_card">
-                    <div className="legal_contact_icon">💬</div>
+                    <div className="legal_contact_icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                      </svg>
+                    </div>
                     <strong>Customer Support</strong>
                     <span>support@foodiehub.com</span>
                   </div>
                   <div className="legal_contact_card">
-                    <div className="legal_contact_icon">📍</div>
+                    <div className="legal_contact_icon">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                    </div>
                     <strong>Registered Office</strong>
                     <span>Sector 25D, Chandigarh - 160014</span>
                   </div>

@@ -11,7 +11,7 @@ import Footer from "../components/Footer";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 
-function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist, removeFromWishlist, wishList, foodItems }) {
+function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist, removeFromWishlist, wishList, foodItems, openCustomise, add_customized_cart }) {
 
   const [activeCategory, setActiveCategory] = useState("All");
   const [homeData, setHomeData] = useState(null);
@@ -121,6 +121,7 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
               wishList={wishList}
               addToWishlist={addToWishlist}
               removeFromWishlist={removeFromWishlist}
+              openCustomise={openCustomise}
             />
           </div>
         </div>
@@ -135,6 +136,7 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
         wishList={wishList}
         addToWishlist={addToWishlist}
         removeFromWishlist={removeFromWishlist}
+        openCustomise={openCustomise}
       />
 
       <HowItWorks details={homeData} />
