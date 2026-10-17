@@ -59,7 +59,24 @@
 }
 
 .menu_sort_select {
+  height: 42px;
   max-width: 220px;
+  border-radius: 9999px;
+  border: 1.5px solid #e2e8f0;
+  padding: 0 36px 0 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #334155;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.menu_sort_select:focus {
+  border-color: #ff7a00;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
 }
 
 .menu_food_card {
@@ -195,68 +212,118 @@ input.form-control:focus {
   }
 }
 
-/* Veg Only Toggle Switch */
-.veg_only_switch_container {
-  background: #f8fafc;
+/* ========================================================
+   Veg Only Toggle Pill Button (Modern Swiggy/Zomato style)
+   ======================================================== */
+.veg_only_pill_btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px 0 10px;
+  background: #ffffff;
   border: 1.5px solid #e2e8f0;
-  border-radius: 999px;
-  padding: 4px 12px 4px 6px;
-  transition: all 0.2s ease;
-}
-
-.veg_only_switch_container:hover {
-  border-color: #16a34a;
-  background: #f0fdf4;
-}
-
-.veg_toggle_switch {
+  border-radius: 9999px;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 22px;
   margin: 0;
 }
 
-.veg_toggle_switch input {
+.veg_only_pill_btn:hover {
+  border-color: #86efac;
+  background: #f0fdf4;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.12);
+  transform: translateY(-1px);
+}
+
+.veg_only_pill_btn.active {
+  background: #f0fdf4;
+  border-color: #16a34a;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.16);
+}
+
+.veg_pill_checkbox {
+  position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
+  margin: 0;
+  pointer-events: none;
 }
 
-.veg_toggle_slider {
-  position: absolute;
-  cursor: pointer;
-  inset: 0;
+.veg_pill_switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
   background-color: #cbd5e1;
-  transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 34px;
+  border-radius: 9999px;
+  transition: background-color 0.22s ease;
+  flex-shrink: 0;
 }
 
-.veg_toggle_slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+.veg_only_pill_btn:hover .veg_pill_switch {
+  background-color: #94a3b8;
 }
 
-.veg_toggle_switch input:checked + .veg_toggle_slider {
+.veg_only_pill_btn.active .veg_pill_switch {
   background-color: #16a34a;
 }
 
-.veg_toggle_switch input:checked + .veg_toggle_slider:before {
+.veg_pill_knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.veg_only_pill_btn.active .veg_pill_knob {
   transform: translateX(16px);
 }
 
-.veg_toggle_label {
-  font-size: 13px;
+.veg_pill_content {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.veg_pill_text {
+  font-size: 13.5px;
   font-weight: 700;
-  color: #1e293b;
-  user-select: none;
+  color: #334155;
+  letter-spacing: -0.2px;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.veg_only_pill_btn.active .veg_pill_text {
+  color: #15803d;
+}
+
+/* Backward compatibility for previous classes */
+.veg_only_switch_container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 16px 0 10px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9999px;
   cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }

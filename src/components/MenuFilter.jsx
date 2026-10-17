@@ -1,4 +1,4 @@
-import { allPrice, sortData, ratingData, typeDishData } from "../data/Menudata";
+import { allPrice, sortData, ratingData } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import VegBadge from "./VegBadge";
 import '../pages/Menu.css';
@@ -14,16 +14,14 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
 
   const [activeCategory, setCategory] = useState("All");
 
-  const randomFood = useMemo(() => {
-    return [...foods].sort(() => Math.random() - 0.5);
-  }, [foods]);
+  const foodList = useMemo(() => (Array.isArray(foods) ? foods : []), [foods]);
 
   /* Category Filter */
 
   const filterFood =
     activeCategory === "All"
-      ? randomFood
-      : randomFood.filter((item) => item.category_name === activeCategory);
+      ? foodList
+      : foodList.filter((item) => item.category_name === activeCategory);
 
   /* Search Filter */
   const [search, setSearch] = useState("");
@@ -72,32 +70,21 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
           : filterDietary.filter((item) => Number(item.food_price) > 300);
 
 
-  /* Types Of Dishes Filter */
-
-  const [activeType, setActiveType] = useState("All");
-
-  const typesFilter =
-    activeType === "All"
-      ? filterPrice
-      : filterPrice.filter((item) => item.food_type === activeType);
-
-
   /* Ratings Filter */
 
   const [activeRating, setRating] = useState("All");
 
   const filterRating =
     activeRating === "All"
-      ? typesFilter
+      ? filterPrice
       : activeRating === "Above 4.5"
-        ? typesFilter.filter((item) => Number(item.food_rating) >= 4.5)
+        ? filterPrice.filter((item) => Number(item.food_rating) >= 4.5)
         : activeRating === "Above 4"
-          ? typesFilter.filter((item) => Number(item.food_rating) >= 4)
-          : typesFilter.filter((item) => Number(item.food_rating) >= 3.5);
+          ? filterPrice.filter((item) => Number(item.food_rating) >= 4)
+          : filterPrice.filter((item) => Number(item.food_rating) >= 3.5);
 
   const clearFilters = () => {
     setCategory("All");
-    setActiveType("All");
     setSearch("");
     setPrice("All Prices");
     setRating("All");
@@ -194,22 +181,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                 </div>
               </div>
 
-              <div className="mb-4">
-                <div className="category_heading_box">
-                  <h5>Types of Dishes</h5>
-                </div>
-                <div className="category_buttons">
-                  {typeDishData.map((item) => (
-                    <button
-                      key={item.id}
-                      className={`menu_filter_btn ${activeType === item.title ? "active" : ""}`}
-                      onClick={() => setActiveType(item.title)}
-                    >
-                      {item.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
+
 
               <div className="mb-4">
                 <div className="category_heading_box">
@@ -258,22 +230,24 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
 
               <div className="d-flex align-items-center gap-3">
                 {/* Quick Veg Only Switch */}
-                <div className="veg_only_switch_container d-flex align-items-center gap-2">
-                  <label className="veg_toggle_switch" title="Toggle Pure Veg Dishes">
-                    <input
-                      type="checkbox"
-                      checked={dietaryFilter === "veg"}
-                      onChange={(e) => setDietaryFilter(e.target.checked ? "veg" : "all")}
-                    />
-                    <span className="veg_toggle_slider"></span>
-                  </label>
-                  <span
-                    className="veg_toggle_label d-flex align-items-center gap-1"
-                    onClick={() => setDietaryFilter(dietaryFilter === "veg" ? "all" : "veg")}
-                  >
-                    <VegBadge isVeg={true} size="sm" /> Veg Only
+                <label
+                  className={`veg_only_pill_btn ${dietaryFilter === "veg" ? "active" : ""}`}
+                  title="Toggle Pure Veg Dishes Only"
+                >
+                  <input
+                    type="checkbox"
+                    className="veg_pill_checkbox"
+                    checked={dietaryFilter === "veg"}
+                    onChange={(e) => setDietaryFilter(e.target.checked ? "veg" : "all")}
+                  />
+                  <span className="veg_pill_switch">
+                    <span className="veg_pill_knob"></span>
                   </span>
-                </div>
+                  <span className="veg_pill_content">
+                    <VegBadge isVeg={true} size="sm" />
+                    <span className="veg_pill_text">Veg Only</span>
+                  </span>
+                </label>
 
                 <select className="form-select menu_sort_select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                   {sortData.map((item) =>
