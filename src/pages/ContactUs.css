@@ -46,31 +46,33 @@
 
 .contact_badge {
   display: inline-block;
-  font-size: 15px;
-  font-weight: 700;
-  color: #f4a300;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff7600;
+  background: rgba(255, 118, 0, 0.12);
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 118, 0, 0.18);
+  margin-bottom: 14px;
 }
 
 .contact_form_content h2 {
-  font-size: 58px;
-  line-height: 1.1;
-  font-weight: 800;
-  color: #111;
-  margin-bottom: 20px;
+  font-size: 40px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
 }
 
 .contact_form_content h2 span {
-  color: #f4a300;
+  color: #ff7600;
 }
 
 .contact_form_content p {
-  font-size: 18px;
-  line-height: 1.8;
-  color: #555;
-  margin-bottom: 28px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #666;
+  margin-bottom: 24px;
 }
 
 .contact_points {
@@ -196,30 +198,29 @@
 }
 
 .visit_badge {
-    color: #ff8900;
-    letter-spacing: .5px;
-    background: #ffb40026;
-    border: 1px solid #ffb40066;
-    border-radius: 30px;
-    margin-bottom: 20px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-block;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff7600;
+  background: rgba(255, 118, 0, 0.12);
+  padding: 7px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 118, 0, 0.18);
+  margin-bottom: 14px;
 }
 
 .visit_us_box h2 {
-  font-size: 42px;
-  font-weight: 800;
-  color: #111;
-  margin-bottom: 18px;
-  line-height: 1.2;
+  font-size: 40px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  line-height: 1.25;
 }
 
 .visit_us_box p {
   font-size: 16px;
   color: #666;
-  line-height: 1.8;
+  line-height: 1.7;
 }
 
 .visit_info {

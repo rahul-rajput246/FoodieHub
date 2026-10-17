@@ -1,8 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  box-sizing: border-box;
-  padding:0;	
+  padding: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-h1, h2, h3 {
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.3px;
+}
+
+/* =========================================================
+   UNIFIED SECTION DESIGN SYSTEM TOKENS (HEADINGS, BADGES, DESCRIPTIONS)
+   Applied consistently across Home, About, Contact, Menu, Cart, Checkout, Tracking, etc.
+   ========================================================= */
+
+/* 1. UNIFIED SECTION BADGES / TAGS */
+.section_badge,
+.section_tag,
+.why_to_tag,
+.most_loved_tag,
+.how_it_works_tag,
+.testimonial_tag,
+.faq_tag,
+.about_tag,
+.specialities_tag,
+.contact_badge,
+.visit_badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 118, 0, 0.12) !important;
+  color: #ff7600 !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  padding: 7px 18px !important;
+  border-radius: 999px !important;
+  margin-bottom: 14px !important;
+  text-transform: capitalize !important;
+  line-height: 1.4 !important;
+  border: 1px solid rgba(255, 118, 0, 0.18) !important;
+  box-shadow: none !important;
+}
+
+/* Badges on dark backgrounds or gradient cards (CTA, Special Offer, Legal) */
+.cta_tag,
+.special_offer_badge,
+.breadcrumb_tag,
+.legal_badge_pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+  padding: 7px 18px !important;
+  border-radius: 999px !important;
+  margin-bottom: 14px !important;
+  text-transform: capitalize !important;
+  line-height: 1.4 !important;
+  border: 1px solid rgba(255, 255, 255, 0.28) !important;
+  box-shadow: none !important;
+}
+
+/* 2. UNIFIED SECTION HEADINGS (H2) */
+.why_to_heading_row h2,
+.most_loved_heading h2,
+.how_it_works_heading h2,
+.special_offer_heading,
+.offer_heading,
+.testimonial_title,
+.testimonial_heading h2,
+.faq_heading h2,
+.faq_left_box h2,
+.about_content h2,
+.specialities_heading h2,
+.cta_content h2,
+.contact_form_content h2,
+.visit_us_box h2,
+.sub_banner_heading_box h2,
+.checkout_heading_box h2,
+.breadcrumb_title_box h1,
+.legal_hero_title {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: clamp(28px, 3.2vw, 40px) !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.5px !important;
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+/* Light Background Section Headings - Rich Dark Color */
+.why_to_heading_row h2,
+.most_loved_heading h2,
+.how_it_works_heading h2,
+.testimonial_title,
+.testimonial_heading h2,
+.faq_heading h2,
+.faq_left_box h2,
+.about_content h2,
+.specialities_heading h2,
+.contact_form_content h2,
+.visit_us_box h2 {
+  color: #1a1a1a !important;
+}
+
+/* Dark Background / Card Headings - Crisp White */
+.cta_content h2,
+.special_offer_heading,
+.offer_heading,
+.sub_banner_heading_box h2,
+.checkout_heading_box h2,
+.breadcrumb_title_box h1,
+.legal_hero_title {
+  color: #ffffff !important;
+}
+
+/* 3. UNIFIED SECTION DESCRIPTIONS / SUBTITLES */
+.why_to_heading_row p,
+.most_loved_heading p,
+.how_it_works_heading p,
+.testimonial_subtitle,
+.faq_heading p,
+.faq_subtitle,
+.specialities_heading p,
+.visit_us_box p,
+.about_content p {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+  color: #666666 !important;
+  max-width: 650px;
+}
+
+/* Centered Section Descriptions */
+.why_to_heading_row p,
+.most_loved_heading p,
+.how_it_works_heading p,
+.testimonial_subtitle,
+.faq_heading p,
+.specialities_heading p {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+/* Subtitles on dark backgrounds */
+.special_offer_desc,
+.special_banner_box .offer_desc,
+.cta_content p,
+.sub_banner_heading_box h5,
+.checkout_heading_box p,
+.breadcrumb_title_box p,
+.legal_hero_subtitle {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  max-width: 650px;
+}
+
+/* Contact form lead text */
+.contact_form_content p {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 1.7 !important;
+  color: #666666 !important;
+  margin-bottom: 24px !important;
+}
+
+/* 4. UNIFIED CARD SUB-TITLES & BODY TEXT (Eliminating Monospace font-family) */
+.why_to_body_box h4,
+.how_it_works_body h4,
+.speciality_card_body h4,
+.testimonial_user_info h4,
+.contact_card h5,
+.visit_item h6 {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.2px !important;
+}
+
+.why_to_body_box h4,
+.how_it_works_body h4,
+.speciality_card_body h4 {
+  color: #1a1a1a !important;
+}
+
+.why_to_body_box p,
+.how_it_works_body p,
+.speciality_card_body p {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #777777 !important;
 }

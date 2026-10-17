@@ -422,18 +422,32 @@ cart_btn:hover span {
   cursor: pointer;
 }
 
-.why_to_heading_row h2 {
-  text-align: center;
+.why_to_tag {
+  display: inline-block;
+  background: rgba(255, 118, 0, 0.12);
+  color: #ff7600;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 14px;
   font-weight: 600;
-  font-family: monospace;
+  margin-bottom: 14px;
+}
+
+.why_to_heading_row h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 .why_to_heading_row p {
   text-align: center;
-  max-width: 620px;
+  max-width: 650px;
   margin: 0 auto;
-  font-size: 17px;
-  color: #7e7e7e;
+  font-size: 16px;
+  color: #666;
+  line-height: 1.7;
 }
 
 .main_wh_to_icon_box {
@@ -460,17 +474,19 @@ cart_btn:hover span {
 
 .why_to_body_box h4 {
   text-align: center;
-  font-size: 22px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
   padding: 5px 0px;
   margin-bottom: 0px;
-  font-family: monospace;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
 }
 
 .why_to_body_box p {
   text-align: center;
-  font-size: 13px;
-  color: #949494;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
   margin-bottom: 0px;
 }
 
@@ -1699,7 +1715,12 @@ cart_btn:hover span {
     padding: 12px 20px;
   }
 
-  .most_loved_heading h2 {
+  .why_to_heading_row h2,
+  .most_loved_heading h2,
+  .how_it_works_heading h2,
+  .faq_heading h2,
+  .faq_left_box h2,
+  .testimonial_title {
     font-size: 30px;
   }
 

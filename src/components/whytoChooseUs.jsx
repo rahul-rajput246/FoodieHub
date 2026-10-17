@@ -14,7 +14,8 @@ function WhytoChooseUs({details}){
 		<div className="why_to_choose_secton pb-5">
 		<div className="container">
 					
-				<div className="why_to_heading_row pb-4">
+				<div className="why_to_heading_row text-center pb-4">
+					<span className="why_to_tag">{details?.content?.home_wcu?.badge || "Why Choose Us"}</span>
 					<h2>{details?.content?.home_wcu?.home_wcu_title}</h2>
 					<p>{details?.content?.home_wcu?.home_wcu_subtitle}</p>
 				</div>
