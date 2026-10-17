@@ -1,17 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import VegBadge from "./VegBadge";
 import "./CustomiseItemModal.css";
 
 export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart }) {
-  if (!isOpen || !item) return null;
-
-  const variations = useMemo(() => {
-    return Array.isArray(item.variations) ? item.variations : [];
-  }, [item.variations]);
-
-  const addons = useMemo(() => {
-    return Array.isArray(item.addons) ? item.addons : [];
-  }, [item.addons]);
+  const variations = Array.isArray(item?.variations) ? item.variations : [];
+  const addons = Array.isArray(item?.addons) ? item.addons : [];
 
   // Default variation to first option if variations exist
   const [selectedVariation, setSelectedVariation] = useState(() => {
@@ -21,34 +14,39 @@ export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart 
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [quantity, setQuantity] = useState(1);
 
-  // Reset when item changes
-  useEffect(() => {
-    if (variations.length > 0) {
-      setSelectedVariation(variations[0]);
-    } else {
-      setSelectedVariation(null);
+  const handleClose = useCallback(() => {
+    document.body.style.removeProperty("overflow");
+    if (typeof onClose === "function") {
+      onClose();
     }
-    setSelectedAddons([]);
-    setQuantity(1);
-  }, [item.id, variations]);
+  }, [onClose]);
 
-  // Lock body scroll while modal is active
+  // Lock body scroll while modal is active, and cleanly unlock on unmount/close
   useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
+    if (!isOpen || !item) {
+      document.body.style.removeProperty("overflow");
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        onClose();
+        handleClose();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = originalStyle;
+      if (previousOverflow) {
+        document.body.style.overflow = previousOverflow;
+      } else {
+        document.body.style.removeProperty("overflow");
+      }
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [onClose]);
+  }, [isOpen, item, handleClose]);
 
   const toggleAddon = (addon) => {
     setSelectedAddons((prev) => {
@@ -60,6 +58,11 @@ export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart 
       }
     });
   };
+
+  // Safe early return AFTER all hooks
+  if (!isOpen || !item) {
+    return null;
+  }
 
   // Pricing calculations
   const basePrice = Number(item.food_price || 0);
@@ -74,30 +77,35 @@ export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart 
       selectedAddons.length > 0
         ? `a_${selectedAddons
             .map((a) => a.id)
-            .sort()
+            .sort((a, b) => String(a).localeCompare(String(b)))
             .join("_")}`
         : "a_none";
 
     const cartKey = `item_${item.id}_${varKey}_${addonKey}`;
 
-    onAddToCart({
-      id: item.id,
-      cart_key: cartKey,
-      qty: quantity,
-      selected_variation: selectedVariation,
-      selected_addons: selectedAddons,
-      item_price: unitPrice,
-      food_item: item,
-    });
+    // Ensure scrolling is restored immediately
+    document.body.style.removeProperty("overflow");
 
-    onClose();
+    if (typeof onAddToCart === "function") {
+      onAddToCart({
+        id: item.id,
+        cart_key: cartKey,
+        qty: quantity,
+        selected_variation: selectedVariation,
+        selected_addons: selectedAddons,
+        item_price: unitPrice,
+        food_item: item,
+      });
+    }
+
+    handleClose();
   };
 
   return (
     <div
       className="customise_modal_overlay"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) handleClose();
       }}
       role="dialog"
       aria-modal="true"
@@ -109,7 +117,7 @@ export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart 
             <img src={item.image_url} alt={item.food_name} loading="lazy" />
             <button
               className="customise_modal_close_btn"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close"
             >
               <i className="bi bi-x-lg"></i>
@@ -122,7 +130,7 @@ export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart 
           {!item.image_url && (
             <button
               className="customise_modal_close_btn"
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close"
               style={{ position: "relative", top: 0, right: 0, float: "right" }}
             >

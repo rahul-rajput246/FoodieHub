@@ -46,7 +46,7 @@ useEffect(() => {
   fetchUser();
 }, []);
 
-  const getCookieValue = (name) => {
+  const _getCookieValue = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) {
@@ -89,8 +89,9 @@ useEffect(() => {
   };
 
   const add_customized_cart = async (customized) => {
-    const { id, cart_key, qty, selected_variation, selected_addons, item_price } = customized;
-    const product = foodItems.find((item) => item.id === id);
+    const { id, cart_key, qty, selected_variation, selected_addons, item_price, food_item } = customized;
+    const product =
+      foodItems.find((item) => String(item.id) === String(id)) || food_item;
     if (!product) return;
 
     const unitPrice = item_price !== undefined ? Number(item_price) : Number(product.food_price);
@@ -113,7 +114,7 @@ useEffect(() => {
       }
     } else {
       const existingIndex = cartItems.findIndex(
-        (item) => (item.cart_key ? item.cart_key === key : item.id === id)
+        (item) => (item.cart_key ? item.cart_key === key : String(item.id) === String(id))
       );
 
       if (existingIndex > -1) {
@@ -134,6 +135,7 @@ useEffect(() => {
             selected_variation: selected_variation || null,
             selected_addons: selected_addons || null,
             item_price: unitPrice,
+            food_item: product,
           },
         ]);
       }
@@ -545,12 +547,18 @@ useEffect(() => {
 
       </Routes>
 
-      <CustomiseItemModal
-        isOpen={!!customiseItem}
-        item={customiseItem}
-        onClose={() => setCustomiseItem(null)}
-        onAddToCart={add_customized_cart}
-      />
+      {customiseItem && (
+        <CustomiseItemModal
+          key={customiseItem.id}
+          isOpen={!!customiseItem}
+          item={customiseItem}
+          onClose={() => {
+            setCustomiseItem(null);
+            document.body.style.removeProperty("overflow");
+          }}
+          onAddToCart={add_customized_cart}
+        />
+      )}
     </>
   );
 }
