@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 
 function AboutStory({ details }) {
+  const story = details?.content?.about_our_story || details?.content?.About_Our_Story || {};
+  const imagePath = story?.image || details?.content?.About_Our_Story?.image || details?.content?.about_our_story?.image;
 
   return (
     <section className="about_story py-5">
@@ -13,7 +15,7 @@ function AboutStory({ details }) {
           <div className="col-lg-6 mb-4 mb-lg-0">
             <div className="about_img_box">
               <img 
-                src={`${API_BASE_URL}/storage/${details?.content?.about_our_story?.image}`} 
+                src={`${API_BASE_URL}/storage/${imagePath}`} 
                 alt="about"
                 className="about_img"
                 loading="lazy"
@@ -25,21 +27,25 @@ function AboutStory({ details }) {
           <div className="col-lg-6">
             <div className="about_content">
 
-              <span className="about_tag">{details?.content?.About_Our_Story?.subtitle}</span>
+              {story?.subtitle && (
+                <span className="about_tag">{story.subtitle}</span>
+              )}
 
               <h2>
-                {details?.content?.About_Our_Story?.title}
+                {story?.title || "Bringing Delicious Food To Your Doorstep"}
               </h2>
 
-              <p>
-                 {details?.content?.About_Our_Story?.desc1}
-              </p>
+              {story?.desc1 && (
+                <p>{story.desc1}</p>
+              )}
 
-              <p>
-               {details?.content?.About_Our_Story?.desc2}
-              </p>
+              {story?.desc2 && (
+                <p>{story.desc2}</p>
+              )}
 
-              <Link to="/menu" className="about_btn">{details?.content?.About_Our_Story?.btn_text}</Link>
+              <Link to={story?.btn_url || "/menu"} className="about_btn">
+                {story?.btn_text || "Explore Menu"}
+              </Link>
 
             </div>
           </div>

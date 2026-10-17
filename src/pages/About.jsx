@@ -1,4 +1,5 @@
 import "./About.css";
+import "./Home.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Banner from "../components/HomeBanner";

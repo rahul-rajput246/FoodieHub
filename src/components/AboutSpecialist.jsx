@@ -1,6 +1,9 @@
+import "../pages/About.css";
 import { API_BASE_URL } from "../config";
 
 function Specialities({details}) {
+  const items = details?.content?.about_special?.items || [];
+
   return (
     <section className="specialities_section py-5">
       <div className="container">
@@ -13,7 +16,7 @@ function Specialities({details}) {
         </div>
 
         <div className="row g-4">
-          {details?.content?.about_special?.items.map((item , index) => (
+          {items.map((item , index) => (
             <div className="col-md-6 col-lg-3" key={index}>
               <div className="speciality_card h-100">
                 <div className="speciality_img_box">
