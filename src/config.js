@@ -13,6 +13,8 @@ export const normalizeImageUrl = (url, fallback = "/assets/images/burger.png") =
   if (!url) return fallback;
   if (typeof url !== "string") return fallback;
 
+  let normalized = url;
+
   // In production, map localhost/127.0.0.1 back to production API_BASE_URL
   if (API_BASE_URL && !API_BASE_URL.includes("127.0.0.1") && !API_BASE_URL.includes("localhost")) {
     normalized = normalized.replace(/http:\/\/(localhost|127\.0\.0\.1):8000/g, API_BASE_URL);
