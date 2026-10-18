@@ -6,7 +6,7 @@ import CartPage from "../components/CartPage";
 import { useState, useEffect } from "react";
 import { useRoutes } from "react-router-dom";
 
-function Cart({ addToCart, plus_cart, minus_cart, add_cart, totalQty, foodItems, user }) {
+function Cart({ addToCart, plus_cart, minus_cart, remove_cart, add_cart, totalQty, foodItems, user }) {
   return (
     <>
       <Navbar user={user} totalQty={totalQty} />
@@ -22,6 +22,7 @@ function Cart({ addToCart, plus_cart, minus_cart, add_cart, totalQty, foodItems,
         addToCart={addToCart}
         plus_cart={plus_cart}
         minus_cart={minus_cart}
+        remove_cart={remove_cart}
         add_cart={add_cart}
         totalQty={totalQty}
         foodItems={foodItems}

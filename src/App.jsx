@@ -212,22 +212,50 @@ useEffect(() => {
     localStorage.setItem("foodCart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const plus_cart = async (keyOrId) => {
-    const cartItem = cartItems.find(
-      (item) => (item.cart_key && item.cart_key === keyOrId) || item.id === keyOrId
+  const remove_cart = async (keyOrId) => {
+    const target = String(keyOrId);
+    setCartItems((prev) =>
+      prev.filter((item) => {
+        const itemKey = item.cart_key ? String(item.cart_key) : "";
+        const itemId = String(item.id);
+        if (itemKey && (itemKey === target || itemKey === `item_${target}`)) {
+          return false;
+        }
+        if (itemId === target || `item_${itemId}` === target) {
+          return false;
+        }
+        return true;
+      })
     );
+
+    if (user) {
+      try {
+        await axios.delete(`/api/cart/remove/${keyOrId}`);
+      } catch (error) {
+        console.error("Error removing from cart:", error);
+      }
+    }
+  };
+
+  const plus_cart = async (keyOrId) => {
+    const target = String(keyOrId);
+    const cartItem = cartItems.find((item) => {
+      const itemKey = item.cart_key ? String(item.cart_key) : "";
+      const itemId = String(item.id);
+      return itemKey === target || itemId === target || `item_${itemId}` === target;
+    });
     if (!cartItem) return;
 
     const targetKey = cartItem.cart_key || cartItem.id;
     const newQty = cartItem.qty + 1;
 
     setCartItems((prev) =>
-      prev.map((item) =>
-        (item.cart_key && item.cart_key === targetKey) ||
-        (!item.cart_key && item.id === targetKey)
-          ? { ...item, qty: newQty }
-          : item
-      )
+      prev.map((item) => {
+        const itemKey = item.cart_key ? String(item.cart_key) : "";
+        const itemId = String(item.id);
+        const match = itemKey === target || itemId === target || `item_${itemId}` === target;
+        return match ? { ...item, qty: newQty } : item;
+      })
     );
 
     if (user) {
@@ -235,52 +263,41 @@ useEffect(() => {
         await axios.post(`/api/cart/update/${targetKey}`, { quantity: newQty });
       } catch (error) {
         console.error("Error updating cart:", error);
-        fetchCart();
       }
     }
   };
 
   const minus_cart = async (keyOrId) => {
-    const cartItem = cartItems.find(
-      (item) => (item.cart_key && item.cart_key === keyOrId) || item.id === keyOrId
-    );
+    const target = String(keyOrId);
+    const cartItem = cartItems.find((item) => {
+      const itemKey = item.cart_key ? String(item.cart_key) : "";
+      const itemId = String(item.id);
+      return itemKey === target || itemId === target || `item_${itemId}` === target;
+    });
     if (!cartItem) return;
 
+    if (cartItem.qty <= 1) {
+      await remove_cart(keyOrId);
+      return;
+    }
+
     const targetKey = cartItem.cart_key || cartItem.id;
+    const newQty = cartItem.qty - 1;
 
-    if (cartItem.qty === 1) {
-      setCartItems((prev) =>
-        prev.filter((item) =>
-          item.cart_key ? item.cart_key !== targetKey : item.id !== targetKey
-        )
-      );
+    setCartItems((prev) =>
+      prev.map((item) => {
+        const itemKey = item.cart_key ? String(item.cart_key) : "";
+        const itemId = String(item.id);
+        const match = itemKey === target || itemId === target || `item_${itemId}` === target;
+        return match ? { ...item, qty: newQty } : item;
+      })
+    );
 
-      if (user) {
-        try {
-          await axios.delete(`/api/cart/remove/${targetKey}`);
-        } catch (error) {
-          console.error("Error removing from cart:", error);
-          fetchCart();
-        }
-      }
-    } else {
-      const newQty = cartItem.qty - 1;
-      setCartItems((prev) =>
-        prev.map((item) =>
-          (item.cart_key && item.cart_key === targetKey) ||
-          (!item.cart_key && item.id === targetKey)
-            ? { ...item, qty: newQty }
-            : item
-        )
-      );
-
-      if (user) {
-        try {
-          await axios.post(`/api/cart/update/${targetKey}`, { quantity: newQty });
-        } catch (error) {
-          console.error("Error updating cart:", error);
-          fetchCart();
-        }
+    if (user) {
+      try {
+        await axios.post(`/api/cart/update/${targetKey}`, { quantity: newQty });
+      } catch (error) {
+        console.error("Error updating cart:", error);
       }
     }
   };
@@ -514,6 +531,7 @@ useEffect(() => {
               addToCart={cartItems}
               plus_cart={plus_cart}
               minus_cart={minus_cart}
+              remove_cart={remove_cart}
               add_cart={add_cart}
               totalQty={totalQty}
               foodItems={foodItems}
@@ -532,11 +550,11 @@ useEffect(() => {
               foodItems={foodItems}
               plus_cart={plus_cart}
               minus_cart={minus_cart}
+              remove_cart={remove_cart}
               add_cart={add_cart}
               user={user}
               authLoading={authLoading}
             />
-
           }
         />
 

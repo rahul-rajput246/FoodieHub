@@ -111,6 +111,40 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems = [] }
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
 
+  const getCookieValue = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return decodeURIComponent(parts.pop().split(";").shift());
+    }
+    return "";
+  };
+
+  const api = axios.create({
+    baseURL: BACKEND_URL,
+    withCredentials: true,
+    withXSRFToken: true,
+    xsrfCookieName: "XSRF-TOKEN",
+    xsrfHeaderName: "X-XSRF-TOKEN",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  });
+
+  const getCsrfCookie = async () => {
+    await api.get("/sanctum/csrf-cookie");
+
+    const token = getCookieValue("XSRF-TOKEN");
+
+    if (token) {
+      api.defaults.headers.common["X-XSRF-TOKEN"] = token;
+    }
+
+    console.log("XSRF TOKEN:", token);
+  };
+
   useEffect(() => {
     const loadAddresses = async () => {
       try {
@@ -179,39 +213,6 @@ function CheckOutPage({ addToCart = [], totalQty, setAddToCart, foodItems = [] }
     });
   };
 
-  const getCookieValue = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      return decodeURIComponent(parts.pop().split(";").shift());
-    }
-    return "";
-  };
-
-  const api = axios.create({
-    baseURL: BACKEND_URL,
-    withCredentials: true,
-    withXSRFToken: true,
-    xsrfCookieName: "XSRF-TOKEN",
-    xsrfHeaderName: "X-XSRF-TOKEN",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest",
-    },
-  });
-
-  const getCsrfCookie = async () => {
-    await api.get("/sanctum/csrf-cookie");
-
-    const token = getCookieValue("XSRF-TOKEN");
-
-    if (token) {
-      api.defaults.headers.common["X-XSRF-TOKEN"] = token;
-    }
-
-    console.log("XSRF TOKEN:", token);
-  };
 
   const handleCashOnDelivery = async () => {
     try {

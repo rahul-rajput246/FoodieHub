@@ -5,7 +5,7 @@ import { API_BASE_URL, normalizeImageUrl } from "../config";
 import CouponSection from "./CouponSection";
 import VegBadge from "./VegBadge";
 
-function Cart({ addToCart = [], plus_cart, minus_cart, foodItems = [], user }) {
+function Cart({ addToCart = [], plus_cart, minus_cart, remove_cart, foodItems = [], user }) {
 
   const detailedCartItems = addToCart.map((cartItem) => {
     const product = foodItems.find((p) => p.id === cartItem.id) || {};
@@ -172,6 +172,21 @@ function Cart({ addToCart = [], plus_cart, minus_cart, foodItems = [], user }) {
                         </div>
 
                         <h5>₹{item.lineTotal}</h5>
+
+                        <button
+                          type="button"
+                          className="cart_item_remove_btn"
+                          onClick={() => (remove_cart ? remove_cart(item.cart_key || item.id) : minus_cart(item.cart_key || item.id))}
+                          title="Remove item from cart"
+                        >
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                            <line x1="10" y1="11" x2="10" y2="17" />
+                            <line x1="14" y1="11" x2="14" y2="17" />
+                          </svg>
+                          <span>Remove</span>
+                        </button>
                       </div>
                     </div>
                   ))}
