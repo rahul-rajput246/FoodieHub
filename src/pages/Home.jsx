@@ -10,6 +10,7 @@ import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
+import { DEFAULT_HOME_DATA } from "../data/defaultPageData";
 
 function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist, removeFromWishlist, wishList, foodItems, openCustomise, add_customized_cart }) {
 
@@ -17,9 +18,9 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
   const [homeData, setHomeData] = useState(() => {
     try {
       const cached = localStorage.getItem("homeDataCache");
-      return cached ? JSON.parse(cached) : null;
+      return cached ? JSON.parse(cached) : DEFAULT_HOME_DATA;
     } catch {
-      return null;
+      return DEFAULT_HOME_DATA;
     }
   });
   const foodData = foodItems || [];
@@ -69,21 +70,6 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
     .sort((a, b) => b.id - a.id).slice(0, 4);
 
   const totalQty = addToCart.reduce((total, item) => total + item.qty, 0);
-
-  if (!homeData) {
-    return (
-      <>
-        <Navbar totalQty={totalQty} user={user} />
-        <div className="text-center py-5 d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
-          <div className="spinner-border text-warning" role="status" style={{ width: "3rem", height: "3rem" }}>
-            <span className="visually-hidden">Loading FoodieHub...</span>
-          </div>
-          <p className="mt-3 text-secondary">Loading delicious food...</p>
-        </div>
-        <Footer />
-      </>
-    );
-  }
 
   return (
     <>

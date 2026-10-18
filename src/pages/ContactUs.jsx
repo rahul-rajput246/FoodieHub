@@ -8,24 +8,25 @@ import ContactMap from "../components/ContactMap";
 import "./ContactUs.css";
 import { useEffect, useState } from 'react';
 import { API_BASE_URL } from "../config";
+import { DEFAULT_CONTACT_DATA, DEFAULT_ABOUT_DATA } from "../data/defaultPageData";
 
 function ContactUs({ totalQty, user }) {
 
     const [contactData, setContactData] = useState(() => {
       try {
         const cached = localStorage.getItem("contactDataCache");
-        return cached ? JSON.parse(cached) : null;
+        return cached ? JSON.parse(cached) : DEFAULT_CONTACT_DATA;
       } catch {
-        return null;
+        return DEFAULT_CONTACT_DATA;
       }
     });
 
     const [aboutData, setAboutData] = useState(() => {
       try {
         const cached = localStorage.getItem("aboutDataCache");
-        return cached ? JSON.parse(cached) : null;
+        return cached ? JSON.parse(cached) : DEFAULT_ABOUT_DATA;
       } catch {
-        return null;
+        return DEFAULT_ABOUT_DATA;
       }
     });
 
@@ -48,39 +49,22 @@ function ContactUs({ totalQty, user }) {
     }, []);
 
     useEffect(() => {
-        if (!aboutData) {
-          fetch(`${API_BASE_URL}/api/home-data/about`)
-          .then((res) => res.json())
-          .then((result) => {
-              if (result.data) {
-                setAboutData(result.data);
-                try {
-                  localStorage.setItem("aboutDataCache", JSON.stringify(result.data));
-                } catch (e) {
-                  console.warn("Could not cache about data:", e);
-                }
+        fetch(`${API_BASE_URL}/api/home-data/about`)
+        .then((res) => res.json())
+        .then((result) => {
+            if (result.data) {
+              setAboutData(result.data);
+              try {
+                localStorage.setItem("aboutDataCache", JSON.stringify(result.data));
+              } catch (e) {
+                console.warn("Could not cache about data:", e);
               }
-          })
-          .catch((error) => {
-              console.log("error fetching about API:", error);
-          });
-        }
-    }, [aboutData]);
-
-    if (!contactData && !aboutData) {
-        return (
-          <>
-            <Navbar totalQty={totalQty} user={user} />
-            <div className="text-center py-5 d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
-              <div className="spinner-border text-warning" role="status" style={{ width: "3rem", height: "3rem" }}>
-                <span className="visually-hidden">Loading Contact Us...</span>
-              </div>
-              <p className="mt-3 text-secondary">Loading contact details...</p>
-            </div>
-            <Footer />
-          </>
-        );
-    }
+            }
+        })
+        .catch((error) => {
+            console.log("error fetching about API:", error);
+        });
+    }, []);
 
     return(
         <>

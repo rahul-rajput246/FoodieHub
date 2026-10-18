@@ -4,15 +4,16 @@ import MenuFilter from "../components/MenuFilter";
 import Footer from "../components/Footer";
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "../config";
+import { DEFAULT_MENU_DATA } from "../data/defaultPageData";
 
 function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wishList, addToWishlist, removeFromWishlist, foodItems, openCustomise, add_customized_cart }) {
 
   const [menuData, setmenuData] = useState(() => {
     try {
       const cached = localStorage.getItem("menuDataCache");
-      return cached ? JSON.parse(cached) : null;
+      return cached ? JSON.parse(cached) : DEFAULT_MENU_DATA;
     } catch {
-      return null;
+      return DEFAULT_MENU_DATA;
     }
   });
 
@@ -33,21 +34,6 @@ function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wish
         console.log("Error Fetching Menu API:", error);
       });
   }, []);
-
-  if (!menuData) {
-    return (
-      <>
-        <Navbar totalQty={totalQty} user={user} />
-        <div className="text-center py-5 d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
-          <div className="spinner-border text-warning" role="status" style={{ width: "3rem", height: "3rem" }}>
-            <span className="visually-hidden">Loading Menu...</span>
-          </div>
-          <p className="mt-3 text-secondary">Loading delicious menu...</p>
-        </div>
-        <Footer />
-      </>
-    );
-  }
 
   return (
     <>

@@ -10,8 +10,10 @@ function ScrollToHash() {
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
-  }, [location]);
+  }, [location.pathname, location.hash]);
 
   return null;
 }
