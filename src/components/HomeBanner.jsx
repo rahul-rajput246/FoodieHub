@@ -1,14 +1,28 @@
 import { Link } from "react-router-dom";
-import { API_BASE_URL } from "../config";
+import { normalizeImageUrl } from "../config";
 
 function HomeBanner({ details, bannerKey}){
 
   const banner = details?.content?.[bannerKey];
+  const bannerImgSrc = normalizeImageUrl(
+    banner?.image,
+    "/assets/images/home_banner.png"
+  );
 
     return(
       <div className="banner_section">
         <div className="banner_img_box">
-          <img src={`${API_BASE_URL}/storage/${banner?.image}`} loading="lazy" alt="banner_Img.." className="banner_img" />
+          <img
+            src={bannerImgSrc}
+            fetchPriority="high"
+            decoding="async"
+            alt="banner_Img.."
+            className="banner_img"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "/assets/images/home_banner.png";
+            }}
+          />
         </div>
         <div className="banner_overlay">
           <div className="container">
@@ -35,11 +49,11 @@ function HomeBanner({ details, bannerKey}){
               </div>
 
               <div className="button_box">
-                <Link to={banner?.btn_url1} className="shop_btn">
-                  {banner?.btn_text1}
+                <Link to={banner?.btn_url1 || "/cart"} className="shop_btn">
+                  {banner?.btn_text1 || "Shop Now"}
                 </Link>
-                <Link to={banner?.btn_url2} className="menu_btn">
-                  {banner?.btn_text2}
+                <Link to={banner?.btn_url2 || "/menu"} className="menu_btn">
+                  {banner?.btn_text2 || "Explore Menu"}
                 </Link>
               </div>
             </div>

@@ -1,11 +1,12 @@
 import VegBadge from "./VegBadge";
+import { normalizeImageUrl } from "../config";
 
 function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wishList, removeFromWishlist, addToWishlist, foods, openCustomise }) {
 
   return (
     <div className="category_block">
       <div className="row">
-        {items.map((props) => {
+        {items.map((props, index) => {
           const cartItem = addToCart.find((c) => c.id === props.id);
           const isCustomisable =
             props.has_customizations ||
@@ -16,7 +17,17 @@ function CategorySection({ items, addToCart, add_cart, plus_cart, minus_cart, wi
             <div className="col-lg-3 col-md-6 mb-3" key={props.id}>
               <div className="food_card p-3">
                 <div className="food_img_box">
-                  <img src={props.image_url} alt={props.food_name} className="food_img" loading="lazy"/>
+                  <img
+                    src={normalizeImageUrl(props.image_url)}
+                    alt={props.food_name}
+                    className="food_img"
+                    loading={index < 4 ? "eager" : "lazy"}
+                    decoding="async"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/assets/images/burger.png";
+                    }}
+                  />
 
                   <button
                     className="food_badge"

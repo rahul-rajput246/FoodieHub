@@ -14,16 +14,30 @@ import axios from "axios";
 function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist, removeFromWishlist, wishList, foodItems, openCustomise, add_customized_cart }) {
 
   const [activeCategory, setActiveCategory] = useState("All");
-  const [homeData, setHomeData] = useState(null);
+  const [homeData, setHomeData] = useState(() => {
+    try {
+      const cached = localStorage.getItem("homeDataCache");
+      return cached ? JSON.parse(cached) : null;
+    } catch {
+      return null;
+    }
+  });
   const foodData = foodItems || [];
 
   useEffect(() => {
     const fetchHome = async () => {
       try {
         const res = await axios.get("/api/home-data/home");
-        setHomeData(res.data.data);
+        if (res.data?.data) {
+          setHomeData(res.data.data);
+          try {
+            localStorage.setItem("homeDataCache", JSON.stringify(res.data.data));
+          } catch (e) {
+            console.warn("Could not cache home data:", e);
+          }
+        }
       } catch (error) {
-        console.log(error);
+        console.log("Error fetching home data:", error);
       }
     };
 
@@ -54,42 +68,22 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
   const mostLovedItems = [...foodData].filter((item) => item.food_is_popular == 1)
     .sort((a, b) => b.id - a.id).slice(0, 4);
 
-  // Admin Login credentials
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     try {
-  //       await fetch("http://localhost:8000/sanctum/csrf-cookie", {
-  //         credentials: "include",
-  //       });
-
-  //       const res = await fetch("http://localhost:8000/api/user", {
-  //         credentials: "include",
-  //       });
-
-  //       if (!res.ok) throw new Error("Not logged in");
-
-  //       const data = await res.json();
-  //       setUser(data);
-  //     } catch (err) {
-  //       setUser(null);
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
-
   const totalQty = addToCart.reduce((total, item) => total + item.qty, 0);
 
- if (!homeData) {
-  return (
-    <div className="text-center bg-transparent py-5">
-      <div className="spinner">
-        <img src="/assets/favicon/favicon.png" alt="loading..."/>
-      </div>
-    </div>
-  );
-}
+  if (!homeData) {
+    return (
+      <>
+        <Navbar totalQty={totalQty} user={user} />
+        <div className="text-center py-5 d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
+          <div className="spinner-border text-warning" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="visually-hidden">Loading FoodieHub...</span>
+          </div>
+          <p className="mt-3 text-secondary">Loading delicious food...</p>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>

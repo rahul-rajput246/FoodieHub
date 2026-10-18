@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, normalizeImageUrl } from "../config";
 import CouponSection from "./CouponSection";
 import VegBadge from "./VegBadge";
 
@@ -117,7 +117,15 @@ function Cart({ addToCart = [], plus_cart, minus_cart, foodItems = [], user }) {
                   {detailedCartItems.map((item) => (
                     <div className="cart_item_card" key={item.cart_key || item.id}>
                       <div className="cart_item_img">
-                        <img src={item.image_url} alt={item.food_name} loading="lazy" />
+                        <img
+                          src={normalizeImageUrl(item.image_url)}
+                          alt={item.food_name}
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/assets/images/burger.png";
+                          }}
+                        />
                       </div>
 
                       <div className="cart_item_info">

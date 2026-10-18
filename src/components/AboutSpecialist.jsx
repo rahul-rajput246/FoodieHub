@@ -1,5 +1,5 @@
 import "../pages/About.css";
-import { API_BASE_URL } from "../config";
+import { normalizeImageUrl } from "../config";
 
 function Specialities({details}) {
   const items = details?.content?.about_special?.items || [];
@@ -21,10 +21,14 @@ function Specialities({details}) {
               <div className="speciality_card h-100">
                 <div className="speciality_img_box">
                   <img
-                    src={`${API_BASE_URL}/storage/${item.image}`}
+                    src={normalizeImageUrl(item.image, "/assets/images/our_team_img1.png")}
                     alt={item.title}
                     className="speciality_img"
                     loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "/assets/images/our_team_img1.png";
+                    }}
                   />
                 </div>
 

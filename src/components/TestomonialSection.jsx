@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../config";
+import { normalizeImageUrl } from "../config";
 
 function TestomonialSection({ details }) {
   return (
@@ -27,10 +27,14 @@ function TestomonialSection({ details }) {
                 <div className="testimonial_user">
                   <div className="testimonial_img_box">
                     <img
-                      src={`${API_BASE_URL}/storage/${props.image}`}
+                      src={normalizeImageUrl(props.image, "/assets/images/our_team_img1.png")}
                       alt="User Image"
                       className="testimonial_img"
                       loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/assets/images/our_team_img1.png";
+                      }}
                     />
                   </div>
 

@@ -6,69 +6,79 @@ import ContactForm from "../components/ContactUsForm";
 import CTASection from "../components/CTASection";
 import ContactMap from "../components/ContactMap";
 import "./ContactUs.css";
-import {useEffect , useState} from 'react';
+import { useEffect, useState } from 'react';
 import { API_BASE_URL } from "../config";
 
-function ContactUs({  totalQty, user }) {
+function ContactUs({ totalQty, user }) {
 
-    const [contactData , setContactData] = useState(null);
+    const [contactData, setContactData] = useState(() => {
+      try {
+        const cached = localStorage.getItem("contactDataCache");
+        return cached ? JSON.parse(cached) : null;
+      } catch {
+        return null;
+      }
+    });
+
+    const [aboutData, setAboutData] = useState(() => {
+      try {
+        const cached = localStorage.getItem("aboutDataCache");
+        return cached ? JSON.parse(cached) : null;
+      } catch {
+        return null;
+      }
+    });
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/api/home-data/contact`)
         .then((res) => res.json())
         .then((result) => {
-            console.log("Fatching API:" , result);
-            setContactData(result.data);
+            if (result.data) {
+              setContactData(result.data);
+              try {
+                localStorage.setItem("contactDataCache", JSON.stringify(result.data));
+              } catch (e) {
+                console.warn("Could not cache contact data:", e);
+              }
+            }
         })
         .catch((error) => {
-            console.log('error fatching Api:' , error);
-        });
-    } , []);
-
-    const [aboutData , setAboutData] = useState(null);
-
-    useEffect(() => {
-        fetch(`${API_BASE_URL}/api/home-data/about`)
-        .then((res) => res.json())
-        .then((result) => {
-            console.log('Apt Data:',result)
-            setAboutData(result.data)
-        })
-        .catch((error) => {
-            console.log("error Fatching API" , error);
+            console.log('error fetching contact API:', error);
         });
     }, []);
 
-//     useEffect(() => {
-//   const fetchUser = async () => {
-//     try {
-//       await fetch("http://localhost:8000/sanctum/csrf-cookie", {
-//         credentials: "include",
-//       });
+    useEffect(() => {
+        if (!aboutData) {
+          fetch(`${API_BASE_URL}/api/home-data/about`)
+          .then((res) => res.json())
+          .then((result) => {
+              if (result.data) {
+                setAboutData(result.data);
+                try {
+                  localStorage.setItem("aboutDataCache", JSON.stringify(result.data));
+                } catch (e) {
+                  console.warn("Could not cache about data:", e);
+                }
+              }
+          })
+          .catch((error) => {
+              console.log("error fetching about API:", error);
+          });
+        }
+    }, [aboutData]);
 
-//       const res = await fetch("http://localhost:8000/api/user", {
-//         credentials: "include",
-//       });
-
-//       if (!res.ok) throw new Error("Not logged in");
-
-//       const data = await res.json();
-//       setUser(data);
-//     } catch (err) {
-//       setUser(null);
-//     }
-//   };
-
-//   fetchUser();
-// }, []);
-
-     if (!contactData || !aboutData) {
+    if (!contactData && !aboutData) {
         return (
-            <div className="text-center py-5">
-            <div className="spinner">
-                <img src="/assets/favicon/favicon.png" alt="loading..." loading="lazy"/>
+          <>
+            <Navbar totalQty={totalQty} user={user} />
+            <div className="text-center py-5 d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
+              <div className="spinner-border text-warning" role="status" style={{ width: "3rem", height: "3rem" }}>
+                <span className="visually-hidden">Loading Contact Us...</span>
+              </div>
+              <p className="mt-3 text-secondary">Loading contact details...</p>
             </div>
-            </div>
+            <Footer />
+          </>
         );
     }
 

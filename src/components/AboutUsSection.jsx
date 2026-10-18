@@ -1,6 +1,6 @@
 import "../pages/About.css";
 import { Link } from "react-router-dom";
-import { API_BASE_URL } from "../config";
+import { normalizeImageUrl } from "../config";
 
 function AboutStory({ details }) {
   const story = details?.content?.about_our_story || details?.content?.About_Our_Story || {};
@@ -15,10 +15,14 @@ function AboutStory({ details }) {
           <div className="col-lg-6 mb-4 mb-lg-0">
             <div className="about_img_box">
               <img 
-                src={`${API_BASE_URL}/storage/${imagePath}`} 
+                src={normalizeImageUrl(imagePath, "/assets/images/about-story.png")} 
                 alt="about"
                 className="about_img"
                 loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/assets/images/about-story.png";
+                }}
               />
             </div>
           </div>

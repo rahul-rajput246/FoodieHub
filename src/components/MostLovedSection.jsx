@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import VegBadge from "./VegBadge";
+import { normalizeImageUrl } from "../config";
 
 function MostLovedSection({ items, add_cart, foodData, openCustomise }) {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function MostLovedSection({ items, add_cart, foodData, openCustomise }) {
         </div>
 
         <div className="row g-4">
-          {items.map((item) => {
+          {items.map((item, index) => {
             const isCustomisable =
               item.has_customizations ||
               (Array.isArray(item.variations) && item.variations.length > 0) ||
@@ -38,7 +39,17 @@ function MostLovedSection({ items, add_cart, foodData, openCustomise }) {
               <div className="col-md-6 col-lg-3" key={item.id}>
                 <div className="most_loved_card h-100">
                   <div className="most_loved_img_box">
-                    <img src={item.image_url} alt={item.food_name} className="most_loved_img" loading="lazy"/>  
+                    <img
+                      src={normalizeImageUrl(item.image_url)}
+                      alt={item.food_name}
+                      className="most_loved_img"
+                      loading={index < 4 ? "eager" : "lazy"}
+                      decoding="async"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = "/assets/images/burger.png";
+                      }}
+                    />  
                     <span className="most_loved_rating">⭐{item.food_rating}</span>
                   </div>
 

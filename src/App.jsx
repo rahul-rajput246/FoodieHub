@@ -55,10 +55,19 @@ useEffect(() => {
   };
 
   useEffect(() => {
-  axios.get("/sanctum/csrf-cookie");
-}, []);
+    if (!document.cookie.includes("XSRF-TOKEN")) {
+      axios.get("/sanctum/csrf-cookie").catch(() => {});
+    }
+  }, []);
 
-  const [foodItems, setFoodItems] = useState([]);
+  const [foodItems, setFoodItems] = useState(() => {
+    try {
+      const cached = localStorage.getItem("foodItemsCache");
+      return cached ? JSON.parse(cached) : [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/food-data`, {
@@ -69,11 +78,39 @@ useEffect(() => {
         return res.json();
       })
       .then((result) => {
-        setFoodItems(result.data || []);
+        const items = result.data || [];
+        setFoodItems(items);
+        try {
+          localStorage.setItem("foodItemsCache", JSON.stringify(items));
+        } catch (e) {
+          console.warn("Could not cache food items:", e);
+        }
       })
       .catch((error) => {
         console.log("Error Fetching food-data API:", error);
       });
+  }, []);
+
+  // Background prefetch for secondary pages (About, Menu, Contact) to make page navigation instant
+  useEffect(() => {
+    const prefetchTimer = setTimeout(() => {
+      const prefetchPages = ["about", "menu", "contact"];
+      prefetchPages.forEach((page) => {
+        const cacheKey = `${page}DataCache`;
+        if (!localStorage.getItem(cacheKey)) {
+          fetch(`${API_BASE_URL}/api/home-data/${page}`)
+            .then((r) => r.json())
+            .then((d) => {
+              if (d.data) {
+                localStorage.setItem(cacheKey, JSON.stringify(d.data));
+              }
+            })
+            .catch(() => {});
+        }
+      });
+    }, 1500);
+
+    return () => clearTimeout(prefetchTimer);
   }, []);
 
 

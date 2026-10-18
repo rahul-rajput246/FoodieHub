@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import VegBadge from "./VegBadge";
 import "./CustomiseItemModal.css";
+import { normalizeImageUrl } from "../config";
 
 export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart }) {
   const variations = Array.isArray(item?.variations) ? item.variations : [];
@@ -114,7 +115,15 @@ export default function CustomiseItemModal({ isOpen, item, onClose, onAddToCart 
         {/* Banner with image */}
         {item.image_url && (
           <div className="customise_modal_hero">
-            <img src={item.image_url} alt={item.food_name} loading="lazy" />
+            <img
+              src={normalizeImageUrl(item.image_url)}
+              alt={item.food_name}
+              loading="eager"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/assets/images/burger.png";
+              }}
+            />
             <button
               className="customise_modal_close_btn"
               onClick={handleClose}

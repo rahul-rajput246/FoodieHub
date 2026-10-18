@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { API_BASE_URL } from "../config";
+import { normalizeImageUrl } from "../config";
 
 function SpecialOfferBanner({ details }) {
   const offer = details?.content?.home_specialOffer || details?.content?.specialOffer || {};
@@ -10,14 +10,7 @@ function SpecialOfferBanner({ details }) {
   const btnText = offer.home_offer_btn_text || "Order Now";
   const btnUrl = offer.home_offer_btn_url || "/menu";
 
-  let imgSrc = "assets/images/burger.png";
-  if (offer.image) {
-    if (offer.image.startsWith("http")) {
-      imgSrc = offer.image;
-    } else {
-      imgSrc = `${API_BASE_URL}/storage/${offer.image}`;
-    }
-  }
+  const imgSrc = normalizeImageUrl(offer.image, "/assets/images/burger.png");
 
   return (
     <section className="special_banner_section py-5">
@@ -86,7 +79,7 @@ function SpecialOfferBanner({ details }) {
                     loading="lazy"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "assets/images/burger.png";
+                      e.target.src = "/assets/images/burger.png";
                     }}
                   />
                   <div className="offer_floating_badge">

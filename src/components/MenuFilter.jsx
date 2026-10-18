@@ -2,6 +2,7 @@ import { allPrice, sortData, ratingData } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import VegBadge from "./VegBadge";
 import '../pages/Menu.css';
+import { normalizeImageUrl } from "../config";
 
 function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, removeFromWishlist, foods, openCustomise }) {
 
@@ -258,7 +259,7 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
             </div>
 
             <div className="row">
-              {sortFilter.map((item) => {
+              {sortFilter.map((item, index) => {
                 const cartItem = addToCart.find((cart) => cart.id === item.id);
                 const isCustomisable =
                   item.has_customizations ||
@@ -270,10 +271,15 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                     <div className="menu_food_card p-3 h-100">
                       <div className="menu_food_img_box">
                         <img
-                          src={item.image_url}
+                          src={normalizeImageUrl(item.image_url)}
                           alt={item.food_name}
                           className="menu_food_img"
-                          loading="lazy"
+                          loading={index < 6 ? "eager" : "lazy"}
+                          decoding="async"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/assets/images/burger.png";
+                          }}
                         />
                         <button
                           className="food_badge"
