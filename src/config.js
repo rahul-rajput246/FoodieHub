@@ -13,8 +13,13 @@ export const normalizeImageUrl = (url, fallback = "/assets/images/burger.png") =
   if (!url) return fallback;
   if (typeof url !== "string") return fallback;
 
-  // Replace localhost:8000 with 127.0.0.1:8000 to eliminate Windows IPv6 delay
-  let normalized = url.replace(/http:\/\/localhost:8000/g, "http://127.0.0.1:8000");
+  // In production, map localhost/127.0.0.1 back to production API_BASE_URL
+  if (API_BASE_URL && !API_BASE_URL.includes("127.0.0.1") && !API_BASE_URL.includes("localhost")) {
+    normalized = normalized.replace(/http:\/\/(localhost|127\.0\.0\.1):8000/g, API_BASE_URL);
+  } else {
+    // Replace localhost:8000 with 127.0.0.1:8000 to eliminate Windows IPv6 delay locally
+    normalized = normalized.replace(/http:\/\/localhost:8000/g, "http://127.0.0.1:8000");
+  }
 
   if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
     return normalized;
