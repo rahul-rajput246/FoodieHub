@@ -2,7 +2,7 @@ import { allPrice, sortData, ratingData } from "../data/Menudata";
 import { useState, useMemo } from "react";
 import VegBadge from "./VegBadge";
 import '../pages/Menu.css';
-import { normalizeImageUrl } from "../config";
+import { normalizeImageUrl, getFoodFallback } from "../config";
 
 function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addToWishlist, removeFromWishlist, foods, openCustomise }) {
 
@@ -271,14 +271,14 @@ function MenuFilter({ addToCart, add_cart, plus_cart, minus_cart, wishList, addT
                     <div className="menu_food_card p-3 h-100">
                       <div className="menu_food_img_box">
                         <img
-                          src={normalizeImageUrl(item.image_url)}
+                          src={normalizeImageUrl(item.image_url, getFoodFallback(item))}
                           alt={item.food_name}
                           className="menu_food_img"
                           loading={index < 6 ? "eager" : "lazy"}
                           decoding="async"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/assets/images/burger.png";
+                            e.currentTarget.src = getFoodFallback(item);
                           }}
                         />
                         <button

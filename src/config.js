@@ -72,3 +72,19 @@ export const normalizeImageUrl = (url, fallback = "/assets/images/burger.png") =
 
   return `/${normalized}`;
 };
+
+/**
+ * Returns a smart, category-appropriate fallback image for food items.
+ */
+export const getFoodFallback = (item) => {
+  const name = (item?.food_name || item?.name || "").toLowerCase();
+  const cat = (item?.category_name || "").toLowerCase();
+
+  if (name.includes("pizza") || cat.includes("pizza")) return "/assets/images/cheese_pizza.jfif";
+  if (name.includes("drink") || name.includes("mojito") || name.includes("tea") || name.includes("coffee") || name.includes("shake") || name.includes("soda") || cat.includes("drink") || cat.includes("chill")) return "/assets/images/mojito.jfif";
+  if (name.includes("cake") || name.includes("sweet") || name.includes("dessert") || name.includes("jamun") || name.includes("ice") || name.includes("brownie") || cat.includes("sweet")) return "/assets/images/blackForest_cake.webp";
+  if (name.includes("chole") || name.includes("paneer") || name.includes("dal") || name.includes("rice") || name.includes("puri") || cat.includes("desi")) return "/assets/images/chole_bhature.jfif";
+  if (name.includes("chicken") || name.includes("wing")) return "/assets/images/chicken_wings_img.jfif";
+  if (name.includes("sandwich") || name.includes("sandwitch")) return "/assets/images/sandwitch_img.jfif";
+  return "/assets/images/burger.png";
+};

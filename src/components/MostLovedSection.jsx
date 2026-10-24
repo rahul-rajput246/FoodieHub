@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import VegBadge from "./VegBadge";
-import { normalizeImageUrl } from "../config";
+import { normalizeImageUrl, getFoodFallback } from "../config";
 
 function MostLovedSection({ items, add_cart, foodData, openCustomise }) {
   const navigate = useNavigate();
@@ -40,14 +40,14 @@ function MostLovedSection({ items, add_cart, foodData, openCustomise }) {
                 <div className="most_loved_card h-100">
                   <div className="most_loved_img_box">
                     <img
-                      src={normalizeImageUrl(item.image_url)}
+                      src={normalizeImageUrl(item.image_url, getFoodFallback(item))}
                       alt={item.food_name}
                       className="most_loved_img"
                       loading={index < 4 ? "eager" : "lazy"}
                       decoding="async"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = "/assets/images/burger.png";
+                        e.currentTarget.src = getFoodFallback(item);
                       }}
                     />  
                     <span className="most_loved_rating">⭐{item.food_rating}</span>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL, normalizeImageUrl } from "../config";
+import { API_BASE_URL, normalizeImageUrl, getFoodFallback } from "../config";
 import CouponSection from "./CouponSection";
 import VegBadge from "./VegBadge";
 
@@ -118,12 +118,12 @@ function Cart({ addToCart = [], plus_cart, minus_cart, remove_cart, foodItems = 
                     <div className="cart_item_card" key={item.cart_key || item.id}>
                       <div className="cart_item_img">
                         <img
-                          src={normalizeImageUrl(item.image_url)}
+                          src={normalizeImageUrl(item.image_url, getFoodFallback(item))}
                           alt={item.food_name}
                           loading="lazy"
                           onError={(e) => {
                             e.currentTarget.onerror = null;
-                            e.currentTarget.src = "/assets/images/burger.png";
+                            e.currentTarget.src = getFoodFallback(item);
                           }}
                         />
                       </div>
