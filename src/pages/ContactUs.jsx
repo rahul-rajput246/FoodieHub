@@ -31,7 +31,7 @@ function ContactUs({ totalQty, user }) {
     });
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/home-data/contact`)
+        fetch(`${API_BASE_URL}/api/home-data/contact?_t=${Date.now()}`)
         .then((res) => res.json())
         .then((result) => {
             if (result.data) {
@@ -49,7 +49,7 @@ function ContactUs({ totalQty, user }) {
     }, []);
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/home-data/about`)
+        fetch(`${API_BASE_URL}/api/home-data/about?_t=${Date.now()}`)
         .then((res) => res.json())
         .then((result) => {
             if (result.data) {

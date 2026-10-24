@@ -18,7 +18,16 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
   const [homeData, setHomeData] = useState(() => {
     try {
       const cached = localStorage.getItem("homeDataCache");
-      return cached ? JSON.parse(cached) : DEFAULT_HOME_DATA;
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        // Clean out legacy broken hash images or avatar placeholders
+        const img = parsed?.content?.home_banner?.image;
+        if (img && (img.includes("mPr2u") || img.includes("ui-avatars"))) {
+          parsed.content.home_banner.image = DEFAULT_HOME_DATA.content.home_banner.image;
+        }
+        return parsed;
+      }
+      return DEFAULT_HOME_DATA;
     } catch {
       return DEFAULT_HOME_DATA;
     }
@@ -28,7 +37,7 @@ function Home({ user, addToCart, add_cart, plus_cart, minus_cart, addToWishlist,
   useEffect(() => {
     const fetchHome = async () => {
       try {
-        const res = await axios.get("/api/home-data/home");
+        const res = await axios.get(`/api/home-data/home?_t=${Date.now()}`);
         if (res.data?.data) {
           setHomeData(res.data.data);
           try {

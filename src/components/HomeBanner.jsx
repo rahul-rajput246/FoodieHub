@@ -25,6 +25,11 @@ function HomeBanner({ details, bannerKey }){
           decoding="async"
           alt="banner_Img.."
           className="banner_img"
+          onLoad={(e) => {
+            if (e.currentTarget.src.includes("ui-avatars.com") || (e.currentTarget.naturalWidth === 500 && e.currentTarget.naturalHeight === 500 && e.currentTarget.src.includes("Admin"))) {
+              e.currentTarget.src = defaultFallback;
+            }
+          }}
           onError={(e) => {
             e.currentTarget.onerror = null;
             e.currentTarget.src = defaultFallback;

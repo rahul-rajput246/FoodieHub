@@ -12,7 +12,7 @@ export const DEFAULT_HOME_DATA = {
       btn_url1: "/cart",
       btn_text2: "Explore Menu",
       btn_url2: "/menu",
-      image: "uploads/mPr2uVt3rUQYGNir95aDX01hfEqsm6SnsidUmci4.png",
+      image: "/assets/images/home_banner.png",
     },
     home_wcu: {
       home_wcu_title: "Experience the Best Food Service",
@@ -42,15 +42,15 @@ export const DEFAULT_HOME_DATA = {
       home_offer_desc: "Enjoy your favorite meals at a discounted price. Fresh, delicious, and delivered right to your doorstep.",
       home_offer_btn_text: "Order Now",
       home_offer_btn_url: "/cart",
-      image: "uploads/yqwA3RyUMhPmQTGt8WGJEOFQWYGtsByDofqUMnyR.jpg"
+      image: "/assets/images/Pepperoni_pizza.png"
     },
     home_testom: {
       home_testi_subtitle: "Testimonials",
       home_testi_title: "Loved By Food Lovers",
       items: [
-        { desc: "Absolutely loved the burger and fries. Delivery was super quick and food arrived hot.", rating: 5, name: "Rahul Rajput", emotion: "This is Great..!!", image: "uploads/VjxXGGXRFkpmVXiFAhvJICYG9ZX6pIBi8SyMpnZj.jpg" },
-        { desc: "The pizza was cheesy, fresh, and full of flavor. One of the best online food experiences.", rating: 4, name: "Mohit Sharma", emotion: "Dishes is literally Awsome..!!", image: "uploads/rCOvjeaUsP0K8O5CdywoksY6xsvnyoTlXI0fR5nt.jpg" },
-        { desc: "FoodieHub made my dinner so easy. Great taste, great service, and smooth ordering process", rating: 5, name: "Himanshu Singh", emotion: "Great taste ever i tasted..!!", image: "uploads/uX4P9fwrFZfSGTsUfXFaLgl8Hdc4wCAbX8Zfk5MP.jpg" }
+        { desc: "Absolutely loved the burger and fries. Delivery was super quick and food arrived hot.", rating: 5, name: "Rahul Rajput", emotion: "This is Great..!!", image: "/assets/images/our_team_img1.png" },
+        { desc: "The pizza was cheesy, fresh, and full of flavor. One of the best online food experiences.", rating: 4, name: "Mohit Sharma", emotion: "Dishes is literally Awsome..!!", image: "/assets/images/our_team_img2.png" },
+        { desc: "FoodieHub made my dinner so easy. Great taste, great service, and smooth ordering process", rating: 5, name: "Himanshu Singh", emotion: "Great taste ever i tasted..!!", image: "/assets/images/our_team_img3.png" }
       ]
     },
     home_faq: {
@@ -82,7 +82,7 @@ export const DEFAULT_ABOUT_DATA = {
       btn_url1: "/cart",
       btn_text2: "Contact Us",
       btn_url2: "/contact",
-      image: "uploads/SDiAfHcJ0AeUhHQhalD3dDQ6qMX0DgubGbTDhimS.jpg",
+      image: "/assets/images/about_banner.jpg",
     },
     about_our_story: {
       subtitle: "Our Story",
@@ -91,17 +91,17 @@ export const DEFAULT_ABOUT_DATA = {
       desc2: "From fresh ingredients to fast delivery, our mission is to serve happiness in every bite. Whether it's fast food or traditional flavors, we've got something for everyone.",
       btn_text: "Explore Menu",
       btn_url: "/menu",
-      image: "uploads/2u9QJM6ipssmf5BaqKzx7uxnwWStIkHuXwD4flK6.jpg",
+      image: "/assets/images/about-story.jpg",
     },
     about_special: {
       subtitle: "What We Serve",
       title: "Our Specialities",
       desc: "From spicy desi meals to sweet desserts, FoodieHub brings all your favorite flavors together in one place.",
       items: [
-        { box_title: "Fast Food", box_desc: "Crispy, cheesy, and loaded with flavor — perfect for your quick cravings.", image: "uploads/ILaUjLQUVtelUamTSNn9uxtZsWRL92iOHeDjCXLs.jpg" },
-        { box_title: "Desi Tadka", box_desc: "Authentic Indian flavors made with rich spices and homely love.", image: "uploads/PCjk28QXlX2Usx5OnjS84NVOvuy15I8wC9rqFVXc.jpg" },
-        { box_title: "Chill Drinks", box_desc: "Refreshing beverages and cool sips to complete every meal.", image: "uploads/GHS4odt6WOnMggFGSp6FBhNB7RNLOOVXGVcoTXmO.jpg" },
-        { box_title: "Sweet Cravings", box_desc: "Delightful desserts and sweets that make every ending perfect.", image: "uploads/rZU6Arx8Qiw7HzRG0DRe0oC7jiTzP1GP2mGlov1u.jpg" }
+        { box_title: "Fast Food", box_desc: "Crispy, cheesy, and loaded with flavor — perfect for your quick cravings.", image: "/assets/images/burger.png" },
+        { box_title: "Desi Tadka", box_desc: "Authentic Indian flavors made with rich spices and homely love.", image: "/assets/images/chole_bhature.jfif" },
+        { box_title: "Chill Drinks", box_desc: "Refreshing beverages and cool sips to complete every meal.", image: "/assets/images/mojito.jfif" },
+        { box_title: "Sweet Cravings", box_desc: "Delightful desserts and sweets that make every ending perfect.", image: "/assets/images/blackForest_cake.webp" }
       ]
     },
     aboutOffer: {
@@ -128,7 +128,7 @@ export const DEFAULT_MENU_DATA = {
       btn_url1: "/cart",
       btn_text2: "Explore Menu",
       btn_url2: "/menu",
-      image: "uploads/XFo7KKJ2Vc9GdySQrBAXXAu0uKUDsK1XFTuxyMGr.jpg",
+      image: "/assets/images/menu_banner.png",
     }
   }
 };
@@ -145,7 +145,7 @@ export const DEFAULT_CONTACT_DATA = {
       btn_url1: "/menu",
       btn_text2: "Call Now",
       btn_url2: "/contact#contact-form",
-      image: "uploads/7iFzYubLCuNzW1d4zlRbDb9bceSUzbFATeL8xB49.jpg",
+      image: "/assets/images/contact_banner.jpeg",
     },
     contact_info: {
       items: [

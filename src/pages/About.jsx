@@ -34,7 +34,7 @@ function AboutPage({ totalQty, user }){
   });
 
   useEffect(() => {
-    axios.get("/api/home-data/about")
+    axios.get(`/api/home-data/about?_t=${Date.now()}`)
       .then((res) => {
         if (res.data?.data) {
           setAboutData(res.data.data);
@@ -51,7 +51,7 @@ function AboutPage({ totalQty, user }){
   }, []);
 
   useEffect(() => {
-    axios.get("/api/home-data/home")
+    axios.get(`/api/home-data/home?_t=${Date.now()}`)
       .then((res) => {
         if (res.data?.data) {
           setHomeData(res.data.data);

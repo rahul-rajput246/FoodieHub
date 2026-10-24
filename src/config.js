@@ -42,6 +42,16 @@ export const normalizeImageUrl = (url, fallback = "/assets/images/burger.png") =
   if (!url) return fallback;
   if (typeof url !== "string") return fallback;
 
+  // Never allow ui-avatars.com placeholder as banner or content image
+  if (url.includes("ui-avatars.com")) {
+    return fallback;
+  }
+
+  // Base64 Data URIs are self-contained and durable
+  if (url.startsWith("data:image/")) {
+    return url;
+  }
+
   let normalized = url;
 
   // Replace any localhost:8000 or 127.0.0.1:8000 with active API_BASE_URL

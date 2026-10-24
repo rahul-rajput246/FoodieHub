@@ -108,7 +108,7 @@ useEffect(() => {
             .catch(() => {});
         }
       });
-    }, 1500);
+    }, 5000);
 
     return () => clearTimeout(prefetchTimer);
   }, []);

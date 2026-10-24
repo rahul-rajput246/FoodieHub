@@ -18,7 +18,7 @@ function Menu({ user, addToCart, add_cart, plus_cart, totalQty, minus_cart, wish
   });
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/home-data/menu`)
+    fetch(`${API_BASE_URL}/api/home-data/menu?_t=${Date.now()}`)
       .then((res) => res.json())
       .then((result) => {
         if (result.data) {
